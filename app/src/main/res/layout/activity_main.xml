@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <!--TODO: make the interface compatible for screens when device is rotated -->
+
     <TextView
         android:id="@+id/scoreboard"
         android:layout_width="match_parent"
@@ -19,11 +21,12 @@
         />
 
     <FrameLayout
+        android:id="@+id/game_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/gameframe"
+            android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tap"
