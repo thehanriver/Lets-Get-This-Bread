@@ -26,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
 
     // screen & character sizes
     private int screenWidth;
-    private int screenHeight;
+    //private int screenHeight;
     private int frameHeight;
-    private int bread_size;
+    private int bread_width;
+    private int bread_height;
 
-    // positions
+    // Positions
+    private int breadX;
     private int breadY;
     private int cutleryX;
     private int cutleryY;
@@ -39,13 +41,16 @@ public class MainActivity extends AppCompatActivity {
     private int pigeonX;
     private int pigeonY;
     
-    // intialize classes
+    // Intialize classes
     private Handler handler = new Handler();
     private Timer timer = new Timer();
 
-    // status check
+    // Status check
     private boolean action_flag = false;
     private boolean start_flag = false;
+
+    // Scoreboard
+    private int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +80,13 @@ public class MainActivity extends AppCompatActivity {
         knife.setX(-100);
         knife.setY(-100);
 
+        scoreboard.setText("Score: 0");
     }
 
     public void changePos() {
+        // Collision box check
+        hitCheck();
+
         // Move obstacle knife
         knifeX -= 16; // TODO: make velocity change with time
         if (knifeX < 0) {
@@ -117,11 +126,46 @@ public class MainActivity extends AppCompatActivity {
         if (breadY < 0) {
             breadY = 0;
         }
-        else if (breadY > (frameHeight - bread_size)) {
-            breadY = frameHeight - bread_size;
+        else if (breadY > (frameHeight - bread_height)) {
+            breadY = frameHeight - bread_height;
         }
 
+        // TODO: add jump mechanic and change breadx
+        breadX = 0;
+        bread.setX(breadX);
         bread.setY(breadY);
+
+        scoreboard.setText("Score: " + score);
+    }
+
+    public void hitCheck() {
+        // Collision counts as the entire box
+
+        //TODO: scale down the collision box to make it easier & realistic ie a circular collision
+
+        // Collision check for cutlery
+        if ((0 <= cutleryX) && (bread_width + breadX >= cutleryX) && (breadY <= cutleryY + cutlery.getHeight()) && (breadY + bread_height >= cutleryY)) {
+            score += 30;
+            cutleryX = -20;
+        }
+        
+        // Collision check for pigeon
+        if ((0 <= pigeonX) && (bread_width + breadX >= pigeonX) && (breadY <= pigeonY + pigeon.getHeight()) && (breadY + bread_height >= pigeonY)) {
+            pigeonX = -20;
+
+            // Game ends TODO: its optional but we can add multiple lives
+            timer.cancel();
+            timer = null;
+
+            // Print results
+        }
+        
+        // Collision check for knife
+        if ((0 <= knifeX) && (bread_width + breadX >= knifeX) && (breadY <= knifeY + knife.getHeight()) && (breadY + bread_height >= knifeY)) {
+            score += 50;
+            knifeX = -20;
+        }
+
     }
 
     public boolean onTouchEvent(MotionEvent me) {
@@ -131,11 +175,12 @@ public class MainActivity extends AppCompatActivity {
             FrameLayout game_frame = findViewById(R.id.game_frame);
             frameHeight = game_frame.getHeight();
 
+            breadX = (int)bread.getX();
             breadY = (int)bread.getY();
 
             // TODO: make sure our figure is square, if not, add getLength
-            bread_size = bread.getHeight();
-            //bread_size = bread.getHeight();
+            bread_width = bread.getWidth();
+            bread_height = bread.getHeight();
 
             start.setVisibility(View.GONE);
 
