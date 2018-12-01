@@ -1,10 +1,12 @@
 package com.example.eddie.letsgetthisbread;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -158,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
             timer = null;
 
             // Print results
+            Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
+            intent.putExtra("SCORE" , score);
+            startActivity(intent);
         }
         
         // Collision check for knife
@@ -206,5 +211,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    // Disable return
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_BACK:
+                    return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
     }
 }
