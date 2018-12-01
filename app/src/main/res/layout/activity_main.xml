@@ -10,6 +10,10 @@
 
     <!--TODO: make the interface compatible for screens when device is rotated -->
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/scoreboard"
         android:layout_width="match_parent"
@@ -20,15 +24,6 @@
         android:gravity="center_vertical"
         />
 
-    <ImageButton
-        android:id="@+id/pause"
-        style="@android:style/Widget.DeviceDefault.ImageButton"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="right"
-        app:srcCompat="@android:color/holo_green_dark"
-        android:onClick="pausePushed"/>
-
     <FrameLayout
         android:id="@+id/game_frame"
         android:layout_width="match_parent"
@@ -38,17 +33,17 @@
             android:id="@+id/start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tap"
-            android:textSize="30sp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="130dp"/>
+            android:layout_marginTop="130dp"
+            android:text="@string/tap"
+            android:textSize="30sp" />
 
         <ImageView
             android:id="@+id/bread"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/bread"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/bread" />
 
         <ImageView
             android:id="@+id/pigeon"
@@ -70,5 +65,20 @@
 
 
     </FrameLayout>
+
+
+
+        <ImageButton
+            android:id="@+id/pause"
+            style="@android:style/Widget.DeviceDefault.ImageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:onClick="pausePushed"/>
+
+    </FrameLayout>
+
 
 </LinearLayout>
