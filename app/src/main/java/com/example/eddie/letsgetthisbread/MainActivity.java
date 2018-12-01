@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         pigeon = findViewById(R.id.pigeon);
 
         pauseButton = findViewById(R.id.pause);
+        pauseButton.setVisibility(View.GONE);
 
         // Getting screen size
         WindowManager wm = getWindowManager();
@@ -204,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
             bread_height = bread.getHeight();
 
             start.setVisibility(View.GONE);
+            pauseButton.setVisibility(View.VISIBLE);
 
             timer.schedule(new TimerTask() {
                 @Override
