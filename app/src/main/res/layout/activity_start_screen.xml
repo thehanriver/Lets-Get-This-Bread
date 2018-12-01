@@ -17,83 +17,12 @@
         android:text="Lets Get This Bread"
         android:textSize ="32sp"/>
 
-    <TableLayout
-        android:layout_width ="wrap_content"
-        android:layout_height ="wrap_content"
-        android:layout_marginTop ="80dp">
-
-
-        <TableRow
-            android:gravity = "center_vertical">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/bread"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text = "30 Points"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"
-                />
-        </TableRow>
-        <TableRow
-            android:gravity = "center_vertical"
-            android:layout_marginTop = "20dp">
-            <ImageView
-
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/knife" />
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text = "Game Over"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"
-                />
-            </TableRow>
-            <TableRow
-                android:gravity = "center_vertical"
-                android:layout_marginTop = "20dp">
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/cutlery"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text = "Game Over"
-                    android:textSize="18sp"
-                    android:paddingLeft="10dp"
-                    />
-            </TableRow>
-        <TableRow
-            android:gravity = "center_vertical"
-            android:layout_marginTop = "20dp">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/pigeon"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text = "Game Over"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"
-                />
-        </TableRow>
-
-        <Button
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="GET BREAD"
-            android:layout_marginTop = "60dp"
-            android:onClick="startGame" />
-    </TableLayout>
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="GET BREAD"
+        android:layout_marginTop = "60dp"
+        android:onClick="startGame" />
 
     <!--android:onClick="tutorialPushed" -->
     <ImageButton
@@ -101,7 +30,7 @@
         style="@android:style/Widget.DeviceDefault.ImageButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/bread" />
 
