@@ -2,4 +2,7 @@
     <string name="app_name">Lets Get This Bread</string>
     <string name="score">Score: 300</string>
     <string name="tap">Tap to Start</string>
+    <string name="over">Game Over</string>
+    <string name="again">Let\'s Get More Bread?</string>
+
 </resources>

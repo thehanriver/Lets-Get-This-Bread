@@ -1,5 +1,6 @@
 package com.example.eddie.letsgetthisbread;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -158,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
             timer = null;
 
             // Print results
+            Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
+            intent.putExtra("SCORE" , score);
+            startActivity(intent);
         }
         
         // Collision check for knife
