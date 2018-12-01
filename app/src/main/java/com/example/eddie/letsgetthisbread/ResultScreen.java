@@ -1,9 +1,11 @@
 package com.example.eddie.letsgetthisbread;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class ResultScreen extends AppCompatActivity {
@@ -33,7 +35,10 @@ public class ResultScreen extends AppCompatActivity {
         else {
             highscore.setText("High Score: " + stored_highS);
         }
+    }
 
+    public void tryAgain(View view) {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
 }
