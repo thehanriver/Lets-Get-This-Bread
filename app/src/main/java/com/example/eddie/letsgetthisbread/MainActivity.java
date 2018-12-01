@@ -10,7 +10,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,9 +52,13 @@ public class MainActivity extends AppCompatActivity {
     // Status check
     private boolean action_flag = false;
     private boolean start_flag = false;
+    private boolean pause_flag = false;
 
     // Scoreboard
     private int score = 0;
+
+    // Button
+    private ImageButton pauseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         cutlery = findViewById(R.id.cutlery);
         knife = findViewById(R.id.knife);
         pigeon = findViewById(R.id.pigeon);
+
+        pauseButton = findViewById(R.id.pause);
 
         // Getting screen size
         WindowManager wm = getWindowManager();
@@ -183,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
             breadX = (int)bread.getX();
             breadY = (int)bread.getY();
 
-            // TODO: make sure our figure is square, if not, add getLength
             bread_width = bread.getWidth();
             bread_height = bread.getHeight();
 
@@ -224,5 +231,34 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    public void pausePushed(View view) {
+        if (!pause_flag) {
+            pause_flag = true;
+
+            timer.cancel();
+            timer = null;
+
+            // TODO: change pauseButton.setImageDrawable();
+
+        }
+        else {
+            pause_flag = false;
+
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            changePos();
+                        }
+                    });
+                }
+            }, 0, 20);
+
+        }
     }
 }
