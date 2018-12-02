@@ -18,6 +18,9 @@ public class StartScreen extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
+    protected void startSettings(View view) {
+        startActivity(new Intent(getApplicationContext(), SettingsScreen.class));
+    }
     // Disable return
 
     @Override

@@ -7,38 +7,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity = "center"
-    tools:context=".Start">
+    tools:context=".StartScreen">
 
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lets Get This Bread"
+        android:text="Settings"
         android:textSize ="32sp"/>
 
     <Button
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="GET BREAD"
+        android:text="Motion Controlled"
         android:layout_marginTop = "60dp"
         android:onClick="startGame" />
     <Button
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Settings"
-        android:layout_marginTop = "30dp"
-        android:onClick="startSettings" />
+        android:text="Button Controlled"
+        android:layout_marginTop = "30dp"  />
+   /*     android:onClick="startSettings" />  */
 
     <!--android:onClick="tutorialPushed" -->
-    <ImageButton
-        android:id="@+id/tutorial"
-        style="@android:style/Widget.DeviceDefault.ImageButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/bread" />
 
 
 </LinearLayout>
