@@ -5,7 +5,8 @@
     <string name="over">Game Over</string>
     <string name="menu">Back to Main Menu</string>
     <string name="again">Let\'s Get More Bread?</string>
-    <string name="description">test</string>
+    <string name="left">\u003C</string>
+    <string name="right">\u003e</string>
 
 
 </resources>

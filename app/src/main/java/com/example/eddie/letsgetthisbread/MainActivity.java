@@ -1,15 +1,13 @@
 package com.example.eddie.letsgetthisbread;
 
 import android.content.Intent;
-import android.graphics.Point;
+import android.media.Image;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -23,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView scoreboard;
     private TextView lives;
-    private TextView start;
+    private TextView start; // TODO: start can function as paused menu as well
+    private TextView left;
+    private TextView right;
     private ImageView bread;
     private ImageView cutlery;
     private ImageView knife;
@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private int breadY;
     private int cutleryX;
     private int cutleryY;
-    private int knifeX;
     private int knifeY;
+    private int knifeX;
     private int pigeonX;
     private int pigeonY;
 
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean action_flag = false;
     private boolean start_flag = false;
     private boolean pause_flag = false;
+    private boolean left_flag = false;
+    private boolean right_flag = false;
 
     // Counter
     private int score = 0;
@@ -76,17 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
         pauseButton = findViewById(R.id.pause);
         pauseButton.setVisibility(View.INVISIBLE);
-        pauseButton.setClickable(false);
 
-        /* Getting screen size
-        WindowManager wm = getWindowManager();
-        Display disp = wm.getDefaultDisplay();
-        Point size = new Point();
-        disp.getSize(size);
+        left = findViewById(R.id.left);
+        right = findViewById(R.id.right);
 
-        screenWidth = size.x;
-        screenWidth = size.y;*/
-
+        // TODO: offload constants into its own class file file
         knifeY = 3000;
         cutleryY = 3000;
         pigeonY = 3000;
@@ -110,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         knifeY += 16; // TODO: make velocity change with time
         if (knifeY > frameHeight) {
             knifeY = -20;
-            //knifeY = screenWidth + 20; // move obj out of screen
             knifeX = (int) Math.floor(Math.random() * (frameWidth - knife.getWidth()));
         }
         knife.setX(knifeX);
@@ -120,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         cutleryY += 12; // TODO: make velocity change with time
         if (cutleryY > frameHeight) {
             cutleryY = -20;
-            //cutleryX = screenWidth + 20; // move obj out of screen
             cutleryX = (int) Math.floor(Math.random() * (frameWidth - cutlery.getWidth()));
         }
         cutlery.setX(cutleryX);
@@ -130,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         pigeonY += 20; // TODO: make velocity change with time
         if (pigeonY > frameHeight) {
             pigeonY = -20;
-            //pigeonX = screenWidth + 20; // move obj out of screen
             pigeonX = (int) Math.floor(Math.random() * (frameWidth - pigeon.getWidth()));
         }
         pigeon.setX(pigeonX);
@@ -138,10 +131,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Move main character
         // TODO: change action flag mechanic into button & tilt
-        if (action_flag) {
+
+        if (action_flag && left_flag) {
             breadX -= 20;
         }
-        else {
+        else if (action_flag && right_flag) {
             breadX += 20;
         }
 
@@ -163,20 +157,17 @@ public class MainActivity extends AppCompatActivity {
     public void hitCheck() {
         // Collision counts as the entire box
 
-        //TODO: scale down the collision box to make it easier & realistic ie a circular collision
-
         // Collision check for knife
         if ((knifeX + knife.getWidth() >= breadX) && (knifeX <= breadX + bread_width) && (knifeY + knife.getHeight() >= breadY) && (knifeY + knife.getHeight() <= frameHeight)) {
             score += 30;
             knifeY = -40;
         }
-        
+
         // Collision check for pigeon
         if ((pigeonX + pigeon.getWidth() >= breadX) && (pigeonX <= breadX + bread_width) && (pigeonY + pigeon.getHeight() >= breadY) && (pigeonY + pigeon.getHeight() <= frameHeight)) {
 
             pigeonY = -40;
             healthCounter -= 1;
-            lives.setText(Integer.toString(healthCounter));
 
             if(healthCounter == 0) {   // Game ends TODO: its optional but we can add multiple lives
                 timer.cancel();
@@ -186,15 +177,18 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
                 intent.putExtra("SCORE", score);
                 startActivity(intent);
+                lives.setText("X");
+            }
+            else {
+                lives.setText(Integer.toString(healthCounter));
             }
         }
-        
+
         // Collision check for cutlery
         if ((cutleryX + cutlery.getWidth() >= breadX) && (cutleryX <= breadX + bread_width) && (cutleryY + cutlery.getHeight() >= breadY) && (cutleryY + cutlery.getHeight() <= frameHeight)) {
             score += 50;
             cutleryY = -40;
         }
-
     }
 
     public boolean onTouchEvent(MotionEvent me) {
@@ -229,14 +223,25 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             if (me.getAction() == MotionEvent.ACTION_DOWN) {
-                action_flag = true;
+                if (inLeftBoundry(me.getX(),me.getY())) {
+                    action_flag = true;
+                    left_flag = true;
+                }
+                if (inRightBoundry(me.getX(),me.getY())) {
+                    action_flag = true;
+                    right_flag = true;
+                }
             } else if (me.getAction() == MotionEvent.ACTION_UP) {
                 action_flag = false;
+                left_flag = false;
+                right_flag = false;
             }
         }
 
         return true;
     }
+
+
 
     // Disable return
 
@@ -276,5 +281,13 @@ public class MainActivity extends AppCompatActivity {
             }, 0, 20);
 
         }
+    }
+    
+    public boolean inLeftBoundry(float x, float y) {
+        return ((x <= left.getX() + left.getWidth()) && (x >= left.getX()) && (y >= left.getY()) && (y <= left.getY() + left.getHeight()));
+    }
+    
+    public boolean inRightBoundry(float x, float y) {
+        return ((x <= right.getX() + right.getWidth()) && (x >= right.getX()) && (y >= right.getY()) && (y <= right.getY() + right.getHeight()));
     }
 }
