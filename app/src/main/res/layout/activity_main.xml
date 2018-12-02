@@ -74,6 +74,13 @@
             android:onClick="pausePushed"
             android:src="@drawable/bread" />
 
+        <ImageView
+            android:id="@+id/cutlery"
+            android:layout_width="50dp"
+            android:layout_gravity="center"
+            android:layout_height="50dp"
+            android:src="@drawable/heart" />
+
 
     </FrameLayout>
 

@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private int knifeY;
     private int pigeonX;
     private int pigeonY;
+
+    // Health
+    private int healthCounter = 3;
     
     // Intialize classes
     private Handler handler = new Handler();
@@ -170,16 +173,19 @@ public class MainActivity extends AppCompatActivity {
         
         // Collision check for pigeon
         if ((pigeonX + pigeon.getWidth() >= breadX) && (pigeonX <= breadX + bread_width) && (pigeonY + pigeon.getHeight() >= breadY) && (pigeonY + pigeon.getHeight() <= frameHeight)) {
+
             pigeonY = -40;
+            healthCounter -= 1;
 
-            // Game ends TODO: its optional but we can add multiple lives
-            timer.cancel();
-            timer = null;
+            if(healthCounter == 0) {   // Game ends TODO: its optional but we can add multiple lives
+                timer.cancel();
+                timer = null;
 
-            // Print results
-            Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
-            intent.putExtra("SCORE" , score);
-            startActivity(intent);
+                // Print results
+                Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
+                intent.putExtra("SCORE", score);
+                startActivity(intent);
+            }
         }
         
         // Collision check for cutlery
