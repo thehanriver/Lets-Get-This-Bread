@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context=".MainActivity">
 
     <!--TODO: make the interface compatible for screens when device is rotated -->
@@ -68,14 +68,15 @@
             style="@android:style/Widget.DeviceDefault.ImageButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:onClick="pausePushed"
             android:src="@drawable/bread" />
 
         <ImageView
-            android:id="@+id/cutlery"
+            android:contentDescription="@string/description"
+            android:id="@+id/heart"
             android:layout_width="50dp"
             android:layout_gravity="center"
             android:layout_height="50dp"

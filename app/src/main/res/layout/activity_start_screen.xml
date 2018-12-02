@@ -1,44 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity = "center"
-    tools:context=".Start">
+    tools:context=".StartScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity = "center">
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize ="32sp"/>
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop = "120dp"
+            android:text="GET BREAD"
+            android:onClick="startGame" />
+
+        <Button
+            android:id="@+id/settingButton"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Settings"
+            android:onClick="startSettings" />
+
+        <Button
+            android:id="@+id/tutorialButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="revealTutorial"
+            android:text="Tutorial" />
+
+    </LinearLayout>
 
 
+    <ImageView
+        android:id="@+id/tutorial_pg1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/bread_icon"
+        android:visibility="invisible" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lets Get This Bread"
-        android:textSize ="32sp"/>
-
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="GET BREAD"
-        android:layout_marginTop = "60dp"
-        android:onClick="startGame" />
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Settings"
-        android:layout_marginTop = "30dp"
-        android:onClick="startSettings" />
-
-    <!--android:onClick="tutorialPushed" -->
-    <ImageButton
-        android:id="@+id/tutorial"
-        style="@android:style/Widget.DeviceDefault.ImageButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/bread" />
-
-
-</LinearLayout>
+</RelativeLayout>

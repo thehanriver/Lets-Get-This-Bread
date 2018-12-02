@@ -29,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView pigeon;
 
     // screen & character sizes
-    private int screenWidth;
-    //private int screenHeight;
     private int frameHeight;
     private int frameWidth;
     private int bread_width;
@@ -79,14 +77,14 @@ public class MainActivity extends AppCompatActivity {
         pauseButton = findViewById(R.id.pause);
         pauseButton.setVisibility(View.GONE);
 
-        // Getting screen size
+        /* Getting screen size
         WindowManager wm = getWindowManager();
         Display disp = wm.getDefaultDisplay();
         Point size = new Point();
         disp.getSize(size);
 
         screenWidth = size.x;
-        screenWidth = size.y;
+        screenWidth = size.y;*/
 
         knifeY = 3000;
         cutleryY = 3000;
