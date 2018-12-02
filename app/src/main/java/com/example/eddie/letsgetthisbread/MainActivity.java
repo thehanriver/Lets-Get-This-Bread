@@ -22,6 +22,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     private TextView scoreboard;
+    private TextView lives;
     private TextView start;
     private ImageView bread;
     private ImageView cutlery;
@@ -44,9 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private int pigeonX;
     private int pigeonY;
 
-    // Health
-    private int healthCounter = 3;
-    
     // Intialize classes
     private Handler handler = new Handler();
     private Timer timer = new Timer();
@@ -56,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean start_flag = false;
     private boolean pause_flag = false;
 
-    // Scoreboard
+    // Counter
     private int score = 0;
+    private int healthCounter = 3;
 
     // Button
     private ImageButton pauseButton;
@@ -73,9 +72,11 @@ public class MainActivity extends AppCompatActivity {
         cutlery = findViewById(R.id.cutlery);
         knife = findViewById(R.id.knife);
         pigeon = findViewById(R.id.pigeon);
+        lives = findViewById(R.id.lives);
 
         pauseButton = findViewById(R.id.pause);
-        pauseButton.setVisibility(View.GONE);
+        pauseButton.setVisibility(View.INVISIBLE);
+        pauseButton.setClickable(false);
 
         /* Getting screen size
         WindowManager wm = getWindowManager();
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         knife.setY(knifeY);
 
         scoreboard.setText("Score: 0");
+        lives.setText(Integer.toString(healthCounter));
     }
 
     public void changePos() {
@@ -174,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
             pigeonY = -40;
             healthCounter -= 1;
+            lives.setText(Integer.toString(healthCounter));
 
             if(healthCounter == 0) {   // Game ends TODO: its optional but we can add multiple lives
                 timer.cancel();
@@ -254,9 +257,7 @@ public class MainActivity extends AppCompatActivity {
 
             timer.cancel();
             timer = null;
-
             // TODO: change pauseButton.setImageDrawable();
-
         }
         else {
             pause_flag = false;

@@ -63,24 +63,39 @@
 
         </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/pause"
-            style="@android:style/Widget.DeviceDefault.ImageButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="end"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:onClick="pausePushed"
-            android:src="@drawable/bread" />
+            android:layout_marginRight="10dp">
 
-        <ImageView
-            android:contentDescription="@string/description"
-            android:id="@+id/heart"
-            android:layout_width="50dp"
-            android:layout_gravity="center"
-            android:layout_height="50dp"
-            android:src="@drawable/heart" />
+            <ImageButton
+                android:id="@+id/pause"
+                style="@android:style/Widget.DeviceDefault.ImageButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="pausePushed"
+                android:src="@drawable/bread" />
+
+            <TextView
+                android:contentDescription="@string/description"
+                android:id="@+id/lives"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/pause"
+                android:gravity="center"
+                android:text="0"
+                android:textSize="32sp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/heart" />
+
+        </RelativeLayout>
+
+
 
 
     </FrameLayout>
