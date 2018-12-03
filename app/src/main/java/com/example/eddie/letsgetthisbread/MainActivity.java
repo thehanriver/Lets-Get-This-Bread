@@ -212,17 +212,7 @@ public class MainActivity extends AppCompatActivity {
             start.setVisibility(View.GONE);
             pauseButton.setClickable(true);
 
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            changePos();
-                        }
-                    });
-                }
-            }, 0, 20);
+            resume();
 
         }
         else {
@@ -276,43 +266,48 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             pause_flag = false;
-            countdown.setVisibility(View.VISIBLE);
 
-            new CountDownTimer(2900, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    // Make pause button invisible and disable interaction TODO: add setting button and replace alpha
-                    pauseButton.setAlpha(128);
-                    pauseButton.setClickable(false);
-
-                    // Print time
-                    countdown.setText(Integer.toString((int)(1 + Math.ceil(millisUntilFinished/1000))));
-                }
-
-                public void onFinish() {
-                    countdown.setVisibility(View.INVISIBLE);
-
-                    // Make pause button visible and enable interaction
-                    pauseButton.setAlpha(255);
-                    pauseButton.setClickable(true);
-
-                    // Resume game timer
-                    timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    changePos();
-                                }
-                            });
-                        }
-                    }, 0, 20);
-                }
-            }.start();
+            resume();
         }
     }
-    
+
+    public void resume() {
+        countdown.setVisibility(View.VISIBLE);
+
+        new CountDownTimer(2900, 1000) {
+            public void onTick(long millisUntilFinished) {
+                // Make pause button invisible and disable interaction TODO: add setting button and replace alpha
+                pauseButton.setAlpha(128);
+                pauseButton.setClickable(false);
+
+                // Print time
+                countdown.setText(Integer.toString((int)(1 + Math.ceil(millisUntilFinished/1000))));
+            }
+
+            public void onFinish() {
+                countdown.setVisibility(View.INVISIBLE);
+
+                // Make pause button visible and enable interaction
+                pauseButton.setAlpha(255);
+                pauseButton.setClickable(true);
+
+                // Resume game timer
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                changePos();
+                            }
+                        });
+                    }
+                }, 0, 20);
+            }
+        }.start();
+    }
+
     public boolean inLeftBoundry(float x, float y) {
         return ((x <= left.getX() + left.getWidth()) && (x >= left.getX()) && (y >= left.getY()) && (y <= left.getY() + left.getHeight()));
     }
