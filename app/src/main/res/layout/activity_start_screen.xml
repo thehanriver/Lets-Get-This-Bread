@@ -11,37 +11,55 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity = "center">
+        android:gravity = "center_horizontal">
 
         <TextView
             android:id="@+id/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize ="32sp"/>
+            android:layout_marginTop="120dp"
+            android:textSize ="32sp" />
 
-        <Button
-            android:id="@+id/startButton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop = "120dp"
-            android:text="GET BREAD"
-            android:onClick="startGame" />
-
-        <Button
-            android:id="@+id/settingButton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Settings"
-            android:onClick="startSettings" />
-
-        <Button
-            android:id="@+id/tutorialButton"
+        <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="revealTutorial"
-            android:text="Tutorial" />
+            android:layout_marginTop="160dp">
 
+            <TableRow>
+                <Button
+                    android:id="@+id/startButton"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="GET BREAD"
+                    android:onClick="startGame" />
+
+                <Button
+                    android:id="@+id/tutorialButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="revealTutorial"
+                    android:text="Tutorial" />
+
+            </TableRow>
+
+            <TableRow>
+                <Button
+                    android:id="@+id/settingButton"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Settings"
+                    android:onClick="startSettings" />
+
+                <Button
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Dummy" />
+
+                <!-- add achievement -->
+             </TableRow>
+
+        </TableLayout>
     </LinearLayout>
 
     <ImageView

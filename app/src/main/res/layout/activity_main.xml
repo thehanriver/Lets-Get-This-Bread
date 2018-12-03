@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/bread"
+            android:id="@+id/character"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center|bottom"
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="100sp"
+                android:textSize="90sp"
                 android:visibility="invisible"/>
 
         <RelativeLayout

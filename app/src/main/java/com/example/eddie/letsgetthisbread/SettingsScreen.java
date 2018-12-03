@@ -3,6 +3,7 @@ package com.example.eddie.letsgetthisbread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.content.Intent;
 
 public class SettingsScreen extends AppCompatActivity {
 
@@ -23,5 +24,13 @@ public class SettingsScreen extends AppCompatActivity {
             }
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    public void motion() {
+
+    }
+
+    public void button() {
+
     }
 }

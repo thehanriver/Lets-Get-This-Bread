@@ -7,9 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity = "center"
-    tools:context=".StartScreen">
-
-
+    tools:context=".SettingsScreen">
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,15 +20,12 @@
         android:layout_width="wrap_content"
         android:text="Motion Controlled"
         android:layout_marginTop = "60dp"
-        android:onClick="startGame" />
+        android:onClick="motion" />
     <Button
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="Button Controlled"
-        android:layout_marginTop = "30dp"  />
-   /*     android:onClick="startSettings" />  */
-
-    <!--android:onClick="tutorialPushed" -->
-
+        android:layout_marginTop = "30dp"
+        android:onClick="button" />
 
 </LinearLayout>

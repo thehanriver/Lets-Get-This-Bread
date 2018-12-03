@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView scoreboard;
     private TextView lives;
-    private TextView start; // TODO: start can function as paused menu as well
+    private TextView start;
     private TextView left;
     private TextView right;
     private TextView countdown;
-    private ImageView bread;
+    private ImageView character;
     private ImageView cutlery;
     private ImageView knife;
     private ImageView pigeon;
@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
     // screen & character sizes
     private int frameHeight;
     private int frameWidth;
-    private int bread_width;
-    private int bread_height;
+    private int character_width;
+    private int character_height;
 
     // Positions
-    private int breadX;
-    private int breadY;
+    private int characterX;
+    private int characterY;
     private int cutleryX;
     private int cutleryY;
     private int knifeY;
@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private Timer timer = new Timer();
 
     // Status check
-    private boolean action_flag = false;
     private boolean start_flag = false;
     private boolean pause_flag = false;
     private boolean left_flag = false;
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         scoreboard = findViewById(R.id.scoreboard);
         start = findViewById(R.id.start);
-        bread = findViewById(R.id.bread);
+        character = findViewById(R.id.character);
         cutlery = findViewById(R.id.cutlery);
         knife = findViewById(R.id.knife);
         pigeon = findViewById(R.id.pigeon);
@@ -104,9 +103,10 @@ public class MainActivity extends AppCompatActivity {
     public void changePos() {
         // Collision box check
         hitCheck();
-
+        // TODO: make it so score has a multiplier for each bread not dropped
+        // TODO: add bonus object for achievement system
         // Move obstacle knife
-        knifeY += 16; // TODO: make velocity change with time
+        knifeY += 12 * difficulty(score);
         if (knifeY > frameHeight) {
             knifeY = -20;
             knifeX = (int) Math.floor(Math.random() * (frameWidth - knife.getWidth()));
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         knife.setY(knifeY);
 
         // Move obstacle knife
-        cutleryY += 12; // TODO: make velocity change with time
+        cutleryY += 14 * difficulty(score);
         if (cutleryY > frameHeight) {
             cutleryY = -20;
             cutleryX = (int) Math.floor(Math.random() * (frameWidth - cutlery.getWidth()));
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         cutlery.setY(cutleryY);
 
         // Move obstacle knife
-        pigeonY += 20; // TODO: make velocity change with time
+        pigeonY += 18 * difficulty(score);
         if (pigeonY > frameHeight) {
             pigeonY = -20;
             pigeonX = (int) Math.floor(Math.random() * (frameWidth - pigeon.getWidth()));
@@ -135,24 +135,24 @@ public class MainActivity extends AppCompatActivity {
         // Move main character
         // TODO: change action flag mechanic into button & tilt
 
-        if (action_flag && left_flag) {
-            breadX -= 20;
+        if (left_flag) {
+            characterX -= 20;
         }
-        else if (action_flag && right_flag) {
-            breadX += 20;
-        }
-
-        if (breadX < 0) {
-            breadX = 0;
-        }
-        else if (breadX > (frameWidth - bread_width)) {
-            breadX = frameWidth - bread_width;
+        else if (right_flag) {
+            characterX += 20;
         }
 
-        // TODO: add jump mechanic and change breadx
-        breadY = frameHeight - bread_height;
-        bread.setX(breadX);
-        bread.setY(breadY);
+        if (characterX < 0) {
+            characterX = 0;
+        }
+        else if (characterX > (frameWidth - character_width)) {
+            characterX = frameWidth - character_width;
+        }
+
+        // TODO: add jump mechanic and change characterx
+        characterY = frameHeight - character_height;
+        character.setX(characterX);
+        character.setY(characterY);
 
         scoreboard.setText("Score: " + score);
     }
@@ -161,18 +161,18 @@ public class MainActivity extends AppCompatActivity {
         // Collision counts as the entire box
 
         // Collision check for knife
-        if ((knifeX + knife.getWidth() >= breadX) && (knifeX <= breadX + bread_width) && (knifeY + knife.getHeight() >= breadY) && (knifeY + knife.getHeight() <= frameHeight)) {
+        if ((knifeX + knife.getWidth() >= characterX) && (knifeX <= characterX + character_width) && (knifeY + knife.getHeight() >= characterY) && (knifeY + knife.getHeight() <= frameHeight)) {
             score += 30;
             knifeY = -40;
         }
 
         // Collision check for pigeon
-        if ((pigeonX + pigeon.getWidth() >= breadX) && (pigeonX <= breadX + bread_width) && (pigeonY + pigeon.getHeight() >= breadY) && (pigeonY + pigeon.getHeight() <= frameHeight)) {
+        if ((pigeonX + pigeon.getWidth() >= characterX) && (pigeonX <= characterX + character_width) && (pigeonY + pigeon.getHeight() >= characterY) && (pigeonY + pigeon.getHeight() <= frameHeight)) {
 
             pigeonY = -40;
             healthCounter -= 1;
 
-            if(healthCounter == 0) {   // Game ends TODO: its optional but we can add multiple lives
+            if(healthCounter == 0) {
                 timer.cancel();
                 timer = null;
 
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Collision check for cutlery
-        if ((cutleryX + cutlery.getWidth() >= breadX) && (cutleryX <= breadX + bread_width) && (cutleryY + cutlery.getHeight() >= breadY) && (cutleryY + cutlery.getHeight() <= frameHeight)) {
+        if ((cutleryX + cutlery.getWidth() >= characterX) && (cutleryX <= characterX + character_width) && (cutleryY + cutlery.getHeight() >= characterY) && (cutleryY + cutlery.getHeight() <= frameHeight)) {
             score += 50;
             cutleryY = -40;
         }
@@ -196,37 +196,32 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onTouchEvent(MotionEvent me) {
         if (!start_flag) {
-            // TODO: add countdown b4 game starts
             start_flag = true;
 
             FrameLayout game_frame = findViewById(R.id.game_frame);
             frameHeight = game_frame.getHeight();
             frameWidth = game_frame.getWidth();
 
-            breadX = (int)bread.getX();
-            breadY = (int)bread.getY();
+            characterX = (int)character.getX();
+            characterY = (int)character.getY();
 
-            bread_width = bread.getWidth();
-            bread_height = bread.getHeight();
+            character_width = character.getWidth();
+            character_height = character.getHeight();
 
             start.setVisibility(View.GONE);
             pauseButton.setClickable(true);
 
             resume();
-
         }
         else {
             if (me.getAction() == MotionEvent.ACTION_DOWN) {
                 if (inLeftBoundry(me.getX(),me.getY())) {
-                    action_flag = true;
                     left_flag = true;
                 }
                 if (inRightBoundry(me.getX(),me.getY())) {
-                    action_flag = true;
                     right_flag = true;
                 }
             } else if (me.getAction() == MotionEvent.ACTION_UP) {
-                action_flag = false;
                 left_flag = false;
                 right_flag = false;
             }
@@ -234,8 +229,6 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
-
 
     // Disable return
 
@@ -266,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             pause_flag = false;
-
             resume();
         }
     }
@@ -281,7 +273,12 @@ public class MainActivity extends AppCompatActivity {
                 pauseButton.setClickable(false);
 
                 // Print time
-                countdown.setText(Integer.toString((int)(1 + Math.ceil(millisUntilFinished/1000))));
+                int display = (int)(1 + Math.ceil(millisUntilFinished/1000));
+                if (display < 2)
+                    countdown.setText("BREADY?");
+                else
+                    countdown.setText(Integer.toString(display));
+
             }
 
             public void onFinish() {
@@ -308,11 +305,22 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
+    // TODO: Make boundry check more general
     public boolean inLeftBoundry(float x, float y) {
         return ((x <= left.getX() + left.getWidth()) && (x >= left.getX()) && (y >= left.getY()) && (y <= left.getY() + left.getHeight()));
     }
-    
+
     public boolean inRightBoundry(float x, float y) {
         return ((x <= right.getX() + right.getWidth()) && (x >= right.getX()) && (y >= right.getY()) && (y <= right.getY() + right.getHeight()));
+    }
+
+    public float difficulty(int PlayerScore) {
+        return 1 + (PlayerScore)/1000; // Start at difficulty 1
+    }
+
+    public float random_Pos(int range) {
+
+
+        return 1f;
     }
 }
