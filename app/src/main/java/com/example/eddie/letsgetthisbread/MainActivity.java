@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onTouchEvent(MotionEvent me) {
         if (!start_flag) {
+            // TODO: add countdown b4 game starts
             start_flag = true;
 
             FrameLayout game_frame = findViewById(R.id.game_frame);
@@ -277,14 +278,14 @@ public class MainActivity extends AppCompatActivity {
             pause_flag = false;
             countdown.setVisibility(View.VISIBLE);
 
-            new CountDownTimer(3000, 1000) {
+            new CountDownTimer(2900, 1000) {
                 public void onTick(long millisUntilFinished) {
                     // Make pause button invisible and disable interaction TODO: add setting button and replace alpha
                     pauseButton.setAlpha(128);
                     pauseButton.setClickable(false);
 
                     // Print time
-                    countdown.setText(Integer.toString(1 + (int) (millisUntilFinished/1000)));
+                    countdown.setText(Integer.toString((int)(1 + Math.ceil(millisUntilFinished/1000))));
                 }
 
                 public void onFinish() {
