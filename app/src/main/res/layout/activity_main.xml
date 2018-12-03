@@ -60,7 +60,15 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
                 android:text="@string/score"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/countdown"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="100sp"
+                android:visibility="invisible"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -103,7 +111,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:onClick="pausePushed"
-                android:src="@drawable/bread" />
+                android:src="@drawable/bread"
+                android:background="@color/white"/>
 
             <TextView
                 android:id="@+id/lives"

@@ -1,14 +1,13 @@
 package com.example.eddie.letsgetthisbread;
 
 import android.content.Intent;
-import android.media.Image;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView start; // TODO: start can function as paused menu as well
     private TextView left;
     private TextView right;
+    private TextView countdown;
     private ImageView bread;
     private ImageView cutlery;
     private ImageView knife;
@@ -75,9 +75,12 @@ public class MainActivity extends AppCompatActivity {
         knife = findViewById(R.id.knife);
         pigeon = findViewById(R.id.pigeon);
         lives = findViewById(R.id.lives);
+        countdown = findViewById(R.id.countdown);
 
         pauseButton = findViewById(R.id.pause);
-        pauseButton.setVisibility(View.INVISIBLE);
+        pauseButton.setClickable(false);
+
+        countdown.setText(Integer.toString(3));
 
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
@@ -206,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
             bread_height = bread.getHeight();
 
             start.setVisibility(View.GONE);
-            pauseButton.setVisibility(View.VISIBLE);
+            pauseButton.setClickable(true);
 
             timer.schedule(new TimerTask() {
                 @Override
@@ -260,26 +263,52 @@ public class MainActivity extends AppCompatActivity {
         if (!pause_flag) {
             pause_flag = true;
 
+            // Stop timer and show paused interface
             timer.cancel();
             timer = null;
+
+            // Show PAUSED state
+            countdown.setVisibility(View.VISIBLE);
+            countdown.setText("PAUSED");
+            pauseButton.setAlpha(128);
             // TODO: change pauseButton.setImageDrawable();
         }
         else {
             pause_flag = false;
+            countdown.setVisibility(View.VISIBLE);
 
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    handler.post(new Runnable() {
+            new CountDownTimer(3000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    // Make pause button invisible and disable interaction TODO: add setting button and replace alpha
+                    pauseButton.setAlpha(128);
+                    pauseButton.setClickable(false);
+
+                    // Print time
+                    countdown.setText(Integer.toString(1 + (int) (millisUntilFinished/1000)));
+                }
+
+                public void onFinish() {
+                    countdown.setVisibility(View.INVISIBLE);
+
+                    // Make pause button visible and enable interaction
+                    pauseButton.setAlpha(255);
+                    pauseButton.setClickable(true);
+
+                    // Resume game timer
+                    timer = new Timer();
+                    timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            changePos();
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    changePos();
+                                }
+                            });
                         }
-                    });
+                    }, 0, 20);
                 }
-            }, 0, 20);
-
+            }.start();
         }
     }
     
