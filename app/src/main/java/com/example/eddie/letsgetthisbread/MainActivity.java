@@ -1,13 +1,17 @@
 package com.example.eddie.letsgetthisbread;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Point;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -15,6 +19,8 @@ import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.example.eddie.letsgetthisbread.GameConstants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,9 +35,12 @@ public class MainActivity extends AppCompatActivity {
     private ImageView knife;
     private ImageView pigeon;
 
+    private TextView debug1;
+
     // screen & character sizes
     private int frameHeight;
     private int frameWidth;
+    private int screenHeight;
     private int character_width;
     private int character_height;
 
@@ -54,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean pause_flag = false;
     private boolean left_flag = false;
     private boolean right_flag = false;
+    private boolean control_flag = false; // 0 for screen 1 for motion
 
     // Counter
     private int score = 0;
@@ -61,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Button
     private ImageButton pauseButton;
+
+    // Difficulty Multiplier
+    private float speed_multiplier = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         lives = findViewById(R.id.lives);
         countdown = findViewById(R.id.countdown);
 
+        debug1 = findViewById(R.id.debug1);
+
         pauseButton = findViewById(R.id.pause);
         pauseButton.setClickable(false);
 
@@ -85,9 +100,12 @@ public class MainActivity extends AppCompatActivity {
         right = findViewById(R.id.right);
 
         // TODO: offload constants into its own class file file
-        knifeY = 3000;
-        cutleryY = 3000;
-        pigeonY = 3000;
+
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        knifeY = screenHeight + 40;
+        pigeonY = screenHeight + 40;
+        cutleryY = screenHeight + 40;
 
         cutlery.setX(-40);
         cutlery.setY(cutleryY);
@@ -103,32 +121,48 @@ public class MainActivity extends AppCompatActivity {
     public void changePos() {
         // Collision box check
         hitCheck();
+
+        speed_multiplier = difficulty(score); // only update after current fall
+
         // TODO: make it so score has a multiplier for each bread not dropped
         // TODO: add bonus object for achievement system
+
         // Move obstacle knife
-        knifeY += 12 * difficulty(score);
-        if (knifeY > frameHeight) {
-            knifeY = -20;
+        if (knife.getY() > frameHeight) {
+            knifeY = -40;
+        }
+        else if (knife.getY() <= -40){ // when out of screen, randomize
             knifeX = (int) Math.floor(Math.random() * (frameWidth - knife.getWidth()));
         }
+        knifeY += (12 * speed_multiplier);
+
+        debug1.setText(Float.toString(speed_multiplier));
+
         knife.setX(knifeX);
         knife.setY(knifeY);
 
-        // Move obstacle knife
-        cutleryY += 14 * difficulty(score);
-        if (cutleryY > frameHeight) {
-            cutleryY = -20;
+        // Move obstacle cutlery
+        if (cutlery.getY() > frameHeight) {
+            cutleryY = -40;
+        }
+        else if (cutlery.getY() <= -40){ // when out of screen, randomize
             cutleryX = (int) Math.floor(Math.random() * (frameWidth - cutlery.getWidth()));
         }
+        cutleryY += (14 * speed_multiplier);
+
         cutlery.setX(cutleryX);
         cutlery.setY(cutleryY);
 
-        // Move obstacle knife
-        pigeonY += 18 * difficulty(score);
-        if (pigeonY > frameHeight) {
-            pigeonY = -20;
+        // Move obstacle pigeon
+
+        if (pigeon.getY() > frameHeight) {
+            pigeonY = -40;
+        }
+        else if (pigeon.getY() <= -40){ // when out of screen, randomize
             pigeonX = (int) Math.floor(Math.random() * (frameWidth - pigeon.getWidth()));
         }
+        pigeonY += (18 * speed_multiplier);
+
         pigeon.setX(pigeonX);
         pigeon.setY(pigeonY);
 
@@ -145,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         if (characterX < 0) {
             characterX = 0;
         }
+
         else if (characterX > (frameWidth - character_width)) {
             characterX = frameWidth - character_width;
         }
@@ -315,12 +350,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public float difficulty(int PlayerScore) {
-        return 1 + (PlayerScore)/1000; // Start at difficulty 1
+        return 1 + (float)PlayerScore/1000; // Start at difficulty 1
     }
 
     public float random_Pos(int range) {
 
 
         return 1f;
+    }
+
+    public void update(ImageView object, int multiplier) {
+
+
+    }
+
+    public void control() {
+        Intent i = getIntent();
+        if ("m" == i.getStringExtra("control"))
+            left.setText("M");
+        else
+            left.setText("S");
     }
 }
