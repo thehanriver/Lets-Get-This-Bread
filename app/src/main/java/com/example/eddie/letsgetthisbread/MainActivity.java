@@ -235,19 +235,23 @@ public class MainActivity extends AppCompatActivity {
         // TODO: add jump mechanic and change characterx
         // Sets the position of the character
         characterY = frameHeight - character_height;
-        character.setX(characterX);
-        character.setY(characterY);
+
 //Make sure character stays inside the boudry of the screen in the vertical direction
         if(characterY<0){
             characterY=0;
         }
+        else if(characterY>(frameHeight-character_height)){
+            characterY=frameHeight-character_height;
+        }
 
         if(jump_flag){
-            characterY+=20;
+            characterY-=50;
         }
         else
-            characterY-=20;
+            characterY +=50;
 
+        character.setX(characterX);
+        character.setY(characterY);
         // Updates scoreboard
         scoreboard.setText("Score: " + score);
     }
