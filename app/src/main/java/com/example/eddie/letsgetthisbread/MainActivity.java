@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     // screen & character sizes
     private int screenWidth;
-    //private int screenHeight;
     private int frameHeight;
     private int bread_width;
     private int bread_height;
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         disp.getSize(size);
 
         screenWidth = size.x;
-        screenWidth = size.y;
+        frameHeight = size.y;
 
         cutlery.setX(-100);
         cutlery.setY(-100);
@@ -98,28 +97,28 @@ public class MainActivity extends AppCompatActivity {
         hitCheck();
 
         // Move obstacle knife
-        knifeX -= 16; // TODO: make velocity change with time
-        if (knifeX < 0) {
-            knifeX = screenWidth + 20; // move obj out of screen
-            knifeY = (int) Math.floor(Math.random() * (frameHeight - knife.getHeight()));
+        knifeY += 16; // TODO: make velocity change with time
+        if (knifeY < 0) {
+            knifeY = frameHeight - 20; // move obj out of screen
+            knifeX = (int) Math.floor(Math.random() * (screenWidth - knife.getWidth()));
         }
         knife.setX(knifeX);
         knife.setY(knifeY);
 
-        // Move obstacle knife
-        cutleryX -= 12; // TODO: make velocity change with time
-        if (cutleryX < 0) {
-            cutleryX = screenWidth + 20; // move obj out of screen
-            cutleryY = (int) Math.floor(Math.random() * (frameHeight - knife.getHeight()));
+        // Move obstacle cutlery
+        cutleryY += 16; // TODO: make velocity change with time
+        if (cutleryY < 0) {
+            cutleryY = frameHeight - 20; // move obj out of screen
+            cutleryX = (int) Math.floor(Math.random() * (screenWidth - cutlery.getWidth()));
         }
         cutlery.setX(cutleryX);
         cutlery.setY(cutleryY);
 
-        // Move obstacle knife
-        pigeonX -= 20; // TODO: make velocity change with time
-        if (pigeonX < 0) {
-            pigeonX = screenWidth + 20; // move obj out of screen
-            pigeonY = (int) Math.floor(Math.random() * (frameHeight - knife.getHeight()));
+        // Move obstacle pigeon
+        pigeonY += 16; // TODO: make velocity change with time
+        if (pigeonY < 0) {
+            pigeonY = frameHeight - 20; // move obj out of screen
+            pigeonX = (int) Math.floor(Math.random() * (screenWidth - pigeon.getWidth()));
         }
         pigeon.setX(pigeonX);
         pigeon.setY(pigeonY);
@@ -127,22 +126,23 @@ public class MainActivity extends AppCompatActivity {
         // Move main character
         // TODO: change action flag mechanic into button & tilt
         if (action_flag) {
-            breadY -= 20;
+            breadX -= 20;
         }
         else {
-            breadY += 20;
+            breadX += 20;
         }
 
-        if (breadY < 0) {
-            breadY = 0;
+        if (breadX < 0) {
+            breadX = 0;
         }
-        else if (breadY > (frameHeight - bread_height)) {
-            breadY = frameHeight - bread_height;
+        else if (breadX > (screenWidth - bread_width)) {
+            breadX = (screenWidth - bread_width);
         }
 
         // TODO: add jump mechanic and change breadx
-        breadX = 0;
+
         bread.setX(breadX);
+        breadY = frameHeight - bread.getHeight();
         bread.setY(breadY);
 
         scoreboard.setText("Score: " + score);
@@ -156,12 +156,12 @@ public class MainActivity extends AppCompatActivity {
         // Collision check for cutlery
         if ((0 <= cutleryX) && (bread_width + breadX >= cutleryX) && (breadY <= cutleryY + cutlery.getHeight()) && (breadY + bread_height >= cutleryY)) {
             score += 30;
-            cutleryX = -20;
+            cutleryY = frameHeight + 20;;
         }
         
         // Collision check for pigeon
         if ((0 <= pigeonX) && (bread_width + breadX >= pigeonX) && (breadY <= pigeonY + pigeon.getHeight()) && (breadY + bread_height >= pigeonY)) {
-            pigeonX = -20;
+            pigeonY = frameHeight + 20;
 
             // Game ends TODO: its optional but we can add multiple lives
             timer.cancel();
@@ -174,9 +174,9 @@ public class MainActivity extends AppCompatActivity {
         }
         
         // Collision check for knife
-        if ((0 <= knifeX) && (bread_width + breadX >= knifeX) && (breadY <= knifeY + knife.getHeight()) && (breadY + bread_height >= knifeY)) {
+        if ((0 <= knifeY) && (bread_width + breadX >= knifeX) && (breadY <= knifeY + knife.getHeight()) && (breadY + bread_height >= knifeY)) {
             score += 50;
-            knifeX = -20;
+            knifeY = frameHeight + 20;;
         }
 
     }
