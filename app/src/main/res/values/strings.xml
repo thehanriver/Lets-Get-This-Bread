@@ -7,6 +7,7 @@
     <string name="again">Let\'s Get More Bread?</string>
     <string name="left">\u003C</string>
     <string name="right">\u003e</string>
+    <string name="up">\u005e</string>
 
 
 </resources>
