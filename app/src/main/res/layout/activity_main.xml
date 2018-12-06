@@ -130,7 +130,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:onClick="pausePushed"
-                android:src="@drawable/bread"
+                android:src="@drawable/pausebutton"
                 android:background="@color/white"/>
 
             <TextView
