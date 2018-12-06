@@ -22,6 +22,7 @@ public class StartScreen extends AppCompatActivity {
     private Button startButton;
     private Button settingButton;
     private Button tutorialButton;
+    private Button dummyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class StartScreen extends AppCompatActivity {
         tutorialButton = findViewById(R.id.tutorialButton);
         startButton = findViewById(R.id.startButton);
         settingButton = findViewById(R.id.settingButton);
+        dummyButton = findViewById(R.id.dummyButton);
     }
 
     protected void startGame(View view) {
@@ -48,6 +50,8 @@ public class StartScreen extends AppCompatActivity {
         tutorialButton.setVisibility(View.GONE);
         startButton.setVisibility(View.GONE);
         settingButton.setVisibility(View.GONE);
+        dummyButton.setVisibility(View.GONE);
+
     }
 
     // Detection pressing
@@ -59,6 +63,7 @@ public class StartScreen extends AppCompatActivity {
                 tutorialButton.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.VISIBLE);
                 settingButton.setVisibility(View.VISIBLE);
+                dummyButton.setVisibility(View.VISIBLE);
             }
         } else if (me.getAction() == MotionEvent.ACTION_UP) {
             action_flag = false;

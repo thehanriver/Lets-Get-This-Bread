@@ -52,6 +52,7 @@
                     android:onClick="startSettings" />
 
                 <Button
+                    android:id="@+id/dummyButton"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="Dummy" />
@@ -67,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/bread_icon"
+        android:src="@drawable/tutorialscreen"
         android:visibility="invisible" />
 
 </RelativeLayout>
