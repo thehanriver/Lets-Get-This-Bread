@@ -129,6 +129,7 @@
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:gravity="center"
                 android:onClick="pausePushed"
                 android:src="@drawable/pausebutton"
                 android:background="@color/white"/>
