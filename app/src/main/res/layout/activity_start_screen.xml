@@ -55,7 +55,7 @@
                     android:id="@+id/dummyButton"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Dummy" />
+                    android:text="Happy Birthday" />
 
                 <!-- add achievement -->
              </TableRow>
