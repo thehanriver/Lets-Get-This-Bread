@@ -245,10 +245,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(jump_flag){
-            characterY-=50;
+            characterY-=100;
+            if(!jump_flag){
+                characterY+=100;
+            }
         }
-        else
-            characterY +=50;
 
         character.setX(characterX);
         character.setY(characterY);
