@@ -119,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageView knife;
     private ImageView pigeon;
 
+
+
+    private ImageView chair;
+
     // Initialize variables for dimensions in layout
     private int frameHeight;
     private int frameWidth;
@@ -129,6 +133,9 @@ public class MainActivity extends AppCompatActivity {
     private int cutleryWidth;
     private int pigeonWidth;
 
+
+    private int chairWidth;
+
     // Positions of sprites
     private int characterX;
     private int characterY;
@@ -138,6 +145,11 @@ public class MainActivity extends AppCompatActivity {
     private int knifeY;
     private int pigeonX;
     private int pigeonY;
+
+
+
+    private int chairX;
+    private int chairY;
 
     // Intialize classes
     private Handler handler = new Handler();
@@ -178,12 +190,18 @@ public class MainActivity extends AppCompatActivity {
         pigeonWidth = (int)(res.getDimension(R.dimen.pigeon));
         cutleryWidth = (int)(res.getDimension(R.dimen.cutlery));
 
+
+
+
+        chairWidth = (int)(res.getDimension(R.dimen.chair));
+
         // Assign View objects
         //Characters initialized
         character = findViewById(R.id.character);
         cutlery = findViewById(R.id.cutlery);
         knife = findViewById(R.id.knife);
         pigeon = findViewById(R.id.pigeon);
+        chair = findViewById(R.id.chair);
 
         // UI initialized
         scoreboard = findViewById(R.id.scoreboard);
@@ -213,6 +231,10 @@ public class MainActivity extends AppCompatActivity {
         pigeonY = screenHeight + 40;
         cutleryY = screenHeight + 40;
 
+
+
+        chairY = characterY - 40;
+
         // Set positions for falling sprites
         cutlery.setX(-40);
         cutlery.setY(cutleryY);
@@ -220,6 +242,12 @@ public class MainActivity extends AppCompatActivity {
         pigeon.setY(pigeonY);
         knife.setX(-40);
         knife.setY(knifeY);
+
+        chair.setX(-40);
+        chair.setY(chairY);
+
+
+
 
         // Set scoreboard & live counter
         scoreboard.setText("Score: 0");
@@ -316,24 +344,24 @@ public class MainActivity extends AppCompatActivity {
         // TODO: change action flag mechanic into button & tilt
 
         // Depending on movement flag, move characters
-//        if (left_flag) {
-//            characterX -= 20;
-//        }
-//        else if (right_flag) {
-//            characterX += 20;
-//        }
+        if (left_flag) {
+            characterX -= 20;
+        }
+        else if (right_flag) {
+            characterX += 20;
+        }
 
         //motion controlled movement
-        if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
-            float pitch = orientationData.getOrientation()[1] - orientationData.getOrientation()[1];
-            float roll = orientationData.getOrientation()[2] - orientationData.getOrientation()[2];
-
-            float xSpeed = 2*roll/1000f;
-            float ySpeed = pitch/1000f;
-
-            characterX += (xSpeed);
-            characterY += (ySpeed);
-        }
+//        if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
+//            float pitch = orientationData.getOrientation()[1] - orientationData.getOrientation()[1];
+//            float roll = orientationData.getOrientation()[2] - orientationData.getOrientation()[2];
+//
+//            float xSpeed = 2*roll/1000f;
+//            float ySpeed = pitch/1000f;
+//
+//            characterX += (xSpeed);
+//            characterY += (ySpeed);
+//        }
 
         // Make sure character stays inside the boundry of the screen
         if (characterX < 0) {
@@ -342,6 +370,15 @@ public class MainActivity extends AppCompatActivity {
         else if (characterX > (frameWidth - character_width)) {
             characterX = frameWidth - character_width;
         }
+
+
+
+
+        if(score>1000){
+            chairY += 40;
+            chair.setY(chairY);
+        }
+
 
         // TODO: add jump mechanic and change characterx
         // Sets the position of the character

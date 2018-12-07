@@ -36,6 +36,12 @@
                 android:textSize="30sp" />
 
             <ImageView
+                android:id="@+id/chair"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/chair"/>
+
+            <ImageView
                 android:id="@+id/pigeon"
                 android:layout_width="@dimen/pigeon"
                 android:layout_height="@dimen/pigeon"
