@@ -37,8 +37,8 @@
 
             <ImageView
                 android:id="@+id/chair"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/chair"
+                android:layout_height="@dimen/chair"
                 android:src="@drawable/chair"/>
 
             <ImageView

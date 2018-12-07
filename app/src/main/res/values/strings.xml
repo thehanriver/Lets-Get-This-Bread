@@ -8,6 +8,8 @@
     <string name="left">\u003C</string>
     <string name="right">\u003e</string>
     <string name="up">\u005e</string>
+    <string name="bwinner">Pick Your Bread Winner</string>
+    <!-- Crusty, Yung Yeasty-->
 
 
 </resources>

@@ -107,71 +107,73 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Initialize View objects in layout
-    private TextView scoreboard;
-    private TextView lives;
-    private TextView start;
-    private TextView left;
-    private TextView right;
-    private TextView debug;
-    private TextView countdown;
-    private ImageView character;
-    private ImageView cutlery;
-    private ImageView knife;
-    private ImageView pigeon;
+        private TextView scoreboard;
+        private TextView lives;
+        private TextView start;
+        private TextView left;
+        private TextView right;
+        private TextView debug;
+        private TextView countdown;
+        private ImageView character;
+        private ImageView cutlery;
+        private ImageView knife;
+        private ImageView pigeon;
 
 
-
-    private ImageView chair;
+        private ImageView chair;
 
     // Initialize variables for dimensions in layout
-    private int frameHeight;
-    private int frameWidth;
-    private int screenHeight;
-    private int character_width;
-    private int character_height;
-    private int knifeWidth;
-    private int cutleryWidth;
-    private int pigeonWidth;
+        private int frameHeight;
+        private int frameWidth;
+        private int screenHeight;
+        private int character_width;
+        private int character_height;
+        private int knifeWidth;
+        private int cutleryWidth;
+        private int pigeonWidth;
 
 
-    private int chairWidth;
+        private int chairWidth;
+        private int chairHeight;
 
     // Positions of sprites
-    private int characterX;
-    private int characterY;
-    private int cutleryX;
-    private int cutleryY;
-    private int knifeX;
-    private int knifeY;
-    private int pigeonX;
-    private int pigeonY;
+        private int characterX;
+        private int characterY;
+        private int cutleryX;
+        private int cutleryY;
+        private int knifeX;
+        private int knifeY;
+        private int pigeonX;
+        private int pigeonY;
 
 
 
-    private int chairX;
-    private int chairY;
+        private int chairX;
+        private int chairY;
 
     // Intialize classes
-    private Handler handler = new Handler();
-    private Timer timer = new Timer();
+        private Handler handler = new Handler();
+        private Timer timer = new Timer();
 
     // Status check
-    private boolean start_flag = false;
-    private boolean pause_flag = false;
-    private boolean left_flag = false;
-    private boolean right_flag = false;
+        private boolean start_flag = false;
+        private boolean pause_flag = false;
+        private boolean left_flag = false;
+        private boolean right_flag = false;
+        private boolean chair_flag = false;
 
     // Counter
-    private int score = 0;
-    private int healthCounter = 3;
+        private int score = 0;
+        private int currentscore;
+        private int healthCounter = 3;
 
     // Button
-    private ImageButton pauseButton;
+        private ImageButton pauseButton;
 
     // Difficulty Multiplier
-    private float speed_multiplier = 1;
+        private float speed_multiplier = 1;
 
-    private OrientationData orientationData;
+        private OrientationData orientationData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,10 +192,6 @@ public class MainActivity extends AppCompatActivity {
         pigeonWidth = (int)(res.getDimension(R.dimen.pigeon));
         cutleryWidth = (int)(res.getDimension(R.dimen.cutlery));
 
-
-
-
-        chairWidth = (int)(res.getDimension(R.dimen.chair));
 
         // Assign View objects
         //Characters initialized
@@ -233,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        chairY = characterY - 40;
+        chairY = screenHeight + 40;
 
         // Set positions for falling sprites
         cutlery.setX(-40);
@@ -339,17 +337,35 @@ public class MainActivity extends AppCompatActivity {
         pigeon.setX(pigeonX);
         pigeon.setY(pigeonY);
 
-        debug.setText(Boolean.toString(avoidStack("knife", knifeX, cutleryX, pigeonX))); // temporary to show values of stuff, helpful for debug
+        if (!chair_flag) {
+            currentscore = score;
+            chairX = shufflePos(chairWidth);
+            chair_flag = true;
+        }
+        else {
+            chair.setX(chairX);
+            if ((score - currentscore) < 100) {
+                chairY -= 10;
+            }
+            else {
+                chairY += 10;
+            }
+
+
+            if (chairY < frameHeight - chairHeight) {
+                chairY = frameHeight - chairHeight;
+            }
+            else if (chairY > frameHeight + chairHeight) {
+                chairY = frameHeight + chairHeight;
+                chair_flag = false;
+            }
+        }
+        chair.setY(chairY);
+
         // Move main character
         // TODO: change action flag mechanic into button & tilt
 
         // Depending on movement flag, move characters
-        if (left_flag) {
-            characterX -= 20;
-        }
-        else if (right_flag) {
-            characterX += 20;
-        }
 
         //motion controlled movement
 //        if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
@@ -364,6 +380,13 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         // Make sure character stays inside the boundry of the screen
+        if (left_flag) {
+            characterX -= 20;
+        }
+        else if (right_flag) {
+            characterX += 20;
+        }
+
         if (characterX < 0) {
             characterX = 0;
         }
@@ -374,11 +397,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        if(score>1000){
-            chairY += 40;
-            chair.setY(chairY);
-        }
-
+        debug.setText(Integer.toString(score - currentscore)); // temporary to show values of stuff, helpful for debug
 
         // TODO: add jump mechanic and change characterx
         // Sets the position of the character
@@ -442,6 +461,9 @@ public class MainActivity extends AppCompatActivity {
             characterY = (int)character.getY();
             character_width = character.getWidth();
             character_height = character.getHeight();
+
+            chairWidth = chair.getWidth();
+            chairHeight = chair.getHeight();
 
             // Remove "Tap to Start" display and allow pause to be clickable
             start.setVisibility(View.GONE);
