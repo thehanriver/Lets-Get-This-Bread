@@ -340,6 +340,8 @@ public class MainActivity extends AppCompatActivity {
         if (!chair_flag) {
             currentscore = score;
             chairX = shufflePos(chairWidth);
+            if ((chairX >= characterX && chairX <= characterX + character_width) || (chairX + chairWidth >= characterX && chairX + chairWidth <= characterX + character_width))
+                chairX = shufflePos(chairWidth);
             chair_flag = true;
         }
         else {
@@ -380,24 +382,29 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         // Make sure character stays inside the boundry of the screen
-        if (left_flag) {
-            characterX -= 20;
+
+        if (!((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth))) {
+            if (left_flag)
+                characterX -= 20;
+            else if (right_flag)
+                characterX += 20;
+
+            if (characterX < 0)
+                characterX = 0;
+            else if (characterX > (frameWidth - character_width))
+                characterX = frameWidth - character_width;
+            else if (characterX + character_width > chairX)
+                characterX = chairX - character_width;
+            else if (characterX < chairX + chairWidth)
+                characterX = chairX;
         }
-        else if (right_flag) {
-            characterX += 20;
-        }
-
-        if (characterX < 0) {
-            characterX = 0;
-        }
-        else if (characterX > (frameWidth - character_width)) {
-            characterX = frameWidth - character_width;
-        }
 
 
 
 
-        debug.setText(Integer.toString(score - currentscore)); // temporary to show values of stuff, helpful for debug
+        debug.setText(Boolean.toString(!((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)))); // temporary to show values of stuff, helpful for debug
+
+
 
         // TODO: add jump mechanic and change characterx
         // Sets the position of the character
