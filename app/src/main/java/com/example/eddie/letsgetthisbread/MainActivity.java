@@ -1,7 +1,12 @@
 package com.example.eddie.letsgetthisbread;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +24,87 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
+
+
+
+
+
+
+
+
+
+    public class OrientationData implements SensorEventListener {
+        private SensorManager manager;
+        private Sensor accelerometer;
+        private Sensor magnometer;
+
+        private float[] accelOutput;
+        private float[] magOutput;
+
+        private float[] orientation = new float[3];
+        public float[] getOrientation(){
+            return orientation;
+        }
+
+        private float[] startOrientation = null;
+        public float[] getStartOrientation(){
+            return startOrientation;
+        }
+        public void newGame() {
+            startOrientation = null;
+        }
+        public OrientationData() {
+            manager = (SensorManager)getSystemService(SENSOR_SERVICE);
+            accelerometer = manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            magnometer = manager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        }
+
+        public void register(){
+            manager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
+            manager.registerListener(this, magnometer, SensorManager.SENSOR_DELAY_GAME);
+        }
+        public void pause(){
+            manager.unregisterListener(this);
+        }
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy){
+
+        }
+        public void onSensorChanged(SensorEvent event){
+            if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+                accelOutput = event.values;
+            else if(event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
+                magOutput = event.values;
+            if(accelOutput != null && magOutput != null) {
+                float[] R = new float[9];
+                float[] I = new float[9];
+                boolean success = SensorManager.getRotationMatrix(R, I, accelOutput, magOutput);
+                if(success){
+                    SensorManager.getOrientation(R, orientation);
+                    if(startOrientation == null){
+                        startOrientation = new float[orientation.length];
+                        System.arraycopy(orientation,0,startOrientation,0,orientation.length);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Initialize View objects in layout
     private TextView scoreboard;
@@ -73,11 +159,18 @@ public class MainActivity extends AppCompatActivity {
     // Difficulty Multiplier
     private float speed_multiplier = 1;
 
+    private OrientationData orientationData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Runs first time on activity startup, inflates layout of MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
+
 
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
@@ -111,6 +204,10 @@ public class MainActivity extends AppCompatActivity {
         // Get height of screen for compatibility reasons
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
+        orientationData = new OrientationData();
+        orientationData.register();
+
+
         // Set objects below screen when initialized
         knifeY = screenHeight + 40;
         pigeonY = screenHeight + 40;
@@ -127,6 +224,10 @@ public class MainActivity extends AppCompatActivity {
         // Set scoreboard & live counter
         scoreboard.setText("Score: 0");
         lives.setText(Integer.toString(healthCounter));
+
+
+
+        orientationData.newGame();
     }
 
     // Input X coordinate of falling sprites and a string key, ie "knife", to return if knife is in the x range of other falling sprites
@@ -215,11 +316,23 @@ public class MainActivity extends AppCompatActivity {
         // TODO: change action flag mechanic into button & tilt
 
         // Depending on movement flag, move characters
-        if (left_flag) {
-            characterX -= 20;
-        }
-        else if (right_flag) {
-            characterX += 20;
+//        if (left_flag) {
+//            characterX -= 20;
+//        }
+//        else if (right_flag) {
+//            characterX += 20;
+//        }
+
+        //motion controlled movement
+        if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
+            float pitch = orientationData.getOrientation()[1] - orientationData.getOrientation()[1];
+            float roll = orientationData.getOrientation()[2] - orientationData.getOrientation()[2];
+
+            float xSpeed = 2*roll/1000f;
+            float ySpeed = pitch/1000f;
+
+            characterX += (xSpeed);
+            characterY += (ySpeed);
         }
 
         // Make sure character stays inside the boundry of the screen
