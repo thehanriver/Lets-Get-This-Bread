@@ -354,16 +354,19 @@ public class MainActivity extends AppCompatActivity {
         // Depending on movement flag, move characters
 
         //motion controlled movement
-//        if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
-//            float pitch = orientationData.getOrientation()[1] - orientationData.getOrientation()[1];
-//            float roll = orientationData.getOrientation()[2] - orientationData.getOrientation()[2];
-//
-//            float xSpeed = 2*roll/1000f;
-//            float ySpeed = pitch/1000f;
-//
-//            characterX += (xSpeed);
-//            characterY += (ySpeed);
-//        }
+        if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
+            float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
+            float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
+
+            float xSpeed = 2*roll/100f;
+            float ySpeed = pitch/100f;
+
+            characterX += (xSpeed);
+            characterY += (ySpeed);
+            character.setX((float)characterX);
+            character.setY((float)characterY);
+            debug.setText(Float.toString(pitch)); // temporary to show values of stuff, helpful for debug
+        }
 
         // Make sure character stays inside the boundry of the screen
 
@@ -384,8 +387,6 @@ public class MainActivity extends AppCompatActivity {
         else if (characterX > (frameWidth - character_width))
             characterX = frameWidth - character_width;
 
-
-        debug.setText(Boolean.toString(!((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)))); // temporary to show values of stuff, helpful for debug
 
 
 
