@@ -346,14 +346,14 @@ public class MainActivity extends AppCompatActivity {
             float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
             float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
 
-            float xSpeed = 2*roll/100f;
-            float ySpeed = pitch/100f;
+            float xSpeed = 20*roll/1f;
+
 
             characterX += (xSpeed);
-            characterY += (ySpeed);
+
             character.setX((float)characterX);
-            character.setY((float)characterY);
-            debug.setText(Float.toString(pitch)); // temporary to show values of stuff, helpful for debug
+
+             // temporary to show values of stuff, helpful for debug
         }
 
         // Make sure character stays inside the boundry of the screen
@@ -386,8 +386,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(jump_flag)
             characterY -= chairHeight + 20;
-
-        debug.setText(Boolean.toString(reset_flag)); // temporary to show values of stuff, helpful for debug
+        else
+            characterY += chairHeight + 20;
 
         if(characterY + character_height < frameHeight - chairHeight - 20){
             characterY = frameHeight - chairHeight - 20 - character_height;
@@ -468,22 +468,52 @@ public class MainActivity extends AppCompatActivity {
             resume();
         }
         else { // Detects player's finger motion
+            final int actionPerformed = me.getAction();
+
+            switch (actionPerformed) {
+                case me.ACTION_DOWN: {
+                    break;
+                }
+                case me.ACTION_MOVE: {
+                    break;
+                }
+            }
+
+
             if (me.getAction() == MotionEvent.ACTION_DOWN) { // If holding down, check where the player's finger position on the screen
-                for (int i = 0 ; i < pointerCount ; i++) {
+                for (int i = 0; i < pointerCount; i++) {
                     int x = (int) me.getX(i);
                     int y = (int) me.getY(i);
 
-                    if (inLeftBoundry(x ,y)) { // If position in Object: left, set left flag true. Will move character left in changePos()
+                    if (inLeftBoundry(x, y)) { // If position in Object: left, set left flag true. Will move character left in changePos()
                         left_flag = true;
-                    }
-                    if (inRightBoundry(x ,y)) { // Move Right
+                    } else if (inRightBoundry(x, y)) { // Move Right
                         right_flag = true;
+                        debug.setText("R");
                     }
-                    if (inJumpBoundry(x ,y)){ //jump
+                    if (inJumpBoundry(x, y)) { //jump
                         jump_flag = true;
+                        debug.setText("J");
                     }
                 }
-            } else if (me.getAction() == MotionEvent.ACTION_UP) { // If finger leaves screen, return flags to false
+            } else if (me.getAction() == MotionEvent.ACTION_POINTER_DOWN) {
+                for (int i = 1; i < pointerCount; i++) {
+                    int x = (int) me.getX(i);
+                    int y = (int) me.getY(i);
+
+                    if (inLeftBoundry(x, y)) { // If position in Object: left, set left flag true. Will move character left in changePos()
+                        left_flag = true;
+                    } else if (inRightBoundry(x, y)) { // Move Right
+                        right_flag = true;
+                        debug.setText("R");
+                    }
+                    if (inJumpBoundry(x, y)) { //jump
+                        jump_flag = true;
+                        debug.setText("J");
+                    }
+                }
+            }
+            else if (me.getAction() == MotionEvent.ACTION_UP) { // If finger leaves screen, return flags to false
                 left_flag = false;
                 right_flag = false;
                 jump_flag = false;
