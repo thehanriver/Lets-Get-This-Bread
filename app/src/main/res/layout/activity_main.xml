@@ -14,6 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/character"
+            android:layout_width="@dimen/character"
+            android:layout_height="@dimen/character"
+            android:layout_gravity="center|bottom"
+            android:src="@drawable/bread" />
+
         <FrameLayout
             android:id="@+id/game_frame"
             android:layout_width="match_parent"
@@ -45,13 +52,6 @@
                 android:layout_width="@dimen/knife"
                 android:layout_height="@dimen/knife"
                 android:src="@drawable/knife" />
-
-            <ImageView
-                android:id="@+id/character"
-                android:layout_width="@dimen/character"
-                android:layout_height="@dimen/character"
-                android:layout_gravity="center|bottom"
-                android:src="@drawable/bread" />
 
             <ImageView
                 android:id="@+id/chair"

@@ -9,7 +9,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -93,6 +92,20 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Initialize View objects in layout
 
 	    private TextView scoreboard;
@@ -145,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
         private boolean right_flag = false;
         private boolean chair_flag = false;
     	private boolean jump_flag = false;
-        private boolean reset_flag = false;
 
     // Counter
         private int score = 0;
@@ -268,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
             knifeX = shufflePos(knifeWidth);
             knifeY = -99;
         }
-        else if (knifeY < 0 && avoidStack("knife", knifeX, (int)cutlery.getX(), (int)pigeon.getX()))  // Shuffle again if knife will collide other objects
+        else if (knifeY < 0 && avoidStack("knife", (int)knife.getX(), (int)cutlery.getX(), (int)pigeon.getX()))  // Shuffle again if knife will collide other objects
             knifeX = shufflePos(knifeWidth);
         else
             knifeY += (12 * speed_multiplier); // Otherwise start falling
@@ -283,9 +295,9 @@ public class MainActivity extends AppCompatActivity {
             cutleryY = -100;
         else if (cutleryY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
             cutleryX = shufflePos(cutleryWidth);
-            cutleryY = -99;
+            cutleryY = -60;
         }
-        else if (cutleryY < 0 && avoidStack("cutlery", (int)knife.getX(), cutleryX, (int)pigeon.getX()))  // Shuffle again if cutlery will collide other objects
+        else if (cutleryY < 0 && avoidStack("cutlery", (int)knife.getX(), (int)cutlery.getX(), (int)pigeon.getX()))  // Shuffle again if cutlery will collide other objects
             cutleryX = shufflePos(cutleryWidth);
         else
             cutleryY += (14 * speed_multiplier); // Otherwise start falling
@@ -299,9 +311,9 @@ public class MainActivity extends AppCompatActivity {
             pigeonY = -100;
         else if (pigeonY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
             pigeonX = shufflePos(pigeonWidth);
-            pigeonY = -99;
+            pigeonY = -60;
         }
-        else if (pigeonY < 0 && avoidStack("pigeon", (int)knife.getX(), (int)cutlery.getX(), pigeonX))  // Shuffle again if pigeon will collide other objects
+        else if (pigeonY < 0 && avoidStack("pigeon", (int)knife.getX(), (int)cutlery.getX(), (int)pigeon.getX()))  // Shuffle again if pigeon will collide other objects
             pigeonX = shufflePos(pigeonWidth);
         else
             pigeonY += (12 * speed_multiplier); // Otherwise start falling
@@ -361,13 +373,10 @@ public class MainActivity extends AppCompatActivity {
             characterX += 20;
 
         if ((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
-            if (character.getY() + character_height > chair.getY()) {
-                if (characterX + character_width > chairX && characterX > chairX)
-                    characterX += 20;
-                else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth )
-                    characterX -= 20;
-            }
-
+            if (characterX + character_width > chairX && characterX > chairX)
+                characterX += 20;
+            else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth )
+                characterX -= 20;
         }
 
         if (characterX < 0)
@@ -376,21 +385,27 @@ public class MainActivity extends AppCompatActivity {
             characterX = frameWidth - character_width;
 
 
+        debug.setText(Boolean.toString(!((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)))); // temporary to show values of stuff, helpful for debug
+
+
+
         // TODO: add jump mechanic and change characterx
         // Sets the position of the character
+        characterY = frameHeight - character_height;
 
 //Make sure character stays inside the boudry of the screen in the vertical direction
-
-        if(jump_flag)
-            characterY -= chairHeight + 20;
-
-        debug.setText(Boolean.toString(reset_flag)); // temporary to show values of stuff, helpful for debug
-
-        if(characterY + character_height < frameHeight - chairHeight - 20){
-            characterY = frameHeight - chairHeight - 20 - character_height;
+        if(characterY<0){
+            characterY=0;
         }
-        else if(characterY > (frameHeight-character_height)){
-            characterY = frameHeight-character_height;
+        else if(characterY>(frameHeight-character_height)){
+            characterY=frameHeight-character_height;
+        }
+
+        if(jump_flag){
+            characterY-=100;
+            if(!jump_flag){
+                characterY+=100;
+            }
         }
 
         character.setX(characterX);
@@ -439,8 +454,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onTouchEvent(MotionEvent me) {
-        int pointerCount = me.getPointerCount();
-
         if (!start_flag) { // If its the player's first time touching the screen on MainActivity, call this
             start_flag = true; // Set true so this doesn't get called again
 
@@ -466,19 +479,14 @@ public class MainActivity extends AppCompatActivity {
         }
         else { // Detects player's finger motion
             if (me.getAction() == MotionEvent.ACTION_DOWN) { // If holding down, check where the player's finger position on the screen
-                for (int i = 0 ; i < pointerCount ; i++) {
-                    int x = (int) me.getX(i);
-                    int y = (int) me.getY(i);
-
-                    if (inLeftBoundry(x ,y)) { // If position in Object: left, set left flag true. Will move character left in changePos()
-                        left_flag = true;
-                    }
-                    if (inRightBoundry(x ,y)) { // Move Right
-                        right_flag = true;
-                    }
-                    if (inJumpBoundry(x ,y)){ //jump
-                        jump_flag = true;
-                    }
+                if (inLeftBoundry(me.getX(),me.getY())) { // If position in Object: left, set left flag true. Will move character left in changePos()
+                    left_flag = true;
+                }
+                if (inRightBoundry(me.getX(),me.getY())) { // Move Right
+                    right_flag = true;
+                }
+                if (inJumpBoundry(me.getX(),me.getY())){ //jump
+                    jump_flag = true;
                 }
             } else if (me.getAction() == MotionEvent.ACTION_UP) { // If finger leaves screen, return flags to false
                 left_flag = false;
@@ -486,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
                 jump_flag = false;
             }
         }
-        //TODO: revert states for jump
+
         return true;
     }
 
@@ -587,4 +595,3 @@ public class MainActivity extends AppCompatActivity {
         return 1 + (float)PlayerScore/1000; // Start at difficulty 1
     }
 }
-
