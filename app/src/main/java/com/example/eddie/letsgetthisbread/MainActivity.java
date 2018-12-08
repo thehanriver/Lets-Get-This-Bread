@@ -468,18 +468,6 @@ public class MainActivity extends AppCompatActivity {
             resume();
         }
         else { // Detects player's finger motion
-            final int actionPerformed = me.getAction();
-
-            switch (actionPerformed) {
-                case me.ACTION_DOWN: {
-                    break;
-                }
-                case me.ACTION_MOVE: {
-                    break;
-                }
-            }
-
-
             if (me.getAction() == MotionEvent.ACTION_DOWN) { // If holding down, check where the player's finger position on the screen
                 for (int i = 0; i < pointerCount; i++) {
                     int x = (int) me.getX(i);
@@ -489,11 +477,9 @@ public class MainActivity extends AppCompatActivity {
                         left_flag = true;
                     } else if (inRightBoundry(x, y)) { // Move Right
                         right_flag = true;
-                        debug.setText("R");
                     }
                     if (inJumpBoundry(x, y)) { //jump
                         jump_flag = true;
-                        debug.setText("J");
                     }
                 }
             } else if (me.getAction() == MotionEvent.ACTION_POINTER_DOWN) {
@@ -561,7 +547,7 @@ public class MainActivity extends AppCompatActivity {
         countdown.setVisibility(View.VISIBLE);
 
         // CountDownTimer counts down from 3 seconds doing actions every second
-        new CountDownTimer(3000, 1000) {
+        new CountDownTimer(2999, 1000) {
             public void onTick(long millisUntilFinished) {
                 // TODO: add setting button and replace alpha
                 // Make pause button invisible and disable interaction
@@ -569,7 +555,7 @@ public class MainActivity extends AppCompatActivity {
                 pauseButton.setClickable(false);
 
                 // Print time as timer counts down, prints "BREADY?" when timer is down to 1
-                int display = (int)(1 + Math.round(millisUntilFinished/1000));
+                int display = (int)(1 + Math.ceil(millisUntilFinished/1000));
                 if (display < 2)
                     countdown.setText("BREADY?");
                 else
