@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     // Intialize classes
     private Handler handler = new Handler();
     private Timer timer = new Timer();
+    private SoundPlayer sound;
 
     // Status check
     private boolean start_flag = false;
@@ -78,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         // Runs first time on activity startup, inflates layout of MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sound= new SoundPlayer(this);
 
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
@@ -241,12 +244,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hitCheck() {
-        // Boolean statement is basically checking if each corner of an object is inside the character's sprite boundry
+        // Boolean statement is basically checking if each corner of an object is inside the character's sprite boundry and plays sound
 
         // Collision check for knife, add points
         if ((knifeX + knife.getWidth() >= characterX) && (knifeX <= characterX + character_width) && (knifeY + knife.getHeight() >= characterY) && (knifeY + knife.getHeight() <= frameHeight)) {
             score += 30;
             knifeY = -100;
+            sound.playPointSound();
         }
 
         // Collision check for pigeon, lose life
@@ -255,12 +259,17 @@ public class MainActivity extends AppCompatActivity {
 
             // Reduce life counter every time player touches pigeon
             healthCounter -= 1;
+            sound.playHitSound();
+
 
             // Once zero, call next activity ResultScreen
             if(healthCounter == 0) {
                 lives.setText("X"); // Update Life Counter
                 timer.cancel();
                 timer = null;
+
+                //play game over sound
+                sound.playOverSound();
 
                 // Print results
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
@@ -272,10 +281,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // Collision check for cutlery, add points
+        // Collision check for cutlery, add points, plays hit sound
         if ((cutleryX + cutlery.getWidth() >= characterX) && (cutleryX <= characterX + character_width) && (cutleryY + cutlery.getHeight() >= characterY) && (cutleryY + cutlery.getHeight() <= frameHeight)) {
             score += 50;
             cutleryY = -100;
+            sound.playPointSound();
         }
     }
 
