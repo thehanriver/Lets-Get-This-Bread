@@ -36,12 +36,6 @@
                 android:textSize="30sp" />
 
             <ImageView
-                android:id="@+id/chair"
-                android:layout_width="@dimen/chair"
-                android:layout_height="@dimen/chair"
-                android:src="@drawable/chair"/>
-
-            <ImageView
                 android:id="@+id/pigeon"
                 android:layout_width="@dimen/pigeon"
                 android:layout_height="@dimen/pigeon"
@@ -58,6 +52,12 @@
                 android:layout_width="@dimen/knife"
                 android:layout_height="@dimen/knife"
                 android:src="@drawable/knife" />
+
+            <ImageView
+                android:id="@+id/chair"
+                android:layout_width="@dimen/chair"
+                android:layout_height="@dimen/chair"
+                android:src="@drawable/chair"/>
 
             <TextView
                 android:id="@+id/scoreboard"

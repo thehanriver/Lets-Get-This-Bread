@@ -294,9 +294,9 @@ public class MainActivity extends AppCompatActivity {
             knifeY = -100;
         else if (knifeY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false. Required since we need to shuffle at least once
             knifeX = shufflePos(knifeWidth);
-            knifeY = -60;
+            knifeY = -99;
         }
-        else if (knifeY < 0 && avoidStack("knife", knifeX, cutleryX, pigeonX))  // Shuffle again if knife will collide other objects
+        else if (knifeY < 0 && avoidStack("knife", (int)knife.getX(), (int)cutlery.getX(), (int)pigeon.getX()))  // Shuffle again if knife will collide other objects
             knifeX = shufflePos(knifeWidth);
         else
             knifeY += (12 * speed_multiplier); // Otherwise start falling
@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
             cutleryX = shufflePos(cutleryWidth);
             cutleryY = -60;
         }
-        else if (cutleryY < 0 && avoidStack("cutlery", knifeX, cutleryX, pigeonX))  // Shuffle again if cutlery will collide other objects
+        else if (cutleryY < 0 && avoidStack("cutlery", (int)knife.getX(), (int)cutlery.getX(), (int)pigeon.getX()))  // Shuffle again if cutlery will collide other objects
             cutleryX = shufflePos(cutleryWidth);
         else
             cutleryY += (14 * speed_multiplier); // Otherwise start falling
@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
             pigeonX = shufflePos(pigeonWidth);
             pigeonY = -60;
         }
-        else if (pigeonY < 0 && avoidStack("pigeon", knifeX, cutleryX, pigeonX))  // Shuffle again if pigeon will collide other objects
+        else if (pigeonY < 0 && avoidStack("pigeon", (int)knife.getX(), (int)cutlery.getX(), (int)pigeon.getX()))  // Shuffle again if pigeon will collide other objects
             pigeonX = shufflePos(pigeonWidth);
         else
             pigeonY += (12 * speed_multiplier); // Otherwise start falling
@@ -383,23 +383,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Make sure character stays inside the boundry of the screen
 
-        if (!((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth))) {
-            if (left_flag)
-                characterX -= 20;
-            else if (right_flag)
-                characterX += 20;
+        if (left_flag)
+            characterX -= 20;
+        else if (right_flag)
+            characterX += 20;
 
-            if (characterX < 0)
-                characterX = 0;
-            else if (characterX > (frameWidth - character_width))
-                characterX = frameWidth - character_width;
-            else if (characterX + character_width > chairX)
-                characterX = chairX - character_width;
-            else if (characterX < chairX + chairWidth)
-                characterX = chairX;
+        if ((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
+            if (characterX + character_width > chairX && characterX > chairX)
+                characterX += 20;
+            else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth )
+                characterX -= 20;
         }
 
-
+        if (characterX < 0)
+            characterX = 0;
+        else if (characterX > (frameWidth - character_width))
+            characterX = frameWidth - character_width;
 
 
         debug.setText(Boolean.toString(!((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)))); // temporary to show values of stuff, helpful for debug
