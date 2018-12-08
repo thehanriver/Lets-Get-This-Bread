@@ -107,20 +107,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Initialize View objects in layout
-        private TextView scoreboard;
-        private TextView lives;
-        private TextView start;
-        private TextView left;
-        private TextView right;
-        private TextView debug;
-        private TextView countdown;
-        private ImageView character;
-        private ImageView cutlery;
-        private ImageView knife;
-        private ImageView pigeon;
 
-
-        private ImageView chair;
+	    private TextView scoreboard;
+	    private TextView lives;
+	    private TextView start;
+	    private TextView left;
+	    private TextView right;
+	    private TextView jump;
+	    private TextView debug;
+	    private TextView countdown;
+	    private ImageView chair;
+	    private ImageView character;
+	    private ImageView cutlery;
+	    private ImageView knife;
+	    private ImageView pigeon;
 
     // Initialize variables for dimensions in layout
         private int frameHeight;
@@ -131,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
         private int knifeWidth;
         private int cutleryWidth;
         private int pigeonWidth;
-
-
         private int chairWidth;
         private int chairHeight;
 
@@ -145,9 +143,6 @@ public class MainActivity extends AppCompatActivity {
         private int knifeY;
         private int pigeonX;
         private int pigeonY;
-
-
-
         private int chairX;
         private int chairY;
 
@@ -156,11 +151,13 @@ public class MainActivity extends AppCompatActivity {
         private Timer timer = new Timer();
 
     // Status check
+
         private boolean start_flag = false;
         private boolean pause_flag = false;
         private boolean left_flag = false;
         private boolean right_flag = false;
         private boolean chair_flag = false;
+    	private boolean jump_flag = false;
 
     // Counter
         private int score = 0;
@@ -181,17 +178,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-
-
-
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
         knifeWidth = (int)(res.getDimension(R.dimen.knife));
         pigeonWidth = (int)(res.getDimension(R.dimen.pigeon));
         cutleryWidth = (int)(res.getDimension(R.dimen.cutlery));
-
 
         // Assign View objects
         //Characters initialized
@@ -209,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         pauseButton = findViewById(R.id.pause);
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
+        jump= findViewById(R.id.jump);
         debug = findViewById(R.id.debug1);
 
         // On startup, pause button is not clickable and set countdown to tick from 3
@@ -228,9 +220,6 @@ public class MainActivity extends AppCompatActivity {
         knifeY = screenHeight + 40;
         pigeonY = screenHeight + 40;
         cutleryY = screenHeight + 40;
-
-
-
         chairY = screenHeight + 40;
 
         // Set positions for falling sprites
@@ -244,14 +233,9 @@ public class MainActivity extends AppCompatActivity {
         chair.setX(-40);
         chair.setY(chairY);
 
-
-
-
         // Set scoreboard & live counter
         scoreboard.setText("Score: 0");
         lives.setText(Integer.toString(healthCounter));
-
-
 
         orientationData.newGame();
     }
@@ -408,9 +392,24 @@ public class MainActivity extends AppCompatActivity {
         // TODO: add jump mechanic and change characterx
         // Sets the position of the character
         characterY = frameHeight - character_height;
+
+//Make sure character stays inside the boudry of the screen in the vertical direction
+        if(characterY<0){
+            characterY=0;
+        }
+        else if(characterY>(frameHeight-character_height)){
+            characterY=frameHeight-character_height;
+        }
+
+        if(jump_flag){
+            characterY-=100;
+            if(!jump_flag){
+                characterY+=100;
+            }
+        }
+
         character.setX(characterX);
         character.setY(characterY);
-
         // Updates scoreboard
         scoreboard.setText("Score: " + score);
     }
@@ -486,9 +485,13 @@ public class MainActivity extends AppCompatActivity {
                 if (inRightBoundry(me.getX(),me.getY())) { // Move Right
                     right_flag = true;
                 }
+                if (inJumpBoundry(me.getX(),me.getY())){ //jump
+                    jump_flag = true;
+                }
             } else if (me.getAction() == MotionEvent.ACTION_UP) { // If finger leaves screen, return flags to false
                 left_flag = false;
                 right_flag = false;
+                jump_flag = false;
             }
         }
 
@@ -574,7 +577,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // TODO: Make boundry check more general
-    // Checks if input coordinate is in left/right button. Used to see if user is pressing the "buttons"
+    // Checks if input coordinate is in left/right button also jump. Used to see if user is pressing the "buttons"
     // The buttons are actually images so you cant do call functions
     public boolean inLeftBoundry(float x, float y) {
         return ((x <= left.getX() + left.getWidth()) && (x >= left.getX()) && (y >= left.getY()) && (y <= left.getY() + left.getHeight()));
@@ -584,6 +587,9 @@ public class MainActivity extends AppCompatActivity {
         return ((x <= right.getX() + right.getWidth()) && (x >= right.getX()) && (y >= right.getY()) && (y <= right.getY() + right.getHeight()));
     }
 
+    public boolean inJumpBoundry(float x,float y){
+        return((x<= jump.getX() + jump.getWidth()) && (x>=jump.getX()) && (y>=jump.getY())&&(y<=jump.getY()+jump.getHeight()));
+    }
     // Updates the player difficulty by score
     public float difficulty(int PlayerScore) {
         return 1 + (float)PlayerScore/1000; // Start at difficulty 1
