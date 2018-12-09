@@ -134,8 +134,10 @@ public class MainActivity extends AppCompatActivity {
         private int chairY;
 
     // Intialize classes
-        private Handler handler = new Handler();
-        private Timer timer = new Timer();
+
+    private Handler handler = new Handler();
+    private Timer timer = new Timer();
+    private SoundPlayer sound;
 
     // Status check
 
@@ -174,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
         control = control_data.getBoolean("GAME_DATA" , false);
+        sound= new SoundPlayer(this);
 
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
@@ -429,12 +432,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hitCheck() {
-        // Boolean statement is basically checking if each corner of an object is inside the character's sprite boundry
+        // Boolean statement is basically checking if each corner of an object is inside the character's sprite boundry and plays sound
 
         // Collision check for knife, add points
         if ((knifeX + knife.getWidth() >= characterX) && (knifeX <= characterX + character_width) && (knifeY + knife.getHeight() >= characterY) && (knifeY + knife.getHeight() <= frameHeight)) {
             score += 30;
             knifeY = -100;
+            sound.playPointSound();
         }
 
         // Collision check for pigeon, lose life
@@ -443,12 +447,20 @@ public class MainActivity extends AppCompatActivity {
 
             // Reduce life counter every time player touches pigeon
             healthCounter -= 1;
+            sound.playHitSound();
+
 
             // Once zero, call next activity ResultScreen
             if(healthCounter == 0) {
                 lives.setText("X"); // Update Life Counter
                 timer.cancel();
                 timer = null;
+
+                //ends background music
+                sound.stopBackgroundMusic();
+
+                //play game over sound
+                sound.playOverSound();
 
                 // Print results
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
@@ -460,10 +472,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // Collision check for cutlery, add points
+        // Collision check for cutlery, add points, plays hit sound
         if ((cutleryX + cutlery.getWidth() >= characterX) && (cutleryX <= characterX + character_width) && (cutleryY + cutlery.getHeight() >= characterY) && (cutleryY + cutlery.getHeight() <= frameHeight)) {
             score += 50;
             cutleryY = -100;
+            sound.playPointSound();
         }
     }
 
@@ -507,7 +520,6 @@ public class MainActivity extends AppCompatActivity {
                 right_flag = false;
             }
         }
-        //TODO: revert states for jump
         return true;
     }
 
@@ -532,6 +544,9 @@ public class MainActivity extends AppCompatActivity {
             timer.cancel();
             timer = null;
 
+            //pause background music
+            sound.pauseBackgroundMusic();
+
             // Show PAUSED state
             countdown.setVisibility(View.VISIBLE);
             countdown.setText("PAUSED");
@@ -540,6 +555,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else { // Resume game and reset flag state
             pause_flag = false;
+
+
             resume();
         }
     }
@@ -558,11 +575,15 @@ public class MainActivity extends AppCompatActivity {
                 pauseButton.setClickable(false);
                 // Print time as timer counts down, prints "BREADY?" when timer is down to 1
                 int display = (int)(Math.floor(millisUntilFinished/1000));
-
                 if (display < 2)
+
                     countdown.setText("BREADY?");
-                else
+                     sound.playStartSound();
+                    }
+                else {
                     countdown.setText(Integer.toString(display));
+                    sound.playCountSound();
+                }
 
             }
 
@@ -583,6 +604,7 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 changePos(); // In charge of update all the sprites as time goes on
                                 loop_number += 1;
+                                sound.playBackgroundMusic();
                             }
                         });
                     }
