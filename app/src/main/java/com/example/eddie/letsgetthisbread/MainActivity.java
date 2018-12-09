@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         private boolean right_flag = false;
         private boolean chair_flag = false;
     	private boolean jump_flag = false;
-        private boolean reset_flag = false;
+        private boolean control;
 
     // Counter
         private int score = 0;
@@ -166,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
         // Runs first time on activity startup, inflates layout of MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
+        control = control_data.getBoolean("GAME_DATA" , false);
 
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
@@ -343,8 +346,6 @@ public class MainActivity extends AppCompatActivity {
         // Depending on movement flag, move characters
 
         //motion controlled movement
-        SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
-        boolean control = control_data.getBoolean("GAME_DATA" , false);
 
         if (control == true) {
             if (orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
@@ -353,20 +354,19 @@ public class MainActivity extends AppCompatActivity {
 
                 float xSpeed = 20 * roll / 1f;
 
-
-                character.setX((float) characterX);
+                characterX += (int)xSpeed;
+                //boundary check and reversal if within bounds
                 if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
                     if (character.getY() + character_height > chair.getY()) {
-                        if (characterX + character_width > chairX && characterX > chairX)
-                            characterX -= Math.floor((double)xSpeed)-1;
+                        if (characterX + character_width > chairX && characterX > chairX) // Right side collision
+                            characterX = chairX + chairWidth + 1;
                         else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth)
-                            characterX -= (int)xSpeed;
+                            characterX = chairX - chairWidth - 1;
                     }
                 }
 
                 debug.setText(Float.toString(xSpeed));
-
-                characterX += (xSpeed);
+                character.setX((float) characterX);
                 // temporary to show values of stuff, helpful for debug
             }
 
