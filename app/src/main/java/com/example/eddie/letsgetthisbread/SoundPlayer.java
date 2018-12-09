@@ -29,7 +29,7 @@ public class SoundPlayer {
         hitSound= soundPool.load(context, R.raw.oof, 1);
         countSound= soundPool.load(context,R.raw.count,1);
         startSound= soundPool.load(context,R.raw.start,1);
-        jumpSound= soundPool.load(context,R.raw.start,1);
+        jumpSound= soundPool.load(context,R.raw.jump,1);
             }
 
     public void playPointSound() {
