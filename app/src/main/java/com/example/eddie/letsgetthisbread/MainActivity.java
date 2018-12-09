@@ -385,10 +385,12 @@ public class MainActivity extends AppCompatActivity {
                 int display = (int)(1 + Math.round(millisUntilFinished/1000));
                 if (display < 2){
                     countdown.setText("BREADY?");
-
+                     sound.playStartSound();
                     }
-                else
+                else {
                     countdown.setText(Integer.toString(display));
+                    sound.playCountSound();
+                }
 
             }
 

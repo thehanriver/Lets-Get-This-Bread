@@ -14,16 +14,20 @@ public class SoundPlayer {
     private static int overSound;
     private static int hitSound;
     MediaPlayer backgroundMusic;
+    private static int countSound;
+    private static int startSound;
 
 
     public SoundPlayer(Context context){
 
         //SoundPool (int maxStreams, int streamType, int srcQuality)
         soundPool= new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
-         backgroundMusic=MediaPlayer.create(context,R.raw.background);
+        backgroundMusic=MediaPlayer.create(context,R.raw.background);
         pointSound= soundPool.load(context, R.raw.hit, 1);
         overSound= soundPool.load(context, R.raw.over, 1);
         hitSound= soundPool.load(context, R.raw.oof, 1);
+        countSound= soundPool.load(context,R.raw.count,1);
+        startSound= soundPool.load(context,R.raw.start,1);
             }
 
     public void playPointSound() {
@@ -56,5 +60,15 @@ public class SoundPlayer {
     public void stopBackgroundMusic(){
 
         backgroundMusic.stop();
+    }
+
+    public void playCountSound(){
+
+        soundPool.play(countSound,1.0f,1.0f,1,0,1);
+    }
+
+    public void playStartSound(){
+
+        soundPool.play(startSound,1.0f,1.0f,1,0,1);
     }
 }
