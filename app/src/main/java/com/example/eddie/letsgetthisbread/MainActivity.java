@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
 	    private ImageView bread;
 	    private ImageView knife;
 
+
     // Initialize variables for dimensions in layout
         private int frameHeight;
         private int frameWidth;
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Button
         private ImageButton pauseButton;
+        private ImageButton menu;
 
 
     //looper
@@ -181,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
         control = control_data.getBoolean("GAME_DATA" , false);
-        sound= new SoundPlayer(this);
+        sound = new SoundPlayer(this);
 
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
@@ -205,6 +208,8 @@ public class MainActivity extends AppCompatActivity {
         life3 = findViewById(R.id.life3);
         countdown = findViewById(R.id.countdown);
         pauseButton = findViewById(R.id.pause);
+        menu = findViewById(R.id.menu);
+
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
         jump= findViewById(R.id.jump);
@@ -212,7 +217,10 @@ public class MainActivity extends AppCompatActivity {
 
         // On startup, pause button is not clickable and set countdown to tick from 3
         pauseButton.setClickable(false);
+        menu.setClickable(false);
         countdown.setText(Integer.toString(3));
+
+
 
         // TODO: offload constants into its own class file file
         // TODO: compatibility for differnt devices
@@ -552,7 +560,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchKeyEvent(event);
+
+
     }
+
+
 
     // Implements pause button
     public void pausePushed(View view) {
@@ -569,25 +581,33 @@ public class MainActivity extends AppCompatActivity {
             // Show PAUSED state
             countdown.setVisibility(View.VISIBLE);
             countdown.setText("PAUSED");
+
             pauseButton.setAlpha(128);
+            menu.setVisibility(View.VISIBLE);
+            menu.setClickable(true);
             // TODO: change pauseButton.setImageDrawable();
         }
         else { // Resume game and reset flag state
             pause_flag = false;
-
-
             resume();
         }
+    }
+
+    public void menuPushed(View view) {
+        startActivity(new Intent(getApplicationContext(), StartScreen.class));
     }
 
     // Function that runs the game loop
     public void resume() { // Before the game starts, there will be a timer buffer that counts down before game starts
         countdown.setVisibility(View.VISIBLE);
 
+
         // CountDownTimer counts down from 3 seconds doing actions every second
         new CountDownTimer(3100, 1000) {
 
             public void onTick(long millisUntilFinished) {
+                menu.setVisibility(View.GONE);
+                menu.setClickable(false);
                 // TODO: add setting button and replace alpha
                 // Make pause button invisible and disable interaction
                 pauseButton.setAlpha(128);
@@ -610,8 +630,10 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 // Make pause button visible and enable interaction, countdown will disappear
                 countdown.setVisibility(View.INVISIBLE);
+
                 pauseButton.setAlpha(255);
                 pauseButton.setClickable(true);
+
 
                 // Resume game timer
                 timer = new Timer();
@@ -624,6 +646,7 @@ public class MainActivity extends AppCompatActivity {
                                 changePos(); // In charge of update all the sprites as time goes on
                                 loop_number += 1;
                                 sound.playBackgroundMusic();
+
                                 goldenGuess = (int) Math.floor(Math.random() * 10000 + 1);
                             }
                         });
