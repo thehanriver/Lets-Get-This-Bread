@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="knife">30dp</dimen>
-    <dimen name="pigeon">40dp</dimen>
-    <dimen name="cutlery">30dp</dimen>
+    <dimen name="bread">40dp</dimen>
+    <dimen name="bread_icon">30dp</dimen>
     <dimen name="character">40dp</dimen>
     <dimen name="chair">40dp</dimen>
 </resources>

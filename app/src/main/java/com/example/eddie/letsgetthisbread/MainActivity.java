@@ -96,7 +96,9 @@ public class MainActivity extends AppCompatActivity {
     // Initialize View objects in layout
 
 	    private TextView scoreboard;
-	    private TextView lives;
+	    private TextView life1;
+	    private TextView life2;
+	    private TextView life3;
 	    private TextView start;
 	    private TextView left;
 	    private TextView right;
@@ -105,9 +107,9 @@ public class MainActivity extends AppCompatActivity {
 	    private TextView countdown;
 	    private ImageView chair;
 	    private ImageView character;
-	    private ImageView cutlery;
+	    private ImageView bread_icon;
+	    private ImageView bread;
 	    private ImageView knife;
-	    private ImageView pigeon;
 
     // Initialize variables for dimensions in layout
         private int frameHeight;
@@ -115,21 +117,21 @@ public class MainActivity extends AppCompatActivity {
         private int screenHeight;
         private int character_width;
         private int character_height;
+        private int breadWidth;
+        private int breadIconWidth;
         private int knifeWidth;
-        private int cutleryWidth;
-        private int pigeonWidth;
         private int chairWidth;
         private int chairHeight;
 
     // Positions of sprites
         private int characterX;
         private int characterY;
-        private int cutleryX;
-        private int cutleryY;
+        private int bread_iconX;
+        private int bread_iconY;
+        private int breadX;
+        private int breadY;
         private int knifeX;
         private int knifeY;
-        private int pigeonX;
-        private int pigeonY;
         private int chairX;
         private int chairY;
 
@@ -180,22 +182,24 @@ public class MainActivity extends AppCompatActivity {
 
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
+        breadWidth = (int)(res.getDimension(R.dimen.bread));
         knifeWidth = (int)(res.getDimension(R.dimen.knife));
-        pigeonWidth = (int)(res.getDimension(R.dimen.pigeon));
-        cutleryWidth = (int)(res.getDimension(R.dimen.cutlery));
+        breadIconWidth = (int)(res.getDimension(R.dimen.bread_icon));
 
         // Assign View objects
         //Characters initialized
         character = findViewById(R.id.character);
-        cutlery = findViewById(R.id.cutlery);
+        bread_icon = findViewById(R.id.bread_icon);
+        bread = findViewById(R.id.bread);
         knife = findViewById(R.id.knife);
-        pigeon = findViewById(R.id.pigeon);
         chair = findViewById(R.id.chair);
 
         // UI initialized
         scoreboard = findViewById(R.id.scoreboard);
         start = findViewById(R.id.start);
-        lives = findViewById(R.id.lives);
+        life1 = findViewById(R.id.life1);
+        life2 = findViewById(R.id.life2);
+        life3 = findViewById(R.id.life3);
         countdown = findViewById(R.id.countdown);
         pauseButton = findViewById(R.id.pause);
         left = findViewById(R.id.left);
@@ -217,41 +221,41 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Set objects below screen when initialized
+        breadY = screenHeight + 40;
         knifeY = screenHeight + 40;
-        pigeonY = screenHeight + 40;
-        cutleryY = screenHeight + 40;
+        bread_iconY = screenHeight + 40;
         chairY = screenHeight + 40;
 
         // Set positions for falling sprites
-        cutlery.setX(-40);
-        cutlery.setY(cutleryY);
-        pigeon.setX(-40);
-        pigeon.setY(pigeonY);
+        bread_icon.setX(-40);
+        bread_icon.setY(bread_iconY);
         knife.setX(-40);
         knife.setY(knifeY);
+        bread.setX(-40);
+        bread.setY(breadY);
 
         chair.setX(-40);
         chair.setY(chairY);
 
         // Set scoreboard & live counter
         scoreboard.setText("Score: 0");
-        lives.setText(Integer.toString(healthCounter));
+
 
         orientationData.newGame();
     }
 
-    // Input X coordinate of falling sprites and a string key, ie "knife", to return if knife is in the x range of other falling sprites
+    // Input X coordinate of falling sprites and a string key, ie "bread", to return if bread is in the x range of other falling sprites
     public boolean avoidStack(String key, int kx, int cx, int px) {
         boolean result = false;
         switch (key) {
-            case "pigeon":
-                result = (px >= kx && px <= kx + knifeWidth) || (px + pigeonWidth >= kx && px + pigeonWidth <= kx + knifeWidth) && (px >= cx && px <= cx + cutleryWidth) || (px + pigeonWidth >= cx && px + pigeonWidth <= cx + cutleryWidth);
-                break;
-            case "cutlery":
-                result = (cx >= px && cx <= px + pigeonWidth) || (cx + cutleryWidth >= px && cx + cutleryWidth <= px + pigeonWidth) &&  (cx >= kx && cx <= kx + knifeWidth) || (cx + cutleryWidth >= kx && cx + cutleryWidth <= kx + knifeWidth);
-                break;
             case "knife":
-                result = (kx >= cx && kx <= cx + cutleryWidth) || (kx + knifeWidth >= cx && kx + knifeWidth <= cx + cutleryWidth) &&  (kx >= cx && kx <= cx + cutleryWidth) || (kx + knifeWidth >= cx && kx + knifeWidth <= cx + cutleryWidth);
+                result = (px >= kx && px <= kx + breadWidth) || (px + knifeWidth >= kx && px + knifeWidth <= kx + breadWidth) && (px >= cx && px <= cx + breadIconWidth) || (px + knifeWidth >= cx && px + knifeWidth <= cx + breadIconWidth);
+                break;
+            case "bread_icon":
+                result = (cx >= px && cx <= px + knifeWidth) || (cx + breadIconWidth >= px && cx + breadIconWidth <= px + knifeWidth) &&  (cx >= kx && cx <= kx + breadWidth) || (cx + breadIconWidth >= kx && cx + breadIconWidth <= kx + breadWidth);
+                break;
+            case "bread":
+                result = (kx >= cx && kx <= cx + breadIconWidth) || (kx + breadWidth >= cx && kx + breadWidth <= cx + breadIconWidth) &&  (kx >= cx && kx <= cx + breadIconWidth) || (kx + breadWidth >= cx && kx + breadWidth <= cx + breadIconWidth);
                 break;
         }
         return result;
@@ -273,53 +277,53 @@ public class MainActivity extends AppCompatActivity {
         // TODO: make it so score has a multiplier for each bread not dropped
         // TODO: add bonus object for achievement system
 
-        // Move obstacle knife
+        // Move obstacle bread
+        if (breadY > frameHeight) // Move bread above screen once bread falls below screen
+            breadY = -100;
+        else if (breadY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false. Required since we need to shuffle at least once
+            breadX = shufflePos(breadWidth);
+            breadY = -99;
+        }
+        else if (breadY < 0 && avoidStack("bread", breadX, (int)bread_icon.getX(), (int)knife.getX()))  // Shuffle again if bread will collide other objects
+            breadX = shufflePos(breadWidth);
+        else
+            breadY += (12 * speed_multiplier); // Otherwise start falling
+
+        // Set bread coordinates
+        bread.setX(breadX);
+        bread.setY(breadY);
+
+        // Move obstacle bread_icon
+
+        if (bread_iconY > frameHeight) // Move bread_icon above screen once bread_icon falls below screen
+            bread_iconY = -100;
+        else if (bread_iconY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
+            bread_iconX = shufflePos(breadIconWidth);
+            bread_iconY = -99;
+        }
+        else if (bread_iconY < 0 && avoidStack("bread_icon", (int)bread.getX(), bread_iconX, (int)knife.getX()))  // Shuffle again if bread_icon will collide other objects
+            bread_iconX = shufflePos(breadIconWidth);
+        else
+            bread_iconY += (14 * speed_multiplier); // Otherwise start falling
+
+        bread_icon.setX(bread_iconX);
+        bread_icon.setY(bread_iconY);
+
+        // Move obstacle bread
+
         if (knifeY > frameHeight) // Move knife above screen once knife falls below screen
             knifeY = -100;
-        else if (knifeY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false. Required since we need to shuffle at least once
+        else if (knifeY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
             knifeX = shufflePos(knifeWidth);
             knifeY = -99;
         }
-        else if (knifeY < 0 && avoidStack("knife", knifeX, (int)cutlery.getX(), (int)pigeon.getX()))  // Shuffle again if knife will collide other objects
+        else if (knifeY < 0 && avoidStack("knife", (int)bread.getX(), (int)bread_icon.getX(), knifeX))  // Shuffle again if knife will collide other objects
             knifeX = shufflePos(knifeWidth);
         else
             knifeY += (12 * speed_multiplier); // Otherwise start falling
-
-        // Set knife coordinates
+        
         knife.setX(knifeX);
         knife.setY(knifeY);
-
-        // Move obstacle cutlery
-
-        if (cutleryY > frameHeight) // Move cutlery above screen once cutlery falls below screen
-            cutleryY = -100;
-        else if (cutleryY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
-            cutleryX = shufflePos(cutleryWidth);
-            cutleryY = -99;
-        }
-        else if (cutleryY < 0 && avoidStack("cutlery", (int)knife.getX(), cutleryX, (int)pigeon.getX()))  // Shuffle again if cutlery will collide other objects
-            cutleryX = shufflePos(cutleryWidth);
-        else
-            cutleryY += (14 * speed_multiplier); // Otherwise start falling
-
-        cutlery.setX(cutleryX);
-        cutlery.setY(cutleryY);
-
-        // Move obstacle knife
-
-        if (pigeonY > frameHeight) // Move pigeon above screen once pigeon falls below screen
-            pigeonY = -100;
-        else if (pigeonY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
-            pigeonX = shufflePos(pigeonWidth);
-            pigeonY = -99;
-        }
-        else if (pigeonY < 0 && avoidStack("pigeon", (int)knife.getX(), (int)cutlery.getX(), pigeonX))  // Shuffle again if pigeon will collide other objects
-            pigeonX = shufflePos(pigeonWidth);
-        else
-            pigeonY += (12 * speed_multiplier); // Otherwise start falling
-        
-        pigeon.setX(pigeonX);
-        pigeon.setY(pigeonY);
 
         if (!chair_flag) {
             currentscore = score;
@@ -442,25 +446,28 @@ public class MainActivity extends AppCompatActivity {
     public void hitCheck() {
         // Boolean statement is basically checking if each corner of an object is inside the character's sprite boundry and plays sound
 
-        // Collision check for knife, add points
-        if ((knifeX + knife.getWidth() >= characterX) && (knifeX <= characterX + character_width) && (knifeY + knife.getHeight() >= characterY) && (knifeY + knife.getHeight() <= frameHeight)) {
+        // Collision check for bread, add points
+        if ((breadX + bread.getWidth() >= characterX) && (breadX <= characterX + character_width) && (breadY + bread.getHeight() >= characterY) && (breadY + bread.getHeight() <= frameHeight)) {
             score += 30;
-            knifeY = -100;
+            breadY = -100;
             sound.playPointSound();
         }
 
-        // Collision check for pigeon, lose life
-        if ((pigeonX + pigeon.getWidth() >= characterX) && (pigeonX <= characterX + character_width) && (pigeonY + pigeon.getHeight() >= characterY) && (pigeonY + pigeon.getHeight() <= frameHeight)) {
-            pigeonY = -100;
+        // Collision check for knife, lose life
+        if ((knifeX + knife.getWidth() >= characterX) && (knifeX <= characterX + character_width) && (knifeY + knife.getHeight() >= characterY) && (knifeY + knife.getHeight() <= frameHeight)) {
+            knifeY = -100;
 
-            // Reduce life counter every time player touches pigeon
+            // Reduce life counter every time player touches knife
             healthCounter -= 1;
             sound.playHitSound();
-
+            if(healthCounter == 2)
+                life3.setVisibility(View.GONE);
+            else if(healthCounter ==1)
+                life2.setVisibility(View.GONE);
 
             // Once zero, call next activity ResultScreen
             if(healthCounter == 0) {
-                lives.setText("X"); // Update Life Counter
+                life1.setVisibility(View.GONE); // Update Life Counter
                 timer.cancel();
                 timer = null;
 
@@ -474,16 +481,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
                 intent.putExtra("SCORE", score); // Sends value of score into ResultScreen
                 startActivity(intent);
-            }
-            else {
-                lives.setText(Integer.toString(healthCounter)); // Update Life Counter
-            }
+            }// Update Life Counter
+
         }
 
-        // Collision check for cutlery, add points, plays hit sound
-        if ((cutleryX + cutlery.getWidth() >= characterX) && (cutleryX <= characterX + character_width) && (cutleryY + cutlery.getHeight() >= characterY) && (cutleryY + cutlery.getHeight() <= frameHeight)) {
+        // Collision check for bread_icon, add points, plays hit sound
+        if ((bread_iconX + bread_icon.getWidth() >= characterX) && (bread_iconX <= characterX + character_width) && (bread_iconY + bread_icon.getHeight() >= characterY) && (bread_iconY + bread_icon.getHeight() <= frameHeight)) {
             score += 50;
-            cutleryY = -100;
+            bread_iconY = -100;
             sound.playPointSound();
         }
     }
