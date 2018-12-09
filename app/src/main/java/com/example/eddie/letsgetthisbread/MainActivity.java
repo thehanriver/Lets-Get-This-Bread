@@ -135,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
         private int chairX;
         private int chairY;
 
+        private int goldenNumber;
+        private int goldenGuess;
+
     // Intialize classes
 
     private Handler handler = new Handler();
@@ -242,6 +245,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         orientationData.newGame();
+
+        goldenNumber = (int) Math.floor(Math.random() * 10000 + 1);
+
     }
 
     // Input X coordinate of falling sprites and a string key, ie "bread", to return if bread is in the x range of other falling sprites
@@ -431,7 +437,7 @@ public class MainActivity extends AppCompatActivity {
                 characterY = frameHeight - character_height;
             }
         }
-        debug.setText(Integer.toString(loop_number - jump_loop_number));
+        debug.setText(Integer.toString(goldenGuess));
 
 
         //if(characterY + character_height < frameHeight - chairHeight - 20)
@@ -618,6 +624,7 @@ public class MainActivity extends AppCompatActivity {
                                 changePos(); // In charge of update all the sprites as time goes on
                                 loop_number += 1;
                                 sound.playBackgroundMusic();
+                                goldenGuess = (int) Math.floor(Math.random() * 10000 + 1);
                             }
                         });
                     }
