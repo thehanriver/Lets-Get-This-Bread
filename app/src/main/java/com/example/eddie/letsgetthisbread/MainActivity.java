@@ -575,7 +575,7 @@ public class MainActivity extends AppCompatActivity {
                 pauseButton.setClickable(false);
                 // Print time as timer counts down, prints "BREADY?" when timer is down to 1
                 int display = (int)(Math.floor(millisUntilFinished/1000));
-                if (display < 2)
+                if (display < 2) {
 
                     countdown.setText("BREADY?");
                      sound.playStartSound();
