@@ -268,6 +268,9 @@ public class MainActivity extends AppCompatActivity {
                 timer.cancel();
                 timer = null;
 
+                //ends background music
+                sound.stopBackgroundMusic();
+
                 //play game over sound
                 sound.playOverSound();
 
@@ -348,6 +351,8 @@ public class MainActivity extends AppCompatActivity {
             timer.cancel();
             timer = null;
 
+
+
             // Show PAUSED state
             countdown.setVisibility(View.VISIBLE);
             countdown.setText("PAUSED");
@@ -356,6 +361,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else { // Resume game and reset flag state
             pause_flag = false;
+
+            //resume background music
+            sound.resumeBackgroundMusic();
             resume();
         }
     }
@@ -374,8 +382,11 @@ public class MainActivity extends AppCompatActivity {
 
                 // Print time as timer counts down, prints "BREADY?" when timer is down to 1
                 int display = (int)(1 + Math.round(millisUntilFinished/1000));
-                if (display < 2)
+                if (display < 2){
                     countdown.setText("BREADY?");
+
+                    //plays background music
+                    sound.playBackgroundMusic();}
                 else
                     countdown.setText(Integer.toString(display));
 
