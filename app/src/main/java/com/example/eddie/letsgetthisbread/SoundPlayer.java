@@ -2,7 +2,10 @@ package com.example.eddie.letsgetthisbread;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
+
+
 
 public class SoundPlayer {
 
@@ -10,19 +13,18 @@ public class SoundPlayer {
     private static int pointSound;
     private static int overSound;
     private static int hitSound;
-    private static int backgroundMusic;
+    MediaPlayer backgroundMusic;
 
 
     public SoundPlayer(Context context){
 
         //SoundPool (int maxStreams, int streamType, int srcQuality)
         soundPool= new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
-
+         backgroundMusic=MediaPlayer.create(context,R.raw.background);
         pointSound= soundPool.load(context, R.raw.hit, 1);
         overSound= soundPool.load(context, R.raw.over, 1);
         hitSound= soundPool.load(context, R.raw.oof, 1);
-        backgroundMusic= soundPool.load(context, R.raw.background, 1);
-    }
+            }
 
     public void playPointSound() {
 
@@ -42,21 +44,17 @@ public class SoundPlayer {
 
     public void playBackgroundMusic(){
 
-        soundPool.play(backgroundMusic,1.0f,1.0f,1,10,1.0f);
+        backgroundMusic.start();
     }
 
     public void pauseBackgroundMusic(){
 
-        soundPool.autoPause();
+        backgroundMusic.pause();
     }
 
-    public void resumeBackgroundMusic(){
-
-        soundPool.autoResume();
-    }
 
     public void stopBackgroundMusic(){
 
-        soundPool.stop(backgroundMusic);
+        backgroundMusic.stop();
     }
 }

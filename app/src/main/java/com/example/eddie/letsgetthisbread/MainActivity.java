@@ -327,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+
         return true;
     }
 
@@ -351,7 +352,8 @@ public class MainActivity extends AppCompatActivity {
             timer.cancel();
             timer = null;
 
-
+            //pause background music
+            sound.pauseBackgroundMusic();
 
             // Show PAUSED state
             countdown.setVisibility(View.VISIBLE);
@@ -362,8 +364,7 @@ public class MainActivity extends AppCompatActivity {
         else { // Resume game and reset flag state
             pause_flag = false;
 
-            //resume background music
-            sound.resumeBackgroundMusic();
+
             resume();
         }
     }
@@ -385,8 +386,7 @@ public class MainActivity extends AppCompatActivity {
                 if (display < 2){
                     countdown.setText("BREADY?");
 
-                    //plays background music
-                    sound.playBackgroundMusic();}
+                    }
                 else
                     countdown.setText(Integer.toString(display));
 
@@ -408,6 +408,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 changePos(); // In charge of update all the sprites as time goes on
+                                sound.playBackgroundMusic();
                             }
                         });
                     }
