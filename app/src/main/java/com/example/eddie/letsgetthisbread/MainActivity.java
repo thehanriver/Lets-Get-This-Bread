@@ -356,6 +356,9 @@ public class MainActivity extends AppCompatActivity {
         //motion controlled movement
 
         if (control == true) {
+            left.setVisibility(View.GONE);
+            right.setVisibility(View.GONE);
+            jump.setVisibility(View.VISIBLE);
             if (orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
                 float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
                 float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
@@ -379,6 +382,9 @@ public class MainActivity extends AppCompatActivity {
         }
         // Make sure character stays inside the boundry of the screen
         if(control == false) {
+            left.setVisibility(View.VISIBLE);
+            right.setVisibility(View.VISIBLE);
+            jump.setVisibility(View.VISIBLE);
             if (left_flag)
                 characterX -= 20;
             else if (right_flag)
@@ -403,9 +409,9 @@ public class MainActivity extends AppCompatActivity {
         // TODO: add jump mechanic and change characterx
         // Sets the position of the character
 
-//Make sure character stays inside the boudry of the screen in the vertical direction
+//Make sure character stays inside the boundry of the screen in the vertical direction
 
-        if (jump_flag && reset_flag == false) {
+        if (jump_flag && !reset_flag) {
             reset_flag = true;
             jump_loop_number = loop_number;
         }

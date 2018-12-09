@@ -97,6 +97,7 @@
                     android:text="@string/left"
                     android:textSize="100sp"
                     android:gravity="center"
+                    android:visibility="invisible"
                     android:background="@drawable/outline"/>
 
                 <TextView
@@ -107,6 +108,7 @@
                     android:layout_toRightOf="@+id/left"
                     android:text="@string/right"
                     android:textSize="100sp"
+                    android:visibility="invisible"
                     android:background="@drawable/outline"/>
 
                 <TextView
@@ -117,6 +119,7 @@
                     android:layout_toRightOf="@+id/right"
                     android:text="@string/up"
                     android:textSize="100sp"
+                    android:visibility="invisible"
                     android:background="@drawable/outline"/>
             </RelativeLayout>
 
