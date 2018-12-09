@@ -16,6 +16,7 @@ public class SoundPlayer {
     MediaPlayer backgroundMusic;
     private static int countSound;
     private static int startSound;
+    private static int jumpSound;
 
 
     public SoundPlayer(Context context){
@@ -28,6 +29,7 @@ public class SoundPlayer {
         hitSound= soundPool.load(context, R.raw.oof, 1);
         countSound= soundPool.load(context,R.raw.count,1);
         startSound= soundPool.load(context,R.raw.start,1);
+        jumpSound= soundPool.load(context,R.raw.start,1);
             }
 
     public void playPointSound() {
@@ -70,5 +72,10 @@ public class SoundPlayer {
     public void playStartSound(){
 
         soundPool.play(startSound,1.0f,1.0f,1,0,1);
+    }
+
+    public void playJumpSound(){
+
+        soundPool.play(jumpSound,1.0f,1.0f,1,0,1);
     }
 }

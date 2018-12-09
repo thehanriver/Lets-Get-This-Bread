@@ -412,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
         if (reset_flag) {
             if(loop_number - jump_loop_number < 75) {
                 characterY = frameHeight - chairHeight - 10 - character_height;
+                sound.playJumpSound();
             }
             else {
                 jump_flag = false;
