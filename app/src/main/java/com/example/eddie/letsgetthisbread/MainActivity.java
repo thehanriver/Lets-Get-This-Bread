@@ -447,9 +447,9 @@ public class MainActivity extends AppCompatActivity {
         if (!start_flag) { // If its the player's first time touching the screen on MainActivity, call this
             start_flag = true; // Set true so this doesn't get called again
 
-            FrameLayout game_frame = findViewById(R.id.game_frame); // Initialize the FrameLayout that holds most of the objects, get dimensions
-            frameHeight = game_frame.getHeight();
-            frameWidth = game_frame.getWidth();
+            FrameLayout gameframe = findViewById(R.id.gameframe); // Initialize the FrameLayout that holds most of the objects, get dimensions
+            frameHeight = gameframe.getHeight();
+            frameWidth = gameframe.getWidth();
 
             // Initialize character positions and dimensions
             characterX = (int)character.getX();
