@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     // Initialize View objects in layout
 
 	    private TextView scoreboard;
@@ -146,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         private boolean right_flag = false;
         private boolean chair_flag = false;
     	private boolean jump_flag = false;
+        private boolean reset_flag = false;
         private boolean control;
 
     // Counter
@@ -155,6 +155,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Button
         private ImageButton pauseButton;
+
+
+    //looper
+        private int loop_number = 0;
+        private int jump_loop_number;
 
     // Difficulty Multiplier
         private float speed_multiplier = 1;
@@ -364,8 +369,6 @@ public class MainActivity extends AppCompatActivity {
                             characterX = chairX - chairWidth - 1;
                     }
                 }
-
-                debug.setText(Float.toString(xSpeed));
                 character.setX((float) characterX);
                 // temporary to show values of stuff, helpful for debug
             }
@@ -386,8 +389,8 @@ public class MainActivity extends AppCompatActivity {
                         characterX -= 20;
                 }
             }
-            debug.setText(Boolean.toString((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)));
         }
+
         if (characterX < 0)
             characterX = 0;
         else if (characterX > (frameWidth - character_width))
@@ -399,17 +402,25 @@ public class MainActivity extends AppCompatActivity {
 
 //Make sure character stays inside the boudry of the screen in the vertical direction
 
-        if(jump_flag)
-            characterY -= chairHeight + 20;
-        else
-            characterY += chairHeight + 20;
+        if (jump_flag && reset_flag == false) {
+            reset_flag = true;
+            jump_loop_number = loop_number;
+        }
+        if (reset_flag) {
+            if(loop_number - jump_loop_number < 75) {
+                characterY = frameHeight - chairHeight - 10 - character_height;
+            }
+            else {
+                jump_flag = false;
+                reset_flag = false;
+                characterY = frameHeight - character_height;
+            }
+        }
+        debug.setText(Integer.toString(loop_number - jump_loop_number));
 
-        if(characterY + character_height < frameHeight - chairHeight - 20){
-            characterY = frameHeight - chairHeight - 20 - character_height;
-        }
-        else if(characterY > (frameHeight-character_height)){
-            characterY = frameHeight-character_height;
-        }
+
+        //if(characterY + character_height < frameHeight - chairHeight - 20)
+        //else if(characterY > (frameHeight-character_height))
 
         character.setX(characterX);
         character.setY(characterY);
@@ -484,39 +495,16 @@ public class MainActivity extends AppCompatActivity {
         }
         else { // Detects player's finger motion
             if (me.getAction() == MotionEvent.ACTION_DOWN) { // If holding down, check where the player's finger position on the screen
-                for (int i = 0; i < pointerCount; i++) {
-                    int x = (int) me.getX(i);
-                    int y = (int) me.getY(i);
-
-                    if (inLeftBoundry(x, y)) { // If position in Object: left, set left flag true. Will move character left in changePos()
-                        left_flag = true;
-                    } else if (inRightBoundry(x, y)) { // Move Right
-                        right_flag = true;
-                    }
-                    if (inJumpBoundry(x, y)) { //jump
-                        jump_flag = true;
-                    }
-                }
-            } else if (me.getAction() == MotionEvent.ACTION_POINTER_DOWN) {
-                for (int i = 1; i < pointerCount; i++) {
-                    int x = (int) me.getX(i);
-                    int y = (int) me.getY(i);
-
-                    if (inLeftBoundry(x, y)) { // If position in Object: left, set left flag true. Will move character left in changePos()
-                        left_flag = true;
-                    } else if (inRightBoundry(x, y)) { // Move Right
-                        right_flag = true;
-
-                    }
-                    if (inJumpBoundry(x, y)) { //jump
-                        jump_flag = true;
-                    }
-                }
+                if (inLeftBoundry(me.getX(), me.getY()))  // If position in Object: left, set left flag true. Will move character left in changePos()
+                    left_flag = true;
+                if (inRightBoundry(me.getX(), me.getY()))  // Move Right
+                    right_flag = true;
+                if (inJumpBoundry(me.getX(), me.getY()))  //jump
+                    jump_flag = true;
             }
             else if (me.getAction() == MotionEvent.ACTION_UP) { // If finger leaves screen, return flags to false
                 left_flag = false;
                 right_flag = false;
-                jump_flag = false;
             }
         }
         //TODO: revert states for jump
@@ -594,6 +582,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 changePos(); // In charge of update all the sprites as time goes on
+                                loop_number += 1;
                             }
                         });
                     }
