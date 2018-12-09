@@ -2,6 +2,7 @@ package com.example.eddie.letsgetthisbread;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -342,37 +343,51 @@ public class MainActivity extends AppCompatActivity {
         // Depending on movement flag, move characters
 
         //motion controlled movement
-        if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
-            float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
-            float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
+        SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
+        boolean control = control_data.getBoolean("GAME_DATA" , false);
 
-            float xSpeed = 20*roll/1f;
+        if (control == true) {
+            if (orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
+                float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
+                float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
+
+                float xSpeed = 20 * roll / 1f;
 
 
-            characterX += (xSpeed);
+                character.setX((float) characterX);
+                if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
+                    if (character.getY() + character_height > chair.getY()) {
+                        if (characterX + character_width > chairX && characterX > chairX)
+                            characterX -= Math.floor((double)xSpeed)-1;
+                        else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth)
+                            characterX -= (int)xSpeed;
+                    }
+                }
 
-            character.setX((float)characterX);
+                debug.setText(Float.toString(xSpeed));
 
-             // temporary to show values of stuff, helpful for debug
-        }
-
-        // Make sure character stays inside the boundry of the screen
-
-        if (left_flag)
-            characterX -= 20;
-        else if (right_flag)
-            characterX += 20;
-
-        if ((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
-            if (character.getY() + character_height > chair.getY()) {
-                if (characterX + character_width > chairX && characterX > chairX)
-                    characterX += 20;
-                else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth )
-                    characterX -= 20;
+                characterX += (xSpeed);
+                // temporary to show values of stuff, helpful for debug
             }
 
         }
+        // Make sure character stays inside the boundry of the screen
+        if(control == false) {
+            if (left_flag)
+                characterX -= 20;
+            else if (right_flag)
+                characterX += 20;
 
+            if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
+                if (character.getY() + character_height > chair.getY()) {
+                    if (characterX + character_width > chairX && characterX > chairX)
+                        characterX += 20;
+                    else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth)
+                        characterX -= 20;
+                }
+            }
+            debug.setText(Boolean.toString((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)));
+        }
         if (characterX < 0)
             characterX = 0;
         else if (characterX > (frameWidth - character_width))
@@ -491,11 +506,10 @@ public class MainActivity extends AppCompatActivity {
                         left_flag = true;
                     } else if (inRightBoundry(x, y)) { // Move Right
                         right_flag = true;
-                        debug.setText("R");
+
                     }
                     if (inJumpBoundry(x, y)) { //jump
                         jump_flag = true;
-                        debug.setText("J");
                     }
                 }
             }
@@ -547,15 +561,16 @@ public class MainActivity extends AppCompatActivity {
         countdown.setVisibility(View.VISIBLE);
 
         // CountDownTimer counts down from 3 seconds doing actions every second
-        new CountDownTimer(2999, 1000) {
+        new CountDownTimer(3100, 1000) {
+
             public void onTick(long millisUntilFinished) {
                 // TODO: add setting button and replace alpha
                 // Make pause button invisible and disable interaction
                 pauseButton.setAlpha(128);
                 pauseButton.setClickable(false);
-
                 // Print time as timer counts down, prints "BREADY?" when timer is down to 1
-                int display = (int)(1 + Math.ceil(millisUntilFinished/1000));
+                int display = (int)(Math.floor(millisUntilFinished/1000));
+
                 if (display < 2)
                     countdown.setText("BREADY?");
                 else

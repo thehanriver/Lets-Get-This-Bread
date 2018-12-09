@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:keepScreenOn="true">
 
     <!--TODO: make the interface compatible for screens when device is rotated -->
 
@@ -132,6 +133,7 @@
                 style="@android:style/Widget.DeviceDefault.ImageButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:alpha="128"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
