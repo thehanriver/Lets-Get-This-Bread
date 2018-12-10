@@ -64,26 +64,26 @@
 
         <ImageView
             android:id="@+id/bread_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/bread_icon"
+            android:layout_height="@dimen/bread_icon"
             android:src="@drawable/bread_icon" />
 
         <ImageView
             android:id="@+id/bread"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/bread"
+            android:layout_height="@dimen/bread"
             android:src="@drawable/bread" />
 
         <ImageView
             android:id="@+id/knife"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/knife"
+            android:layout_height="@dimen/knife"
             android:src="@drawable/knife" />
 
         <ImageView
             android:id="@+id/goldenCroissant"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/goldenCroissant"
+            android:layout_height="@dimen/goldenCroissant"
             android:src="@drawable/golden_croissant" />
 
         <ImageView
@@ -95,8 +95,8 @@
 
         <ImageView
             android:id="@+id/chair"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/chair"
+            android:layout_height="@dimen/chair"
             android:src="@drawable/chair" />
 
         <TextView

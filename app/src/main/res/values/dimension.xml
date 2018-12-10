@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="knife">30dp</dimen>
-    <dimen name="bread">40dp</dimen>
-    <dimen name="bread_icon">30dp</dimen>
+    <dimen name="knife">50dp</dimen>
+    <dimen name="bread">60dp</dimen>
+    <dimen name="bread_icon">60dp</dimen>
     <dimen name="character">40dp</dimen>
     <dimen name="chair">40dp</dimen>
-    <dimen name="goldenCroissant">40dp</dimen>
+    <dimen name="goldenCroissant">60dp</dimen>
 </resources>
