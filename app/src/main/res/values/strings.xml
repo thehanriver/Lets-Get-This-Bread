@@ -10,6 +10,11 @@
     <string name="up">\u005e</string>
     <string name="bwinner">Pick Your Bread Winner</string>
     <!-- Crusty, Yung Yeasty-->
+    <string name="char1">Carbi B</string>
+    <string name="char2">Post Maloaf</string>
+    <string name="char3">Yung Yea\u0024ty</string>
+    <string name="char4">Lil Wheaty</string>
+    <string name="dispchar">Character:\u0020</string>
 
 
 </resources>
