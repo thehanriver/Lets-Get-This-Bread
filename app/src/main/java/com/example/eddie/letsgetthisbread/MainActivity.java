@@ -452,7 +452,7 @@ public class MainActivity extends AppCompatActivity {
                         if (characterX + character_width > chairX && characterX > chairX) // Right side collision
                             characterX = chairX + chairWidth + 1;
                         else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth)
-                            characterX = chairX - chairWidth - 1;
+                            characterX = chairX - character_width - 1;
                     }
                 }
                 character.setX((float) characterX);

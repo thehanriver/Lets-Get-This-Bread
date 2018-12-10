@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:keepScreenOn="true">
+    android:keepScreenOn="true"
+    android:background="@drawable/environment_j">
 
     <android.support.constraint.Guideline
         android:id="@+id/center"
@@ -78,15 +79,14 @@
         <ImageView
             android:id="@+id/character"
             android:layout_width="@dimen/character"
-            android:layout_height="80dp"
+            android:layout_height="85dp"
             android:layout_gravity="center|bottom"
             android:src="@drawable/carbib" />
 
         <ImageView
             android:id="@+id/chair"
             android:layout_width="@dimen/chair"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
+            android:layout_height="55dp"
             android:src="@drawable/chair" />
 
         <TextView
@@ -158,23 +158,26 @@
 
     <ImageButton
         android:id="@+id/menu"
-        android:onClick="menuPushed"
         style="@android:style/Widget.DeviceDefault.ImageButton"
-        android:layout_width="250dp"
-        android:layout_height="200dp"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="88dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@color/white"
-        android:gravity="center"
-        android:src="@drawable/pigeon"
+        android:cropToPadding="true"
+        android:onClick="menuPushed"
+        android:scaleType="fitStart"
+        android:src="@drawable/backbutton"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countdown" />
+        app:layout_constraintTop_toBottomOf="@+id/countdown"
+        tools:ignore="MissingConstraints"
+        tools:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/countdown"
