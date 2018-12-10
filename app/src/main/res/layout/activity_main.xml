@@ -37,7 +37,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3">
 
-
         <TextView
             android:id="@+id/start"
             android:layout_width="match_parent"
@@ -220,7 +219,7 @@
         android:id="@+id/life3"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/heart"
+        android:src="@drawable/heart"
         app:layout_constraintEnd_toStartOf="@+id/life2"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
@@ -228,7 +227,7 @@
         android:id="@+id/life2"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/heart"
+        android:src="@drawable/heart"
         app:layout_constraintEnd_toStartOf="@+id/life1"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
@@ -238,7 +237,7 @@
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/heart"
+        android:src="@drawable/heart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
