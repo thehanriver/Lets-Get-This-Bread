@@ -52,16 +52,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/pigeon"
-            android:layout_width="@dimen/pigeon"
-            android:layout_height="@dimen/pigeon"
-            android:src="@drawable/pigeon" />
+            android:id="@+id/bread_icon"
+            android:layout_width="@dimen/bread_icon"
+            android:layout_height="@dimen/bread_icon"
+            android:src="@drawable/bread_icon" />
 
         <ImageView
-            android:id="@+id/cutlery"
-            android:layout_width="@dimen/cutlery"
-            android:layout_height="@dimen/cutlery"
-            android:src="@drawable/cutlery" />
+            android:id="@+id/bread"
+            android:layout_width="@dimen/bread"
+            android:layout_height="@dimen/bread"
+            android:src="@drawable/bread" />
 
         <ImageView
             android:id="@+id/knife"
@@ -70,13 +70,17 @@
             android:src="@drawable/knife" />
 
         <ImageView
+            android:id="@+id/goldenCroissant"
+            android:layout_width="@dimen/bread_icon"
+            android:layout_height="@dimen/bread_icon"
+            android:src="@drawable/golden_croissant" />
+
+        <ImageView
             android:id="@+id/character"
             android:layout_width="@dimen/character"
             android:layout_height="@dimen/character"
-            android:src="@drawable/bread"
-            app:layout_constraintBottom_toBottomOf="@+id/jump"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_gravity="center|bottom"
+            android:src="@drawable/character" />
 
         <ImageView
             android:id="@+id/chair"
@@ -151,11 +155,9 @@
 
     </LinearLayout>
 
-
-
-    <!-- TODO: add android:onClick="menuPushed" to menu -->
     <ImageButton
         android:id="@+id/menu"
+        android:onClick="menuPushed"
         style="@android:style/Widget.DeviceDefault.ImageButton"
         android:layout_width="250dp"
         android:layout_height="200dp"
