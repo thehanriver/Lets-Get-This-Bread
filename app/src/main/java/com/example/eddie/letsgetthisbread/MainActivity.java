@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         private boolean reset_flag = false;
         private boolean bonus_flag = false;
         private boolean control;
+        private boolean sound_flag;
 
     // Counter
         private int score = 0;
@@ -186,6 +187,12 @@ public class MainActivity extends AppCompatActivity {
         // Runs first time on activity startup, inflates layout of MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
+        control = control_data.getBoolean("GAME_DATA" , false);
+
+        SharedPreferences sound_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
+        sound_flag = sound_data.getBoolean("GAME_DATA" , false);
 
         sound = new SoundPlayer(this);
 
@@ -225,9 +232,6 @@ public class MainActivity extends AppCompatActivity {
         pauseButton.setClickable(false);
         menu.setClickable(false);
         countdown.setText(Integer.toString(3));
-
-        SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
-        control = control_data.getBoolean("GAME_DATA" , false);
 
         if (control) {
             left.setVisibility(View.GONE);
@@ -529,10 +533,12 @@ public class MainActivity extends AppCompatActivity {
                 timer = null;
 
                 //ends background music
-                sound.stopBackgroundMusic();
+                if (sound_flag)
+                    sound.stopBackgroundMusic();
 
                 //play game over sound
-                sound.playOverSound();
+                if (sound_flag)
+                    sound.playOverSound();
 
                 // Print results
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
@@ -630,7 +636,8 @@ public class MainActivity extends AppCompatActivity {
             timer = null;
 
             //pause background music
-            sound.pauseBackgroundMusic();
+            if (sound_flag)
+                sound.pauseBackgroundMusic();
 
             // Show PAUSED state
             countdown.setVisibility(View.VISIBLE);
@@ -649,6 +656,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void menuPushed(View view) {
         startActivity(new Intent(getApplicationContext(), StartScreen.class));
+        if (sound_flag)
+            sound.stopBackgroundMusic();
     }
 
     // Function that runs the game loop
@@ -657,7 +666,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // CountDownTimer counts down from 3 seconds doing actions every second
-        new CountDownTimer(3100, 1000) {
+        new CountDownTimer(3500, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 menu.setVisibility(View.GONE);
@@ -671,7 +680,7 @@ public class MainActivity extends AppCompatActivity {
                 if (display < 2) {
 
                     countdown.setText("BREADY?");
-                     sound.playStartSound();
+                    sound.playStartSound();
                     }
                 else {
                     countdown.setText(Integer.toString(display));
@@ -699,7 +708,8 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 changePos(); // In charge of update all the sprites as time goes on
                                 loop_number += 1;
-                                sound.playBackgroundMusic();
+                                if (sound_flag)
+                                    sound.playBackgroundMusic();
                             }
                         });
                     }

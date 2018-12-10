@@ -7,10 +7,12 @@
     tools:context=".StartScreen">
 
     <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/gifImageView2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/startscreen" />
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/startscreen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="match_parent"
@@ -25,7 +27,6 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/gifImageView2"
         app:layout_constraintVertical_bias="1.0" />
 
 
@@ -80,7 +81,6 @@
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:onClick="startSettings"
                 android:text="Dummy"
                 android:textSize="20sp" />
 
@@ -118,7 +118,7 @@
 
     <ImageView
         android:id="@+id/tutorial_pg1"
-        android:layout_width="392dp"
+        android:layout_width="396dp"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -135,5 +135,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.717" />
 
 </android.support.constraint.ConstraintLayout>
