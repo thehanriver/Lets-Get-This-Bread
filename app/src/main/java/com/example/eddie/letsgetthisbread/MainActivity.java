@@ -327,10 +327,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Move obstacle bread
         if (breadY > frameHeight) // Move bread above screen once bread falls below screen
-            breadY = -100;
-        else if (breadY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false. Required since we need to shuffle at least once
+            breadY = -200;
+        else if (breadY == -200) { // While still above screen, at -100, do initial shuffle and make this statement false. Required since we need to shuffle at least once
             breadX = shufflePos(breadWidth);
-            breadY = -99;
+            breadY = -199;
         }
         else if (breadY < -breadWidth && avoidStack("bread", breadX, (int)bread_icon.getX(), (int)knife.getX()))  // Shuffle again if bread will collide other objects
             breadX = shufflePos(breadWidth);
@@ -344,10 +344,10 @@ public class MainActivity extends AppCompatActivity {
         // Move obstacle bread_icon
 
         if (bread_iconY > frameHeight) // Move bread_icon above screen once bread_icon falls below screen
-            bread_iconY = -100;
-        else if (bread_iconY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
+            bread_iconY = -200;
+        else if (bread_iconY == -200) { // While still above screen, at -100, do initial shuffle and make this statement false
             bread_iconX = shufflePos(breadIconWidth);
-            bread_iconY = -99;
+            bread_iconY = -199;
         }
         else if (bread_iconY < -breadIconWidth && avoidStack("bread_icon", (int)bread.getX(), bread_iconX, (int)knife.getX()))  // Shuffle again if bread_icon will collide other objects
             bread_iconX = shufflePos(breadIconWidth);
@@ -360,10 +360,10 @@ public class MainActivity extends AppCompatActivity {
         // Move obstacle bread
 
         if (knifeY > frameHeight) // Move knife above screen once knife falls below screen
-            knifeY = -100;
-        else if (knifeY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
+            knifeY = -200;
+        else if (knifeY == -200) { // While still above screen, at -100, do initial shuffle and make this statement false
             knifeX = shufflePos(knifeWidth);
-            knifeY = -99;
+            knifeY = -199;
         }
         else if (knifeY < -knifeWidth && avoidStack("knife", (int)bread.getX(), (int)bread_icon.getX(), knifeX))  // Shuffle again if knife will collide other objects
             knifeX = shufflePos(knifeWidth);
@@ -378,24 +378,24 @@ public class MainActivity extends AppCompatActivity {
         if(goldenGuess != goldenNumber)
             goldenGuess = (int) Math.floor(Math.random() * 300 + 1);
         else if (goldenGuess == goldenNumber && goldenCroissantY < -goldenCroissantWidth)
-            goldenCroissantY += 90; // Otherwise start falling
-        else if ( goldenCroissantY > -goldenCroissantWidth) {
+            goldenCroissantY = -goldenCroissantWidth; // Otherwise start falling
+        else if ( goldenCroissantY >= -goldenCroissantWidth) {
 
             goldenCroissantY += 10;
 
             if (goldenCroissantY > frameHeight) { // Move knife above screen once knife falls below screen
-                goldenCroissantY = -100;
+                goldenCroissantY = -200;
                 goldenGuess = 0;
             }
-            if (goldenCroissantY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
+            if (goldenCroissantY == -200) { // While still above screen, at -100, do initial shuffle and make this statement false
                 goldenCroissantX = shufflePos(goldenCroissantWidth);
-                goldenCroissantY = -99;
+                goldenCroissantY = -199;
                 goldenGuess = 0;
             }
         }
         else {
             if (goldenCroissantY > frameHeight)  // Move knife above screen once knife falls below screen
-                goldenCroissantY = -100;
+                goldenCroissantY = -200;
         }
 
         goldenCroissant.setX(goldenCroissantX);
@@ -518,13 +518,13 @@ public class MainActivity extends AppCompatActivity {
         // Collision check for bread, add points
         if ((breadX + bread.getWidth() >= characterX) && (breadX <= characterX + character_width) && (breadY + bread.getHeight() >= characterY) && (breadY + bread.getHeight() <= frameHeight)) {
             score += 30;
-            breadY = -100;
+            breadY = -200;
             sound.playPointSound();
         }
 
         // Collision check for knife, lose life
         if ((knifeX + knife.getWidth() >= characterX) && (knifeX <= characterX + character_width) && (knifeY + knife.getHeight() >= characterY) && (knifeY + knife.getHeight() <= frameHeight)) {
-            knifeY = -100;
+            knifeY = -200;
 
             // Reduce life counter every time player touches knife
             healthCounter -= 1;
@@ -559,13 +559,13 @@ public class MainActivity extends AppCompatActivity {
         // Collision check for bread_icon, add points, plays hit sound
         if ((bread_iconX + bread_icon.getWidth() >= characterX) && (bread_iconX <= characterX + character_width) && (bread_iconY + bread_icon.getHeight() >= characterY) && (bread_iconY + bread_icon.getHeight() <= frameHeight)) {
             score += 50;
-            bread_iconY = -100;
+            bread_iconY = -200;
             sound.playPointSound();
         }
 
         if ((goldenCroissantX + goldenCroissant.getWidth() >= characterX) && (goldenCroissantX <= characterX + character_width) && (goldenCroissantY + goldenCroissant.getHeight() >= characterY) && (goldenCroissantY + goldenCroissant.getHeight() <= frameHeight)) {
             score += 200;
-            goldenCroissantY = -100;
+            goldenCroissantY = -200;
             bonus_flag = false;
             goldenGuess = 0;
             sound.playPointSound();

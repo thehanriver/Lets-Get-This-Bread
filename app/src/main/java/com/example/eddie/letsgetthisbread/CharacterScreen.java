@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -21,6 +22,7 @@ public class CharacterScreen extends AppCompatActivity {
     private int char_id;
 
     private TextView current;
+    private ImageView chardisplay;
     Resources res;
 
 
@@ -31,6 +33,7 @@ public class CharacterScreen extends AppCompatActivity {
 
         res = getResources();
         current = findViewById(R.id.current);
+        chardisplay = findViewById(R.id.chardisplay);
 
         character_data = getSharedPreferences("CHAR_DATA", Context.MODE_PRIVATE);
         char_id = character_data.getInt("CHAR_DATA" , 1);
@@ -80,18 +83,22 @@ public class CharacterScreen extends AppCompatActivity {
             case 1 :
                 name = (res.getString(R.string.dispchar)) + (res.getString(R.string.char1));
                 current.setText(name);
+                chardisplay.setImageResource(R.drawable.carbib);
                 break;
             case 2 :
                 name = (res.getString(R.string.dispchar)) + (res.getString(R.string.char2));
                 current.setText(name);
+                chardisplay.setImageResource(R.drawable.postmaloaf);
                 break;
             case 3 :
                 name = (res.getString(R.string.dispchar)) + (res.getString(R.string.char3));
                 current.setText(name);
+                chardisplay.setImageResource(R.drawable.yungyeasty);
                 break;
             case 4 :
                 name = (res.getString(R.string.dispchar)) + (res.getString(R.string.char4));
                 current.setText(name);
+                chardisplay.setImageResource(R.drawable.lilwheaty);
                 break;
         }
     }

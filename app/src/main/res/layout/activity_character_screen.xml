@@ -23,9 +23,8 @@
         android:text="Bread Winners"
         android:textSize="32sp"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintBottom_toTopOf="@+id/guideline16"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -43,218 +42,150 @@
         android:gravity="center"
         android:text="@string/dispchar"
         android:textSize="32sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
+        app:layout_constraintTop_toTopOf="@+id/guideline16" />
 
-    <ImageButton
-        android:id="@+id/carbi_B"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+    <ImageView
+        android:id="@+id/chardisplay"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:adjustViewBounds="true"
         android:background="@android:color/white"
         android:cropToPadding="true"
-        android:onClick="cardi"
         android:scaleType="fitStart"
         android:src="@drawable/carbib"
-        app:layout_constraintBottom_toTopOf="@+id/yung_yeasty"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/guideline18"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline17"
         tools:ignore="MissingConstraints"
         tools:scaleType="fitCenter" />
 
-    <ImageButton
-        android:id="@+id/lil_wheaty"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+    <GridLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:onClick="lil"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        android:columnCount="2"
+        android:rowCount="2"
+        app:layout_constraintBottom_toTopOf="@+id/menu"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        android:background="@android:color/white"
-        tools:ignore="MissingConstraints"
-        tools:scaleType="fitCenter"
-        android:src="@drawable/lilwheaty" />
-
-    <ImageButton
-        android:id="@+id/yung_yeasty"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:onClick="yung"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        android:background="@android:color/white"
-        tools:ignore="MissingConstraints"
-        tools:scaleType="fitCenter"
-        android:src="@drawable/yungyeasty" />
+        app:layout_constraintTop_toTopOf="@+id/guideline18">
 
-    <ImageButton
-        android:id="@+id/post_maloaf"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:onClick="post"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
-        android:background="@android:color/white"
-        tools:ignore="MissingConstraints"
-        tools:scaleType="fitCenter"
-        android:src="@drawable/postmaloaf" />
+        <Button
+            android:id="@+id/carbi_B"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:onClick="cardi"
+            android:text="@string/char1"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="273dp"
+            tools:layout_editor_absoluteY="402dp" />
+
+        <Button
+            android:id="@+id/lil_wheaty"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:onClick="lil"
+            android:text="@string/char4"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="40dp"
+            tools:layout_editor_absoluteY="507dp" />
+
+        <Button
+            android:id="@+id/yung_yeasty"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:onClick="yung"
+            android:text="@string/char3"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="403dp" />
+
+        <Button
+            android:id="@+id/post_maloaf"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_rowWeight="1"
+            android:layout_columnWeight="1"
+            android:onClick="post"
+            android:text="@string/char2"
+            android:textAllCaps="false"
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="214dp"
+            tools:layout_editor_absoluteY="506dp" />
+
+    </GridLayout>
 
     <Button
         android:id="@+id/menu"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="backtoStart"
         android:text="Back To Menu"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/carbi_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/char1"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/yung_yeasty"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/carbi_B"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/post_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/char2"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/lil_wheaty"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/post_maloaf"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/yung_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/char3"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yung_yeasty"
-        tools:ignore="MissingConstraints"
-        android:textSize="16sp"/>
-
-    <TextView
-        android:id="@+id/lil_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/char4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/lil_wheaty"
-        tools:ignore="MissingConstraints"
-        android:textSize="16sp"/>
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.50" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/guideline16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.1" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
+        android:id="@+id/guideline17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52" />
+        app:layout_constraintGuide_percent="0.2" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline4"
+        android:id="@+id/guideline18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.79" />
+        app:layout_constraintGuide_percent="0.55" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.125" />
 
 </android.support.constraint.ConstraintLayout>
