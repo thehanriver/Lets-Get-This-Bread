@@ -308,7 +308,8 @@ public class MainActivity extends AppCompatActivity {
         else if (breadY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false. Required since we need to shuffle at least once
             breadX = shufflePos(breadWidth);
             breadY = -99;
-        } else if (breadY < 0 && avoidStack("bread", breadX, (int) bread_icon.getX(), (int) knife.getX()))  // Shuffle again if bread will collide other objects
+        }
+        else if (breadY < 0 && avoidStack("bread", breadX, (int)bread_icon.getX(), (int)knife.getX()))  // Shuffle again if bread will collide other objects
             breadX = shufflePos(breadWidth);
         else
             breadY += (12 * speed_multiplier); // Otherwise start falling
@@ -324,7 +325,8 @@ public class MainActivity extends AppCompatActivity {
         else if (bread_iconY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
             bread_iconX = shufflePos(breadIconWidth);
             bread_iconY = -99;
-        } else if (bread_iconY < 0 && avoidStack("bread_icon", (int) bread.getX(), bread_iconX, (int) knife.getX()))  // Shuffle again if bread_icon will collide other objects
+        }
+        else if (bread_iconY < 0 && avoidStack("bread_icon", (int)bread.getX(), bread_iconX, (int)knife.getX()))  // Shuffle again if bread_icon will collide other objects
             bread_iconX = shufflePos(breadIconWidth);
         else
             bread_iconY += (14 * speed_multiplier); // Otherwise start falling
@@ -339,20 +341,22 @@ public class MainActivity extends AppCompatActivity {
         else if (knifeY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
             knifeX = shufflePos(knifeWidth);
             knifeY = -99;
-        } else if (knifeY < 0 && avoidStack("knife", (int) bread.getX(), (int) bread_icon.getX(), knifeX))  // Shuffle again if knife will collide other objects
+        }
+        else if (knifeY < 0 && avoidStack("knife", (int)bread.getX(), (int)bread_icon.getX(), knifeX))  // Shuffle again if knife will collide other objects
             knifeX = shufflePos(knifeWidth);
         else
             knifeY += (12 * speed_multiplier); // Otherwise start falling
-
+        
         knife.setX(knifeX);
         knife.setY(knifeY);
 
 
-        if (goldenGuess != goldenNumber)
+
+        if(goldenGuess != goldenNumber)
             goldenGuess = (int) Math.floor(Math.random() * 1000 + 1);
         else if (goldenGuess == goldenNumber && goldenCroissantY < 0)
             goldenCroissantY += 101; // Otherwise start falling
-        if (goldenCroissantY > 0) {
+        if ( goldenCroissantY > 0) {
 
             goldenCroissantY += 10;
 
@@ -368,7 +372,12 @@ public class MainActivity extends AppCompatActivity {
 
             goldenCroissant.setX(goldenCroissantX);
             goldenCroissant.setY(goldenCroissantY);
-        } else {
+        }
+
+
+
+
+        else {
             if (goldenCroissantY > frameHeight)  // Move knife above screen once knife falls below screen
                 goldenCroissantY = -100;
 
@@ -381,24 +390,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
         if (!chair_flag) {
             currentscore = score;
             chairX = shufflePos(chairWidth);
             if ((chairX >= characterX && chairX <= characterX + character_width) || (chairX + chairWidth >= characterX && chairX + chairWidth <= characterX + character_width))
                 chairX = shufflePos(chairWidth);
             chair_flag = true;
-        } else {
+        }
+        else {
             chair.setX(chairX);
             if ((score - currentscore) < 100) {
                 chairY -= 10;
-            } else {
+            }
+            else {
                 chairY += 10;
             }
 
 
             if (chairY < frameHeight - chairHeight) {
                 chairY = frameHeight - chairHeight;
-            } else if (chairY > frameHeight + chairHeight) {
+            }
+            else if (chairY > frameHeight + chairHeight) {
                 chairY = frameHeight + chairHeight;
                 chair_flag = false;
             }
@@ -422,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
 
                 float xSpeed = 20 * roll / 1f;
 
-                characterX += (int) xSpeed;
+                characterX += (int)xSpeed;
                 //boundary check and reversal if within bounds
                 if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
                     if (character.getY() + character_height > chair.getY()) {
@@ -436,63 +449,63 @@ public class MainActivity extends AppCompatActivity {
                 // temporary to show values of stuff, helpful for debug
             }
 
-            // Make sure character stays inside the boundry of the screen
-            if (control == false) {
-                left.setVisibility(View.VISIBLE);
-                right.setVisibility(View.VISIBLE);
-                jump.setVisibility(View.VISIBLE);
-                if (left_flag)
-                    characterX -= 20;
-                else if (right_flag)
-                    characterX += 20;
+        // Make sure character stays inside the boundry of the screen
+        if(control == false) {
+            left.setVisibility(View.VISIBLE);
+            right.setVisibility(View.VISIBLE);
+            jump.setVisibility(View.VISIBLE);
+            if (left_flag)
+                characterX -= 20;
+            else if (right_flag)
+                characterX += 20;
 
-                if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
-                    if (character.getY() + character_height > chair.getY()) {
-                        if (characterX + character_width > chairX && characterX > chairX)
-                            characterX += 20;
-                        else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth)
-                            characterX -= 20;
-                    }
+            if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
+                if (character.getY() + character_height > chair.getY()) {
+                    if (characterX + character_width > chairX && characterX > chairX)
+                        characterX += 20;
+                    else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth)
+                        characterX -= 20;
                 }
             }
+        }
 
-            if (characterX < 0)
-                characterX = 0;
-            else if (characterX > (frameWidth - character_width))
-                characterX = frameWidth - character_width;
+        if (characterX < 0)
+            characterX = 0;
+        else if (characterX > (frameWidth - character_width))
+            characterX = frameWidth - character_width;
 
 
-            // TODO: add jump mechanic and change characterx
-            // Sets the position of the character
+        // TODO: add jump mechanic and change characterx
+        // Sets the position of the character
 
 //Make sure character stays inside the boundry of the screen in the vertical direction
 
-            if (jump_flag && !reset_flag) {
-                reset_flag = true;
-                jump_loop_number = loop_number;
-            }
-            if (reset_flag) {
-                if (loop_number - jump_loop_number < 30) {
-                    characterY = frameHeight - chairHeight - 10 - character_height;
-                    if (loop_number == jump_loop_number)
-                        sound.playJumpSound();
-                } else {
-                    jump_flag = false;
-                    reset_flag = false;
-                    characterY = frameHeight - character_height;
-                }
-            }
-            debug.setText(Float.toString(goldenCroissant.getY()));
-
-
-            //if(characterY + character_height < frameHeight - chairHeight - 20)
-            //else if(characterY > (frameHeight-character_height))
-
-            character.setX(characterX);
-            character.setY(characterY);
-            // Updates scoreboard
-            scoreboard.setText("Score: " + score);
+        if (jump_flag && !reset_flag) {
+            reset_flag = true;
+            jump_loop_number = loop_number;
         }
+        if (reset_flag) {
+            if(loop_number - jump_loop_number < 30) {
+                characterY = frameHeight - chairHeight - 10 - character_height;
+                if(loop_number == jump_loop_number)
+                    sound.playJumpSound();
+            }
+            else {
+                jump_flag = false;
+                reset_flag = false;
+                characterY = frameHeight - character_height;
+            }
+        }
+        debug.setText(Float.toString(goldenCroissant.getY()));
+
+
+        //if(characterY + character_height < frameHeight - chairHeight - 20)
+        //else if(characterY > (frameHeight-character_height))
+
+        character.setX(characterX);
+        character.setY(characterY);
+        // Updates scoreboard
+        scoreboard.setText("Score: " + score);
     }
 
     public void hitCheck() {
@@ -512,17 +525,19 @@ public class MainActivity extends AppCompatActivity {
             // Reduce life counter every time player touches knife
             healthCounter -= 1;
             sound.playHitSound();
-            if (healthCounter == 2)
+            if(healthCounter == 2)
                 life3.setVisibility(View.GONE);
-            else if (healthCounter == 1)
+            else if(healthCounter ==1)
                 life2.setVisibility(View.GONE);
 
             // Once zero, call next activity ResultScreen
-            if (healthCounter == 2) {
+            if(healthCounter == 2) {
                 life3.setVisibility(View.GONE);
-            } else if (healthCounter == 1) {
+            }
+            else if(healthCounter == 1) {
                 life2.setVisibility(View.GONE);
-            } else if (healthCounter == 0) {
+            }
+            else if(healthCounter == 0) {
                 life1.setVisibility(View.GONE);
                 timer.cancel();
                 timer = null;
@@ -537,24 +552,23 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
                 intent.putExtra("SCORE", score); // Sends value of score into ResultScreen
                 startActivity(intent);
-            }
+        }
 
-            // Collision check for bread_icon, add points, plays hit sound
-            if ((bread_iconX + bread_icon.getWidth() >= characterX) && (bread_iconX <= characterX + character_width) && (bread_iconY + bread_icon.getHeight() >= characterY) && (bread_iconY + bread_icon.getHeight() <= frameHeight)) {
-                score += 50;
-                bread_iconY = -100;
-                sound.playPointSound();
-            }
+        // Collision check for bread_icon, add points, plays hit sound
+        if ((bread_iconX + bread_icon.getWidth() >= characterX) && (bread_iconX <= characterX + character_width) && (bread_iconY + bread_icon.getHeight() >= characterY) && (bread_iconY + bread_icon.getHeight() <= frameHeight)) {
+            score += 50;
+            bread_iconY = -100;
+            sound.playPointSound();
+        }
 
-            if ((goldenCroissantX + goldenCroissant.getWidth() >= characterX) && (goldenCroissantX <= characterX + character_width) && (goldenCroissantY + goldenCroissant.getHeight() >= characterY) && (goldenCroissantY + goldenCroissant.getHeight() <= frameHeight)) {
-                score += 200;
-                goldenCroissantY = -100;
-                bonus_flag = false;
-                goldenGuess = 0;
-                sound.playPointSound();
-                goldenCroissant.setY(goldenCroissantY);
+        if ((goldenCroissantX + goldenCroissant.getWidth() >= characterX) && (goldenCroissantX <= characterX + character_width) && (goldenCroissantY + goldenCroissant.getHeight() >= characterY) && (goldenCroissantY + goldenCroissant.getHeight() <= frameHeight)) {
+            score += 200;
+            goldenCroissantY = -100;
+            bonus_flag = false;
+            goldenGuess = 0;
+            sound.playPointSound();
+            goldenCroissant.setY(goldenCroissantY);
 
-            }
         }
     }
 
@@ -614,6 +628,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
     // Implements pause button
     public void pausePushed(View view) {
