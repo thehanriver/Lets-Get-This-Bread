@@ -187,8 +187,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
-        control = control_data.getBoolean("GAME_DATA" , false);
         sound = new SoundPlayer(this);
 
         // Gets saved dimensions of sprites from xml file: dimension
@@ -228,7 +226,17 @@ public class MainActivity extends AppCompatActivity {
         menu.setClickable(false);
         countdown.setText(Integer.toString(3));
 
+        SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
+        control = control_data.getBoolean("GAME_DATA" , false);
 
+        if (control) {
+            left.setVisibility(View.GONE);
+            right.setVisibility(View.GONE);
+        }
+        else {
+            left.setVisibility(View.VISIBLE);
+            right.setVisibility(View.VISIBLE);
+        }
 
         // TODO: offload constants into its own class file file
         // TODO: compatibility for differnt devices
@@ -375,20 +383,9 @@ public class MainActivity extends AppCompatActivity {
             goldenCroissant.setX(goldenCroissantX);
             goldenCroissant.setY(goldenCroissantY);
         }
-
-
-
-
         else {
             if (goldenCroissantY > frameHeight)  // Move knife above screen once knife falls below screen
                 goldenCroissantY = -100;
-
-            bonus_flag = true;
-        }
-
-        if (bonus_flag) {
-
-
         }
 
 
@@ -428,9 +425,6 @@ public class MainActivity extends AppCompatActivity {
         //motion controlled movement
 
         if (control == true) {
-            left.setVisibility(View.GONE);
-            right.setVisibility(View.GONE);
-            jump.setVisibility(View.VISIBLE);
             if (orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
                 float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
                 float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
@@ -454,9 +448,6 @@ public class MainActivity extends AppCompatActivity {
         }
         // Make sure character stays inside the boundry of the screen
         if(control == false) {
-            left.setVisibility(View.VISIBLE);
-            right.setVisibility(View.VISIBLE);
-            jump.setVisibility(View.VISIBLE);
             if (left_flag)
                 characterX -= 20;
             else if (right_flag)
