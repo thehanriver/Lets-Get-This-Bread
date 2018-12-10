@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         control = control_data.getBoolean("GAME_DATA" , false);
         sound = new SoundPlayer(this);
         SharedPreferences character_data = getSharedPreferences("CHAR_DATA",Context.MODE_PRIVATE);
-        charselect = character_data.getInt("CHAR_DATA",0);
+        charselect = character_data.getInt("CHAR_DATA",1);
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
         breadWidth = (int)(res.getDimension(R.dimen.bread));
@@ -196,16 +196,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Assign View objects
         //Characters initialized
-        if(charselect==0)
-           character = findViewById(R.id.character);
-        else if(charselect==1)
-            character.setImageDrawable(getResources().getDrawable(R.drawable.carbib));
-        else if(charselect==2)
-            character.setImageDrawable(getResources().getDrawable(R.drawable.lilwheaty));
-        else if(charselect==4)
-            character.setImageDrawable(getResources().getDrawable(R.drawable.yungyeasty));
-        else if(charselect==3)
-            character.setBackgroundResource(R.drawable.postmaloaf);
 
         bread_icon = findViewById(R.id.bread_icon);
         bread = findViewById(R.id.bread);
@@ -218,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
         life1 = findViewById(R.id.life1);
         life2 = findViewById(R.id.life2);
         life3 = findViewById(R.id.life3);
+        character = findViewById(R.id.character);
         countdown = findViewById(R.id.countdown);
         pauseButton = findViewById(R.id.pause);
         menu = findViewById(R.id.menu);
@@ -232,7 +223,20 @@ public class MainActivity extends AppCompatActivity {
         menu.setClickable(false);
         countdown.setText(Integer.toString(3));
 
-
+        switch(charselect) {
+            case 1 :
+                character.setImageDrawable(getResources().getDrawable(R.drawable.carbib));
+                break;
+            case 2 :
+                character.setImageDrawable(getResources().getDrawable(R.drawable.postmaloaf));
+                break;
+            case 3 :
+                character.setImageDrawable(getResources().getDrawable(R.drawable.yungyeasty));
+                break;
+            case 4 :
+                character.setImageDrawable(getResources().getDrawable(R.drawable.lilwheaty));
+                break;
+        }
 
         // TODO: offload constants into its own class file file
         // TODO: compatibility for differnt devices
