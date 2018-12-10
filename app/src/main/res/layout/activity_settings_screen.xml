@@ -27,11 +27,5 @@
         android:text="Button Controlled"
         android:layout_marginTop = "30dp"
         android:onClick="button" />
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Back to Main Menu"
-        android:layout_marginTop = "30dp"
-        android:onClick="mainMenu" />
 
 </LinearLayout>
