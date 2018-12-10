@@ -36,20 +36,20 @@ public class StartScreen extends AppCompatActivity {
         characterButton = findViewById(R.id.characterButton);
     }
 
-    protected void startGame(View view) {
+    public void startGame(View view) {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
-    protected void startSettings(View view) {
+    public void startSettings(View view) {
         startActivity(new Intent(getApplicationContext(), SettingsScreen.class));
     }
 
-    protected void characterScreen(View view){
+    public void characterScreen(View view){
         startActivity(new Intent(getApplicationContext(), CharacterScreen.class));
     }
 
     // Make tutorial images visible
-    protected void revealTutorial(View view) {
+    public void revealTutorial(View view) {
         tutorialPG1.setVisibility(View.VISIBLE);
         tutorialButton.setVisibility(View.GONE);
         startButton.setVisibility(View.GONE);

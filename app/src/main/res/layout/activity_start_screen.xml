@@ -76,12 +76,13 @@
                 android:textSize="20sp" />
 
             <Button
-                android:id="@+id/dummyButton"
+                android:id="@+id/characterButton"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:text="Dummy"
+                android:text="Characters"
+                android:onClick="characterScreen"
                 android:textSize="20sp" />
 
         </GridLayout>

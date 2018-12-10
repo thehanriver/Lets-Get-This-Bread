@@ -88,7 +88,7 @@
             android:layout_width="@dimen/character"
             android:layout_height="@dimen/character"
             android:layout_gravity="center|bottom"
-            android:src="@drawable/character" />
+            android:src="@drawable/carbib" />
 
         <ImageView
             android:id="@+id/chair"

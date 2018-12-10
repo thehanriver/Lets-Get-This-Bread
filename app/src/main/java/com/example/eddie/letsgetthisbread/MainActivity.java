@@ -28,14 +28,6 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
-
-
-
-
-
-
     public class OrientationData implements SensorEventListener {
         private SensorManager manager;
         private Sensor accelerometer;
@@ -93,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     // Initialize View objects in layout
 
 	    private TextView scoreboard;
@@ -104,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 	    private TextView left;
 	    private TextView right;
 	    private TextView jump;
-	    private TextView debug;
 	    private TextView countdown;
 	    private ImageView chair;
 	    private ImageView character;
@@ -189,21 +179,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
-        control = control_data.getBoolean("GAME_DATA" , false);
+        SharedPreferences control_data = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        control = control_data.getBoolean("GAME_DATA", false);
 
-        SharedPreferences sound_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
-        sound_flag = sound_data.getBoolean("GAME_DATA" , false);
+        SharedPreferences sound_data = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+        sound_flag = sound_data.getBoolean("GAME_DATA", false);
 
         sound = new SoundPlayer(this);
-        SharedPreferences character_data = getSharedPreferences("CHAR_DATA",Context.MODE_PRIVATE);
-        charselect = character_data.getInt("CHAR_DATA",1);
+        SharedPreferences character_data = getSharedPreferences("CHAR_DATA", Context.MODE_PRIVATE);
+        charselect = character_data.getInt("CHAR_DATA", 1);
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
-        breadWidth = (int)(res.getDimension(R.dimen.bread));
-        knifeWidth = (int)(res.getDimension(R.dimen.knife));
-        breadIconWidth = (int)(res.getDimension(R.dimen.bread_icon));
-        goldenCroissantWidth = (int)(res.getDimension(R.dimen.goldenCroissant));
+        breadWidth = (int) (res.getDimension(R.dimen.bread));
+        knifeWidth = (int) (res.getDimension(R.dimen.knife));
+        breadIconWidth = (int) (res.getDimension(R.dimen.bread_icon));
+        goldenCroissantWidth = (int) (res.getDimension(R.dimen.goldenCroissant));
 
 
         // Assign View objects
@@ -228,8 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
-        jump= findViewById(R.id.jump);
-        debug = findViewById(R.id.debug1);
+        jump = findViewById(R.id.jump);
 
         // On startup, pause button is not clickable and set countdown to tick from 3
         pauseButton.setClickable(false);
@@ -239,64 +228,64 @@ public class MainActivity extends AppCompatActivity {
         if (control) {
             left.setVisibility(View.GONE);
             right.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             left.setVisibility(View.VISIBLE);
             right.setVisibility(View.VISIBLE);
 
-        switch(charselect) {
-            case 1 :
-                character.setImageDrawable(getResources().getDrawable(R.drawable.carbib));
-                break;
-            case 2 :
-                character.setImageDrawable(getResources().getDrawable(R.drawable.postmaloaf));
-                break;
-            case 3 :
-                character.setImageDrawable(getResources().getDrawable(R.drawable.yungyeasty));
-                break;
-            case 4 :
-                character.setImageDrawable(getResources().getDrawable(R.drawable.lilwheaty));
-                break;
+            switch (charselect) {
+                case 1:
+                    character.setImageDrawable(getResources().getDrawable(R.drawable.carbib));
+                    break;
+                case 2:
+                    character.setImageDrawable(getResources().getDrawable(R.drawable.postmaloaf));
+                    break;
+                case 3:
+                    character.setImageDrawable(getResources().getDrawable(R.drawable.yungyeasty));
+                    break;
+                case 4:
+                    character.setImageDrawable(getResources().getDrawable(R.drawable.lilwheaty));
+                    break;
+            }
+
+            // TODO: offload constants into its own class file file
+            // TODO: compatibility for differnt devices
+            // Get height of screen for compatibility reasons
+            screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+            orientationData = new OrientationData();
+            orientationData.register();
+
+
+            // Set objects below screen when initialized
+            breadY = screenHeight + 40;
+            knifeY = screenHeight + 40;
+            bread_iconY = screenHeight + 40;
+            chairY = screenHeight + 40;
+            goldenCroissantY = screenHeight + 40;
+
+            // Set positions for falling sprites
+            bread_icon.setX(-40);
+            bread_icon.setY(bread_iconY);
+            knife.setX(-40);
+            knife.setY(knifeY);
+            bread.setX(-40);
+            bread.setY(breadY);
+
+            goldenCroissant.setX(-40);
+            goldenCroissant.setY(goldenCroissantY);
+
+            chair.setX(-40);
+            chair.setY(chairY);
+
+            // Set scoreboard & live counter
+            scoreboard.setText("Score: 0");
+
+
+            orientationData.newGame();
+
+            goldenNumber = (int) Math.floor(Math.random() * 1000 + 1);
+
         }
-
-        // TODO: offload constants into its own class file file
-        // TODO: compatibility for differnt devices
-        // Get height of screen for compatibility reasons
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-
-        orientationData = new OrientationData();
-        orientationData.register();
-
-
-        // Set objects below screen when initialized
-        breadY = screenHeight + 40;
-        knifeY = screenHeight + 40;
-        bread_iconY = screenHeight + 40;
-        chairY = screenHeight + 40;
-        goldenCroissantY = screenHeight + 40;
-
-        // Set positions for falling sprites
-        bread_icon.setX(-40);
-        bread_icon.setY(bread_iconY);
-        knife.setX(-40);
-        knife.setY(knifeY);
-        bread.setX(-40);
-        bread.setY(breadY);
-
-        goldenCroissant.setX(-40);
-        goldenCroissant.setY(goldenCroissantY);
-
-        chair.setX(-40);
-        chair.setY(chairY);
-
-        // Set scoreboard & live counter
-        scoreboard.setText("Score: 0");
-
-
-        orientationData.newGame();
-
-        goldenNumber = (int) Math.floor(Math.random() * 1000 + 1);
-
     }
 
     // Input X coordinate of falling sprites and a string key, ie "bread", to return if bread is in the x range of other falling sprites
@@ -445,7 +434,7 @@ public class MainActivity extends AppCompatActivity {
 
         //motion controlled movement
 
-        if (control == true) {
+        if (control) {
             if (orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
                 float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
                 float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
@@ -463,12 +452,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 character.setX((float) characterX);
-                // temporary to show values of stuff, helpful for debug
             }
 
         }
         // Make sure character stays inside the boundry of the screen
-        if(control == false) {
+        if(!control) {
             if (left_flag)
                 characterX -= 20;
             else if (right_flag)
@@ -610,7 +598,6 @@ public class MainActivity extends AppCompatActivity {
             resume();
         }
         else { // Detects player's finger motion
-            debug.setText(Boolean.toString(jump_flag));
             if (me.getAction() == MotionEvent.ACTION_DOWN) { // If holding down, check where the player's finger position on the screen
                 if (inLeftBoundry(me.getX(), me.getY()))  // If position in Object: left, set left flag true. Will move character left in changePos()
                     left_flag = true;
