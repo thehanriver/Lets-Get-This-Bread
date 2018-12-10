@@ -231,7 +231,8 @@ public class MainActivity extends AppCompatActivity {
         if (control) {
             left.setVisibility(View.GONE);
             right.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             left.setVisibility(View.VISIBLE);
             right.setVisibility(View.VISIBLE);
 
@@ -249,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
                     character.setImageDrawable(getResources().getDrawable(R.drawable.lilwheaty));
                     break;
             }
+        }
 
             // TODO: offload constants into its own class file file
             // TODO: compatibility for differnt devices
@@ -289,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
             goldenNumber = (int) Math.floor(Math.random() * 300 + 1);
 
         }
-    }
 
     // Input X coordinate of falling sprites and a string key, ie "bread", to return if bread is in the x range of other falling sprites
     public boolean avoidStack(String key, int knifeX, int iconx, int breadx) {
@@ -456,8 +457,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 character.setX((float) characterX);
             }
-
         }
+        
         // Make sure character stays inside the boundry of the screen
         if(!control) {
             if (left_flag)
