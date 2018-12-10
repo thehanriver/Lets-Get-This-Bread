@@ -401,7 +401,7 @@ public class MainActivity extends AppCompatActivity {
         goldenCroissant.setX(goldenCroissantX);
         goldenCroissant.setY(goldenCroissantY);
 
-        debug.setText(Integer.toString(goldenGuess));
+
 
         if (!chair_flag) {
             currentscore = score;
@@ -673,9 +673,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         // CountDownTimer counts down from 3 seconds doing actions every second
-        new CountDownTimer(3500, 1000) {
+        new CountDownTimer(3300, 1000) {
 
             public void onTick(long millisUntilFinished) {
+
                 menu.setVisibility(View.GONE);
                 menu.setClickable(false);
                 // TODO: add setting button and replace alpha
@@ -684,12 +685,14 @@ public class MainActivity extends AppCompatActivity {
                 pauseButton.setClickable(false);
                 // Print time as timer counts down, prints "BREADY?" when timer is down to 1
                 int display = (int)(Math.floor(millisUntilFinished/1000));
-                if (display < 2) {
+                if (display == 1) {
 
                     countdown.setText("BREADY?");
-                    sound.playStartSound();
-                    }
-                else {
+
+                    if (!(display < 1))
+                        sound.playStartSound();
+                }
+                else if (display > 1) {
                     countdown.setText(Integer.toString(display));
                     sound.playCountSound();
                 }
@@ -698,6 +701,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Resumes game time and things will start moving
             public void onFinish() {
+
                 // Make pause button visible and enable interaction, countdown will disappear
                 countdown.setVisibility(View.INVISIBLE);
 
