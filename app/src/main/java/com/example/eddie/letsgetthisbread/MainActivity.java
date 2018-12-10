@@ -2,6 +2,7 @@ package com.example.eddie.letsgetthisbread;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -92,24 +94,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     // Initialize View objects in layout
 
 	    private TextView scoreboard;
+	    private ImageView life1;
+	    private ImageView life2;
+	    private ImageView life3;
 	    private TextView start;
 	    private TextView left;
 	    private TextView right;
 	    private TextView jump;
 	    private TextView debug;
 	    private TextView countdown;
-        private ImageView life1;
-        private ImageView life2;
-        private ImageView life3;
 	    private ImageView chair;
 	    private ImageView character;
-	    private ImageView cutlery;
+	    private ImageView bread_icon;
+	    private ImageView bread;
 	    private ImageView knife;
-	    private ImageView pigeon;
+	    private ImageView goldenCroissant;
+
 
     // Initialize variables for dimensions in layout
         private int frameHeight;
@@ -117,27 +120,35 @@ public class MainActivity extends AppCompatActivity {
         private int screenHeight;
         private int character_width;
         private int character_height;
+        private int breadWidth;
+        private int breadIconWidth;
+        private int goldenCroissantWidth;
         private int knifeWidth;
-        private int cutleryWidth;
-        private int pigeonWidth;
         private int chairWidth;
         private int chairHeight;
 
     // Positions of sprites
         private int characterX;
         private int characterY;
-        private int cutleryX;
-        private int cutleryY;
+        private int bread_iconX;
+        private int bread_iconY;
+        private int breadX;
+        private int breadY;
         private int knifeX;
         private int knifeY;
-        private int pigeonX;
-        private int pigeonY;
         private int chairX;
         private int chairY;
+        private int goldenCroissantX;
+        private int goldenCroissantY;
+
+        private int goldenNumber;
+        private int goldenGuess;
 
     // Intialize classes
-        private Handler handler = new Handler();
-        private Timer timer = new Timer();
+
+    private Handler handler = new Handler();
+    private Timer timer = new Timer();
+    private SoundPlayer sound;
 
     // Status check
 
@@ -148,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
         private boolean chair_flag = false;
     	private boolean jump_flag = false;
         private boolean reset_flag = false;
+        private boolean bonus_flag = false;
+        private boolean control;
 
     // Counter
         private int score = 0;
@@ -156,6 +169,12 @@ public class MainActivity extends AppCompatActivity {
 
     // Button
         private ImageButton pauseButton;
+        private ImageButton menu;
+
+
+    //looper
+        private int loop_number = 0;
+        private int jump_loop_number;
 
     // Difficulty Multiplier
         private float speed_multiplier = 1;
@@ -168,19 +187,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
+        control = control_data.getBoolean("GAME_DATA" , false);
+        sound = new SoundPlayer(this);
+
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
+        breadWidth = (int)(res.getDimension(R.dimen.bread));
         knifeWidth = (int)(res.getDimension(R.dimen.knife));
-        pigeonWidth = (int)(res.getDimension(R.dimen.pigeon));
-        cutleryWidth = (int)(res.getDimension(R.dimen.cutlery));
+        breadIconWidth = (int)(res.getDimension(R.dimen.bread_icon));
+        goldenCroissantWidth = (int)(res.getDimension(R.dimen.goldenCroissant));
+
 
         // Assign View objects
         //Characters initialized
         character = findViewById(R.id.character);
-        cutlery = findViewById(R.id.cutlery);
+        bread_icon = findViewById(R.id.bread_icon);
+        bread = findViewById(R.id.bread);
         knife = findViewById(R.id.knife);
-        pigeon = findViewById(R.id.pigeon);
         chair = findViewById(R.id.chair);
+        goldenCroissant = findViewById(R.id.goldenCroissant);
 
         // UI initialized
         scoreboard = findViewById(R.id.scoreboard);
@@ -190,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
         life3 = findViewById(R.id.life3);
         countdown = findViewById(R.id.countdown);
         pauseButton = findViewById(R.id.pause);
+        menu = findViewById(R.id.menu);
+
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
         jump= findViewById(R.id.jump);
@@ -197,7 +225,10 @@ public class MainActivity extends AppCompatActivity {
 
         // On startup, pause button is not clickable and set countdown to tick from 3
         pauseButton.setClickable(false);
+        menu.setClickable(false);
         countdown.setText(Integer.toString(3));
+
+
 
         // TODO: offload constants into its own class file file
         // TODO: compatibility for differnt devices
@@ -209,18 +240,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Set objects below screen when initialized
+        breadY = screenHeight + 40;
         knifeY = screenHeight + 40;
-        pigeonY = screenHeight + 40;
-        cutleryY = screenHeight + 40;
+        bread_iconY = screenHeight + 40;
         chairY = screenHeight + 40;
+        goldenCroissantY = screenHeight + 40;
 
         // Set positions for falling sprites
-        cutlery.setX(-40);
-        cutlery.setY(cutleryY);
-        pigeon.setX(-40);
-        pigeon.setY(pigeonY);
+        bread_icon.setX(-40);
+        bread_icon.setY(bread_iconY);
         knife.setX(-40);
         knife.setY(knifeY);
+        bread.setX(-40);
+        bread.setY(breadY);
+
+        goldenCroissant.setX(-40);
+        goldenCroissant.setY(goldenCroissantY);
 
         chair.setX(-40);
         chair.setY(chairY);
@@ -228,22 +263,27 @@ public class MainActivity extends AppCompatActivity {
         // Set scoreboard & live counter
         scoreboard.setText("Score: 0");
 
+
         orientationData.newGame();
+
+        goldenNumber = (int) Math.floor(Math.random() * 1000 + 1);
+
     }
 
-    // Input X coordinate of falling sprites and a string key, ie "knife", to return if knife is in the x range of other falling sprites
-    public boolean avoidStack(String key, int kx, int cx, int px) {
+    // Input X coordinate of falling sprites and a string key, ie "bread", to return if bread is in the x range of other falling sprites
+    public boolean avoidStack(String key, int knifeX, int iconx, int breadx) {
         boolean result = false;
         switch (key) {
-            case "pigeon":
-                result = (px >= kx && px <= kx + knifeWidth) || (px + pigeonWidth >= kx && px + pigeonWidth <= kx + knifeWidth) && (px >= cx && px <= cx + cutleryWidth) || (px + pigeonWidth >= cx && px + pigeonWidth <= cx + cutleryWidth);
-                break;
-            case "cutlery":
-                result = (cx >= px && cx <= px + pigeonWidth) || (cx + cutleryWidth >= px && cx + cutleryWidth <= px + pigeonWidth) &&  (cx >= kx && cx <= kx + knifeWidth) || (cx + cutleryWidth >= kx && cx + cutleryWidth <= kx + knifeWidth);
-                break;
             case "knife":
-                result = (kx >= cx && kx <= cx + cutleryWidth) || (kx + knifeWidth >= cx && kx + knifeWidth <= cx + cutleryWidth) &&  (kx >= cx && kx <= cx + cutleryWidth) || (kx + knifeWidth >= cx && kx + knifeWidth <= cx + cutleryWidth);
+                result = (breadx >= knifeX && breadx <= knifeX + breadWidth) || (breadx + knifeWidth >= knifeX && breadx + knifeWidth <= knifeX + breadWidth) && (breadx >= iconx && breadx <= iconx + breadIconWidth) || (breadx + knifeWidth >= iconx && breadx + knifeWidth <= iconx + breadIconWidth);
                 break;
+            case "bread_icon":
+                result = (iconx >= breadx && iconx <= breadx + knifeWidth) || (iconx + breadIconWidth >= breadx && iconx + breadIconWidth <= breadx + knifeWidth) &&  (iconx >= knifeX && iconx <= knifeX + breadWidth) || (iconx + breadIconWidth >= knifeX && iconx + breadIconWidth <= knifeX + breadWidth);
+                break;
+            case "bread":
+                result = (knifeX >= iconx && knifeX <= iconx + breadIconWidth) || (knifeX + breadWidth >= iconx && knifeX + breadWidth <= iconx + breadIconWidth) &&  (knifeX >= iconx && knifeX <= iconx + breadIconWidth) || (knifeX + breadWidth >= iconx && knifeX + breadWidth <= iconx + breadIconWidth);
+                break;
+
         }
         return result;
     }
@@ -264,53 +304,94 @@ public class MainActivity extends AppCompatActivity {
         // TODO: make it so score has a multiplier for each bread not dropped
         // TODO: add bonus object for achievement system
 
-        // Move obstacle knife
+        // Move obstacle bread
+        if (breadY > frameHeight) // Move bread above screen once bread falls below screen
+            breadY = -100;
+        else if (breadY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false. Required since we need to shuffle at least once
+            breadX = shufflePos(breadWidth);
+            breadY = -99;
+        }
+        else if (breadY < 0 && avoidStack("bread", breadX, (int)bread_icon.getX(), (int)knife.getX()))  // Shuffle again if bread will collide other objects
+            breadX = shufflePos(breadWidth);
+        else
+            breadY += (12 * speed_multiplier); // Otherwise start falling
+
+        // Set bread coordinates
+        bread.setX(breadX);
+        bread.setY(breadY);
+
+        // Move obstacle bread_icon
+
+        if (bread_iconY > frameHeight) // Move bread_icon above screen once bread_icon falls below screen
+            bread_iconY = -100;
+        else if (bread_iconY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
+            bread_iconX = shufflePos(breadIconWidth);
+            bread_iconY = -99;
+        }
+        else if (bread_iconY < 0 && avoidStack("bread_icon", (int)bread.getX(), bread_iconX, (int)knife.getX()))  // Shuffle again if bread_icon will collide other objects
+            bread_iconX = shufflePos(breadIconWidth);
+        else
+            bread_iconY += (14 * speed_multiplier); // Otherwise start falling
+
+        bread_icon.setX(bread_iconX);
+        bread_icon.setY(bread_iconY);
+
+        // Move obstacle bread
+
         if (knifeY > frameHeight) // Move knife above screen once knife falls below screen
             knifeY = -100;
-        else if (knifeY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false. Required since we need to shuffle at least once
+        else if (knifeY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
             knifeX = shufflePos(knifeWidth);
             knifeY = -99;
         }
-        else if (knifeY < 0 && avoidStack("knife", knifeX, (int)cutlery.getX(), (int)pigeon.getX()))  // Shuffle again if knife will collide other objects
+        else if (knifeY < 0 && avoidStack("knife", (int)bread.getX(), (int)bread_icon.getX(), knifeX))  // Shuffle again if knife will collide other objects
             knifeX = shufflePos(knifeWidth);
         else
             knifeY += (12 * speed_multiplier); // Otherwise start falling
-
-        // Set knife coordinates
+        
         knife.setX(knifeX);
         knife.setY(knifeY);
 
-        // Move obstacle cutlery
 
-        if (cutleryY > frameHeight) // Move cutlery above screen once cutlery falls below screen
-            cutleryY = -100;
-        else if (cutleryY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
-            cutleryX = shufflePos(cutleryWidth);
-            cutleryY = -99;
+
+        if(goldenGuess != goldenNumber)
+            goldenGuess = (int) Math.floor(Math.random() * 1000 + 1);
+        else if (goldenGuess == goldenNumber && goldenCroissantY < 0)
+            goldenCroissantY += 101; // Otherwise start falling
+        if ( goldenCroissantY > 0) {
+
+            goldenCroissantY += 10;
+
+            if (goldenCroissantY > frameHeight) { // Move knife above screen once knife falls below screen
+                goldenCroissantY = -100;
+            }
+            if (goldenCroissantY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
+                goldenCroissantX = shufflePos(goldenCroissantWidth);
+                goldenCroissantY = -99;
+            }
+
+            goldenGuess = 0;
+
+            goldenCroissant.setX(goldenCroissantX);
+            goldenCroissant.setY(goldenCroissantY);
         }
-        else if (cutleryY < 0 && avoidStack("cutlery", (int)knife.getX(), cutleryX, (int)pigeon.getX()))  // Shuffle again if cutlery will collide other objects
-            cutleryX = shufflePos(cutleryWidth);
-        else
-            cutleryY += (14 * speed_multiplier); // Otherwise start falling
 
-        cutlery.setX(cutleryX);
-        cutlery.setY(cutleryY);
 
-        // Move obstacle knife
 
-        if (pigeonY > frameHeight) // Move pigeon above screen once pigeon falls below screen
-            pigeonY = -100;
-        else if (pigeonY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
-            pigeonX = shufflePos(pigeonWidth);
-            pigeonY = -99;
+
+        else {
+            if (goldenCroissantY > frameHeight)  // Move knife above screen once knife falls below screen
+                goldenCroissantY = -100;
+
+            bonus_flag = true;
         }
-        else if (pigeonY < 0 && avoidStack("pigeon", (int)knife.getX(), (int)cutlery.getX(), pigeonX))  // Shuffle again if pigeon will collide other objects
-            pigeonX = shufflePos(pigeonWidth);
-        else
-            pigeonY += (12 * speed_multiplier); // Otherwise start falling
-        
-        pigeon.setX(pigeonX);
-        pigeon.setY(pigeonY);
+
+        if (bonus_flag) {
+
+
+        }
+
+
 
         if (!chair_flag) {
             currentscore = score;
@@ -345,35 +426,50 @@ public class MainActivity extends AppCompatActivity {
         // Depending on movement flag, move characters
 
         //motion controlled movement
-        /*if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
-            float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
-            float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
 
-            float xSpeed = 20*roll/1f;
+        if (control == true) {
+            left.setVisibility(View.GONE);
+            right.setVisibility(View.GONE);
+            jump.setVisibility(View.VISIBLE);
+            if (orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
+                float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
+                float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
 
+                float xSpeed = 20 * roll / 1f;
 
-            characterX += (xSpeed);
-
-            character.setX((float)characterX);
-
-             // temporary to show values of stuff, helpful for debug
-        }*/
-
-        // Make sure character stays inside the boundry of the screen
-
-        if (left_flag)
-            characterX -= 20;
-        else if (right_flag)
-            characterX += 20;
-
-        if ((characterX >= chairX  && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
-            if (character.getY() + character_height > chair.getY()) {
-                if (characterX + character_width > chairX && characterX > chairX)
-                    characterX += 20;
-                else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth )
-                    characterX -= 20;
+                characterX += (int)xSpeed;
+                //boundary check and reversal if within bounds
+                if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
+                    if (character.getY() + character_height > chair.getY()) {
+                        if (characterX + character_width > chairX && characterX > chairX) // Right side collision
+                            characterX = chairX + chairWidth + 1;
+                        else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth)
+                            characterX = chairX - chairWidth - 1;
+                    }
+                }
+                character.setX((float) characterX);
+                // temporary to show values of stuff, helpful for debug
             }
 
+        }
+        // Make sure character stays inside the boundry of the screen
+        if(control == false) {
+            left.setVisibility(View.VISIBLE);
+            right.setVisibility(View.VISIBLE);
+            jump.setVisibility(View.VISIBLE);
+            if (left_flag)
+                characterX -= 20;
+            else if (right_flag)
+                characterX += 20;
+
+            if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
+                if (character.getY() + character_height > chair.getY()) {
+                    if (characterX + character_width > chairX && characterX > chairX)
+                        characterX += 20;
+                    else if (characterX + character_width < chairX + chairWidth && characterX < chairX + chairWidth)
+                        characterX -= 20;
+                }
+            }
         }
 
         if (characterX < 0)
@@ -385,19 +481,29 @@ public class MainActivity extends AppCompatActivity {
         // TODO: add jump mechanic and change characterx
         // Sets the position of the character
 
-//Make sure character stays inside the boudry of the screen in the vertical direction
+//Make sure character stays inside the boundry of the screen in the vertical direction
 
-        if(jump_flag)
-            characterY -= chairHeight + 20;
-        else
-            characterY += chairHeight + 20;
+        if (jump_flag && !reset_flag) {
+            reset_flag = true;
+            jump_loop_number = loop_number;
+        }
+        if (reset_flag) {
+            if(loop_number - jump_loop_number < 30) {
+                characterY = frameHeight - chairHeight - 10 - character_height;
+                if(loop_number == jump_loop_number)
+                    sound.playJumpSound();
+            }
+            else {
+                jump_flag = false;
+                reset_flag = false;
+                characterY = frameHeight - character_height;
+            }
+        }
+        debug.setText(Float.toString(goldenCroissant.getY()));
 
-        if(characterY + character_height < frameHeight - chairHeight - 20){
-            characterY = frameHeight - chairHeight - 20 - character_height;
-        }
-        else if(characterY > (frameHeight-character_height)){
-            characterY = frameHeight-character_height;
-        }
+
+        //if(characterY + character_height < frameHeight - chairHeight - 20)
+        //else if(characterY > (frameHeight-character_height))
 
         character.setX(characterX);
         character.setY(characterY);
@@ -406,44 +512,62 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void hitCheck() {
-        // Boolean statement is basically checking if each corner of an object is inside the character's sprite boundry
+        // Boolean statement is basically checking if each corner of an object is inside the character's sprite boundry and plays sound
 
-        // Collision check for knife, add points
-        if ((knifeX + knife.getWidth() >= characterX) && (knifeX <= characterX + character_width) && (knifeY + knife.getHeight() >= characterY) && (knifeY + knife.getHeight() <= frameHeight)) {
+        // Collision check for bread, add points
+        if ((breadX + bread.getWidth() >= characterX) && (breadX <= characterX + character_width) && (breadY + bread.getHeight() >= characterY) && (breadY + bread.getHeight() <= frameHeight)) {
             score += 30;
-            knifeY = -100;
+            breadY = -100;
+            sound.playPointSound();
         }
 
-        // Collision check for pigeon, lose life
-        if ((pigeonX + pigeon.getWidth() >= characterX) && (pigeonX <= characterX + character_width) && (pigeonY + pigeon.getHeight() >= characterY) && (pigeonY + pigeon.getHeight() <= frameHeight)) {
-            pigeonY = -100;
+        // Collision check for knife, lose life
+        if ((knifeX + knife.getWidth() >= characterX) && (knifeX <= characterX + character_width) && (knifeY + knife.getHeight() >= characterY) && (knifeY + knife.getHeight() <= frameHeight)) {
+            knifeY = -100;
 
-            // Reduce life counter every time player touches pigeon
+            // Reduce life counter every time player touches knife
             healthCounter -= 1;
+            sound.playHitSound();
+            if(healthCounter == 2)
+                life3.setVisibility(View.GONE);
+            else if(healthCounter ==1)
+                life2.setVisibility(View.GONE);
 
             // Once zero, call next activity ResultScreen
-            if(healthCounter == 2) {
-                life3.setVisibility(View.GONE);
-            }
-            else if(healthCounter == 1) {
-                life2.setVisibility(View.GONE);
-            }
-            else if(healthCounter == 0) {
-                life1.setVisibility(View.GONE);
+            if(healthCounter == 0) {
+                life1.setVisibility(View.GONE); // Update Life Counter
                 timer.cancel();
                 timer = null;
+
+                //ends background music
+                sound.stopBackgroundMusic();
+
+                //play game over sound
+                sound.playOverSound();
 
                 // Print results
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
                 intent.putExtra("SCORE", score); // Sends value of score into ResultScreen
                 startActivity(intent);
-            }
+            }// Update Life Counter
+
         }
 
-        // Collision check for cutlery, add points
-        if ((cutleryX + cutlery.getWidth() >= characterX) && (cutleryX <= characterX + character_width) && (cutleryY + cutlery.getHeight() >= characterY) && (cutleryY + cutlery.getHeight() <= frameHeight)) {
+        // Collision check for bread_icon, add points, plays hit sound
+        if ((bread_iconX + bread_icon.getWidth() >= characterX) && (bread_iconX <= characterX + character_width) && (bread_iconY + bread_icon.getHeight() >= characterY) && (bread_iconY + bread_icon.getHeight() <= frameHeight)) {
             score += 50;
-            cutleryY = -100;
+            bread_iconY = -100;
+            sound.playPointSound();
+        }
+
+        if ((goldenCroissantX + goldenCroissant.getWidth() >= characterX) && (goldenCroissantX <= characterX + character_width) && (goldenCroissantY + goldenCroissant.getHeight() >= characterY) && (goldenCroissantY + goldenCroissant.getHeight() <= frameHeight)) {
+            score += 200;
+            goldenCroissantY = -100;
+            bonus_flag = false;
+            goldenGuess = 0;
+            sound.playPointSound();
+            goldenCroissant.setY(goldenCroissantY);
+
         }
     }
 
@@ -453,9 +577,9 @@ public class MainActivity extends AppCompatActivity {
         if (!start_flag) { // If its the player's first time touching the screen on MainActivity, call this
             start_flag = true; // Set true so this doesn't get called again
 
-            FrameLayout gameframe = findViewById(R.id.gameframe); // Initialize the FrameLayout that holds most of the objects, get dimensions
-            frameHeight = gameframe.getHeight();
-            frameWidth = gameframe.getWidth();
+            FrameLayout game_frame = findViewById(R.id.game_frame); // Initialize the FrameLayout that holds most of the objects, get dimensions
+            frameHeight = game_frame.getHeight();
+            frameWidth = game_frame.getWidth();
 
             // Initialize character positions and dimensions
             characterX = (int)character.getX();
@@ -475,36 +599,18 @@ public class MainActivity extends AppCompatActivity {
         }
         else { // Detects player's finger motion
             if (me.getAction() == MotionEvent.ACTION_DOWN) { // If holding down, check where the player's finger position on the screen
-                for (int i = 0; i < pointerCount; i++) {
-                    int x = (int) me.getX(i);
-                    int y = (int) me.getY(i);
-
-                    if (inLeftBoundry(x, y)) { // If position in Object: left, set left flag true. Will move character left in changePos()
-                        left_flag = true;
-                    } else if (inRightBoundry(x, y)) { // Move Right
-                        right_flag = true;
-                    }
-                    if (inJumpBoundry(x, y)) { //jump
-                        jump_flag = true;
-                    }
-                }
-            } else if (me.getAction() == MotionEvent.ACTION_POINTER_DOWN) {
-                    if (inLeftBoundry(me.getX(), me.getY())) { // If position in Object: left, set left flag true. Will move character left in changePos()
-                        left_flag = true;
-                    } else if (inRightBoundry(me.getX(), me.getY())) { // Move Right
-                        right_flag = true;
-                    }
-                    if (inJumpBoundry(me.getX(), me.getY())) { //jump
-                        jump_flag = true;
-                    }
+                if (inLeftBoundry(me.getX(), me.getY()))  // If position in Object: left, set left flag true. Will move character left in changePos()
+                    left_flag = true;
+                if (inRightBoundry(me.getX(), me.getY()))  // Move Right
+                    right_flag = true;
+                if (inJumpBoundry(me.getX(), me.getY()))  //jump
+                    jump_flag = true;
             }
             else if (me.getAction() == MotionEvent.ACTION_UP) { // If finger leaves screen, return flags to false
                 left_flag = false;
                 right_flag = false;
-                jump_flag = false;
             }
         }
-        //TODO: revert states for jump
         return true;
     }
 
@@ -518,7 +624,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchKeyEvent(event);
+
+
     }
+
+
 
     // Implements pause button
     public void pausePushed(View view) {
@@ -529,10 +639,16 @@ public class MainActivity extends AppCompatActivity {
             timer.cancel();
             timer = null;
 
+            //pause background music
+            sound.pauseBackgroundMusic();
+
             // Show PAUSED state
             countdown.setVisibility(View.VISIBLE);
             countdown.setText("PAUSED");
+
             pauseButton.setAlpha(128);
+            menu.setVisibility(View.VISIBLE);
+            menu.setClickable(true);
             // TODO: change pauseButton.setImageDrawable();
         }
         else { // Resume game and reset flag state
@@ -541,24 +657,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void menuPushed(View view) {
+        startActivity(new Intent(getApplicationContext(), StartScreen.class));
+    }
+
     // Function that runs the game loop
     public void resume() { // Before the game starts, there will be a timer buffer that counts down before game starts
         countdown.setVisibility(View.VISIBLE);
 
+
         // CountDownTimer counts down from 3 seconds doing actions every second
-        new CountDownTimer(2999, 1000) {
+        new CountDownTimer(3100, 1000) {
+
             public void onTick(long millisUntilFinished) {
+                menu.setVisibility(View.GONE);
+                menu.setClickable(false);
                 // TODO: add setting button and replace alpha
                 // Make pause button invisible and disable interaction
                 pauseButton.setAlpha(128);
                 pauseButton.setClickable(false);
-
                 // Print time as timer counts down, prints "BREADY?" when timer is down to 1
-                int display = (int)(1 + Math.ceil(millisUntilFinished/1000));
-                if (display < 2)
+                int display = (int)(Math.floor(millisUntilFinished/1000));
+                if (display < 2) {
+
                     countdown.setText("BREADY?");
-                else
+                     sound.playStartSound();
+                    }
+                else {
                     countdown.setText(Integer.toString(display));
+                    sound.playCountSound();
+                }
 
             }
 
@@ -566,8 +694,10 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 // Make pause button visible and enable interaction, countdown will disappear
                 countdown.setVisibility(View.INVISIBLE);
+
                 pauseButton.setAlpha(255);
                 pauseButton.setClickable(true);
+
 
                 // Resume game timer
                 timer = new Timer();
@@ -578,6 +708,8 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 changePos(); // In charge of update all the sprites as time goes on
+                                loop_number += 1;
+                                sound.playBackgroundMusic();
                             }
                         });
                     }
@@ -602,7 +734,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // Updates the player difficulty by score
     public float difficulty(int PlayerScore) {
-        return 1 + (float)PlayerScore/1000; // Start at difficulty 1
+        return 1 + (float)PlayerScore/2000; // Start at difficulty 1
     }
 }
 
