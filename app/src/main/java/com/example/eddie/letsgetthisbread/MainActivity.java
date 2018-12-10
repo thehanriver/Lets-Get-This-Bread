@@ -235,21 +235,20 @@ public class MainActivity extends AppCompatActivity {
         else {
             left.setVisibility(View.VISIBLE);
             right.setVisibility(View.VISIBLE);
-
-            switch (charselect) {
-                case 1:
-                    character.setImageDrawable(getResources().getDrawable(R.drawable.carbib));
-                    break;
-                case 2:
-                    character.setImageDrawable(getResources().getDrawable(R.drawable.postmaloaf));
-                    break;
-                case 3:
-                    character.setImageDrawable(getResources().getDrawable(R.drawable.yungyeasty));
-                    break;
-                case 4:
-                    character.setImageDrawable(getResources().getDrawable(R.drawable.lilwheaty));
-                    break;
-            }
+        }
+        switch (charselect) {
+            case 1:
+                character.setImageDrawable(getResources().getDrawable(R.drawable.carbib));
+                break;
+            case 2:
+                character.setImageDrawable(getResources().getDrawable(R.drawable.postmaloaf));
+                break;
+            case 3:
+                character.setImageDrawable(getResources().getDrawable(R.drawable.yungyeasty));
+                break;
+            case 4:
+                character.setImageDrawable(getResources().getDrawable(R.drawable.lilwheaty));
+                break;
         }
 
             // TODO: offload constants into its own class file file
