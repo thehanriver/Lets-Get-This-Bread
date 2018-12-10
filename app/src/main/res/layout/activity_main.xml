@@ -1,240 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:keepScreenOn="true">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+    <!--TODO: make the interface compatible for screens when device is rotated -->
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
 
     <FrameLayout
-        android:id="@+id/gameframe"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/start"
+        <FrameLayout
+            android:id="@+id/game_frame"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="132dp"
-            android:gravity="center"
-            android:text="@string/tap"
-            android:textSize="30sp"
-            app:fontFamily="sans-serif"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/pigeon"
-            android:layout_width="@dimen/pigeon"
-            android:layout_height="@dimen/pigeon"
-            android:src="@drawable/pigeon" />
+            <TextView
+                android:id="@+id/start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="130dp"
+                android:text="@string/tap"
+                android:textSize="30sp" />
 
-        <ImageView
-            android:id="@+id/cutlery"
-            android:layout_width="@dimen/cutlery"
-            android:layout_height="@dimen/cutlery"
-            android:src="@drawable/cutlery" />
+            <ImageView
+                android:id="@+id/knife"
+                android:layout_width="@dimen/knife"
+                android:layout_height="@dimen/knife"
+                android:src="@drawable/knife" />
 
-        <ImageView
-            android:id="@+id/knife"
-            android:layout_width="@dimen/knife"
-            android:layout_height="@dimen/knife"
-            android:src="@drawable/knife" />
+            <ImageView
+                android:id="@+id/bread"
+                android:layout_width="@dimen/bread"
+                android:layout_height="@dimen/bread"
+                android:src="@drawable/bread" />
 
-        <ImageView
-            android:id="@+id/character"
-            android:layout_width="@dimen/character"
-            android:layout_height="@dimen/character"
-            android:src="@drawable/bread"
-            app:layout_constraintBottom_toBottomOf="@+id/jump"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <ImageView
+                android:id="@+id/bread_icon"
+                android:layout_width="@dimen/bread_icon"
+                android:layout_height="@dimen/bread_icon"
+                android:src="@drawable/bread_icon" />
 
-        <ImageView
-            android:id="@+id/chair"
-            android:layout_width="@dimen/chair"
-            android:layout_height="@dimen/chair"
-            android:src="@drawable/chair" />
+            <ImageView
+                android:id="@+id/goldenCroissant"
+                android:layout_width="@dimen/bread_icon"
+                android:layout_height="@dimen/bread_icon"
+                android:src="@drawable/golden_croissant" />
 
-        <TextView
-            android:id="@+id/scoreboard"
+            <ImageView
+                android:id="@+id/character"
+                android:layout_width="@dimen/character"
+                android:layout_height="@dimen/character"
+                android:layout_gravity="center|bottom"
+                android:src="@drawable/character" />
+
+            <ImageView
+                android:id="@+id/chair"
+                android:layout_width="@dimen/chair"
+                android:layout_height="@dimen/chair"
+                android:src="@drawable/chair"/>
+
+            <TextView
+                android:id="@+id/scoreboard"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="@string/score"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/debug1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="30dp"
+                android:text="debug"
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center">
+
+                <TextView
+                    android:id="@+id/left"
+                    android:layout_width="120dp"
+                    android:layout_height="200dp"
+                    android:text="@string/left"
+                    android:textSize="100sp"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    android:background="@drawable/outline"/>
+
+                <TextView
+                    android:id="@+id/right"
+                    android:layout_width="120dp"
+                    android:layout_height="200dp"
+                    android:gravity="center"
+                    android:layout_toRightOf="@+id/left"
+                    android:text="@string/right"
+                    android:textSize="100sp"
+                    android:visibility="invisible"
+                    android:background="@drawable/outline"/>
+
+                <TextView
+                    android:id="@+id/jump"
+                    android:layout_width="60dp"
+                    android:layout_height="200dp"
+                    android:gravity="center"
+                    android:layout_toRightOf="@+id/right"
+                    android:text="@string/up"
+                    android:textSize="100sp"
+                    android:visibility="invisible"
+                    android:background="@drawable/outline"/>
+            </RelativeLayout>
+
+        </FrameLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:text="@string/score"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/character"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-            
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp">
+
+            <ImageButton
+                android:id="@+id/menu"
+                style="@android:style/Widget.DeviceDefault.ImageButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:onClick="menuPushed"
+                android:src="@drawable/pigeon"
+                android:visibility="invisible"
+                android:background="@color/white"/>
+
+            <TextView
+                android:id="@+id/countdown"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="90sp"
+                android:visibility="invisible"/>
+
+            <ImageButton
+                android:id="@+id/pause"
+                style="@android:style/Widget.DeviceDefault.ImageButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:alpha="128"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:onClick="pausePushed"
+                android:src="@drawable/pausebutton"
+                android:background="@color/white"/>
+
+            <ImageView
+                android:id="@+id/life1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/pause"
+                android:gravity="center"
+                android:textSize="32sp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/heart" />
+            <ImageView
+                android:id="@+id/life2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/pause"
+                android:gravity="center"
+                android:textSize="32sp"
+                android:layout_marginTop="45dp"
+                android:background="@drawable/heart" />
+            <ImageView
+                android:id="@+id/life3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/pause"
+                android:gravity="center"
+                android:textSize="32sp"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/heart" />
+        </RelativeLayout>
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/debug1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="debug"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
-    <TextView
-        android:id="@+id/jump"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@drawable/outline"
-        android:gravity="center"
-        android:text="@string/up"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:alpha="128"
-        app:layout_constraintBottom_toTopOf="@+id/jump">
-
-        <TextView
-            android:id="@+id/left"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/left"
-            android:textSize="100sp"
-            android:background="@drawable/outline"/>
-
-        <TextView
-            android:id="@+id/right"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/right"
-            android:textSize="100sp"
-            android:background="@drawable/outline"/>
-
-    </LinearLayout>
-
-
-
-    <!-- TODO: add android:onClick="menuPushed" to menu -->
-    <ImageButton
-        android:id="@+id/menu"
-        style="@android:style/Widget.DeviceDefault.ImageButton"
-        android:layout_width="250dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:src="@drawable/pigeon"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/countdown" />
-
-    <TextView
-        android:id="@+id/countdown"
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:gravity="center"
-        android:text="3"
-        android:textSize="90sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageButton
-        android:id="@+id/pause"
-        style="@android:style/Widget.DeviceDefault.ImageButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:onClick="pausePushed"
-        android:src="@drawable/pausebutton"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--TODO: change id to android:id="@+id/life1" "...life2" ...-->
-    <ImageView
-        android:id="@+id/life3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/heart"
-        app:layout_constraintEnd_toStartOf="@+id/life2"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
-
-    <ImageView
-        android:id="@+id/life2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/heart"
-        app:layout_constraintEnd_toStartOf="@+id/life1"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
-
-    <ImageView
-        android:id="@+id/life1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/heart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
-
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
