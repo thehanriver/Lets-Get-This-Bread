@@ -7,23 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".StartScreen">
 
-
-    <TextView
-        android:id="@+id/app_name"
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/app_name"
-        android:textSize="32sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:background="@drawable/startscreen" />
+
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/titlegif"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/gifImageView2"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp" />
+
 
     <FrameLayout
+        android:id="@+id/frameLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
@@ -41,49 +45,45 @@
                 android:id="@+id/startButton"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
                 android:onClick="startGame"
-                android:text="GET BREAD"/>
+                android:text="GET BREAD"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/tutorialButton"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
                 android:onClick="revealTutorial"
-                android:text="Tutorial"/>
+                android:text="Tutorial"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/settingButton"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
                 android:onClick="startSettings"
-                android:text="Settings"/>
+                android:text="Settings"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/dummyButton"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
                 android:onClick="startSettings"
-                android:text="Dummy"/>
+                android:text="Dummy"
+                android:textSize="20sp" />
 
         </GridLayout>
 
     </FrameLayout>
-
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.44793713" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline4"
@@ -104,15 +104,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6051081" />
+        app:layout_constraintGuide_percent="0.2" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.94" />
+        app:layout_constraintGuide_percent="0.43" />
 
-
+    <ImageView
+        android:id="@+id/tutorial_pg1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/white"
+        android:src="@drawable/tutorialscreen"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

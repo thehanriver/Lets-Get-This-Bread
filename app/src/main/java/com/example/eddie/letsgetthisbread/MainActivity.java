@@ -96,13 +96,15 @@ public class MainActivity extends AppCompatActivity {
     // Initialize View objects in layout
 
 	    private TextView scoreboard;
-	    private TextView lives;
 	    private TextView start;
 	    private TextView left;
 	    private TextView right;
 	    private TextView jump;
 	    private TextView debug;
 	    private TextView countdown;
+        private ImageView life1;
+        private ImageView life2;
+        private ImageView life3;
 	    private ImageView chair;
 	    private ImageView character;
 	    private ImageView cutlery;
@@ -183,7 +185,9 @@ public class MainActivity extends AppCompatActivity {
         // UI initialized
         scoreboard = findViewById(R.id.scoreboard);
         start = findViewById(R.id.start);
-        lives = findViewById(R.id.lives);
+        life1 = findViewById(R.id.life1);
+        life2 = findViewById(R.id.life2);
+        life3 = findViewById(R.id.life3);
         countdown = findViewById(R.id.countdown);
         pauseButton = findViewById(R.id.pause);
         left = findViewById(R.id.left);
@@ -223,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set scoreboard & live counter
         scoreboard.setText("Score: 0");
-        lives.setText(Integer.toString(healthCounter));
 
         orientationData.newGame();
     }
@@ -342,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
         // Depending on movement flag, move characters
 
         //motion controlled movement
-        if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
+        /*if(orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
             float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
             float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
 
@@ -354,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
             character.setX((float)characterX);
 
              // temporary to show values of stuff, helpful for debug
-        }
+        }*/
 
         // Make sure character stays inside the boundry of the screen
 
@@ -419,8 +422,14 @@ public class MainActivity extends AppCompatActivity {
             healthCounter -= 1;
 
             // Once zero, call next activity ResultScreen
-            if(healthCounter == 0) {
-                lives.setText("X"); // Update Life Counter
+            if(healthCounter == 2) {
+                life3.setVisibility(View.GONE);
+            }
+            else if(healthCounter == 1) {
+                life2.setVisibility(View.GONE);
+            }
+            else if(healthCounter == 0) {
+                life1.setVisibility(View.GONE);
                 timer.cancel();
                 timer = null;
 
@@ -428,9 +437,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
                 intent.putExtra("SCORE", score); // Sends value of score into ResultScreen
                 startActivity(intent);
-            }
-            else {
-                lives.setText(Integer.toString(healthCounter)); // Update Life Counter
             }
         }
 
@@ -483,21 +489,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             } else if (me.getAction() == MotionEvent.ACTION_POINTER_DOWN) {
-                for (int i = 1; i < pointerCount; i++) {
-                    int x = (int) me.getX(i);
-                    int y = (int) me.getY(i);
-
-                    if (inLeftBoundry(x, y)) { // If position in Object: left, set left flag true. Will move character left in changePos()
+                    if (inLeftBoundry(me.getX(), me.getY())) { // If position in Object: left, set left flag true. Will move character left in changePos()
                         left_flag = true;
-                    } else if (inRightBoundry(x, y)) { // Move Right
+                    } else if (inRightBoundry(me.getX(), me.getY())) { // Move Right
                         right_flag = true;
-                        debug.setText("R");
                     }
-                    if (inJumpBoundry(x, y)) { //jump
+                    if (inJumpBoundry(me.getX(), me.getY())) { //jump
                         jump_flag = true;
-                        debug.setText("J");
                     }
-                }
             }
             else if (me.getAction() == MotionEvent.ACTION_UP) { // If finger leaves screen, return flags to false
                 left_flag = false;
