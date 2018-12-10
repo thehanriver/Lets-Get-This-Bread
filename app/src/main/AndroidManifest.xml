@@ -23,6 +23,8 @@
                   android:screenOrientation="portrait"/>
         <activity android:name=".SettingsScreen"
                   android:screenOrientation="portrait"></activity>
+        <activity android:name=".CharacterScreen"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

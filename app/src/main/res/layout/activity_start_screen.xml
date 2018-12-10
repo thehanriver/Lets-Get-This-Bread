@@ -53,10 +53,11 @@
                     android:onClick="startSettings" />
 
                 <Button
-                    android:id="@+id/dummyButton"
+                    android:id="@+id/characterButton"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Dummy" />
+                    android:text="Characters"
+                    android:onClick="characterScreen"/>
 
                 <!-- add achievement -->
              </TableRow>

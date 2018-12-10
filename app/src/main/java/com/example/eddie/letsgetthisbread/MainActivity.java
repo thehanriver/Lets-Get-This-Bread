@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         private int knifeWidth;
         private int chairWidth;
         private int chairHeight;
+        private int charselect;
 
     // Positions of sprites
         private int characterX;
@@ -185,7 +186,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences control_data = getSharedPreferences("GAME_DATA" , Context.MODE_PRIVATE);
         control = control_data.getBoolean("GAME_DATA" , false);
         sound = new SoundPlayer(this);
-
+        SharedPreferences character_data = getSharedPreferences("CHAR_DATA",Context.MODE_PRIVATE);
+        charselect = character_data.getInt("CHAR_DATA",0);
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
         breadWidth = (int)(res.getDimension(R.dimen.bread));
@@ -194,7 +196,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Assign View objects
         //Characters initialized
-        character = findViewById(R.id.character);
+        if(charselect==0)
+           character = findViewById(R.id.character);
+        else if(charselect==1)
+            character.setImageDrawable(getResources().getDrawable(R.drawable.carbib));
+        else if(charselect==2)
+            character.setImageDrawable(getResources().getDrawable(R.drawable.lilwheaty));
+        else if(charselect==4)
+            character.setImageDrawable(getResources().getDrawable(R.drawable.yungyeasty));
+        else if(charselect==3)
+            character.setBackgroundResource(R.drawable.postmaloaf);
+
         bread_icon = findViewById(R.id.bread_icon);
         bread = findViewById(R.id.bread);
         knife = findViewById(R.id.knife);

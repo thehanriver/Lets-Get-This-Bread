@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity = "center"
+    android:keepScreenOn="true"
+>
+
+
+    <TextView
+        android:id="@+id/characterTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bread Winners"
+        android:textStyle="normal|bold"
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:textSize="36sp"
+        tools:ignore="MissingConstraints"
+        />
+
+    <ImageButton
+        android:id="@+id/carbi_B"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/white"
+        android:cropToPadding="true"
+        android:scaleType="fitStart"
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="106dp"
+        tools:scaleType="fitCenter"
+        tools:srcCompat="@drawable/carbib"
+        tools:ignore="MissingConstraints"
+        android:onClick="cardi"/>
+
+    <ImageButton
+        android:id="@+id/lil_wheaty"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+        tools:background="@android:color/white"
+        tools:layout_editor_absoluteX="207dp"
+        tools:layout_editor_absoluteY="305dp"
+        tools:scaleType="fitCenter"
+        tools:srcCompat="@drawable/lilwheaty"
+        tools:ignore="MissingConstraints"
+        android:onClick="lil"/>
+
+    <ImageButton
+        android:id="@+id/yung_yeasty"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+        tools:scaleType="fitCenter"
+        tools:background="@android:color/white"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="295dp"
+        tools:srcCompat="@drawable/yungyeasty"
+        tools:ignore="MissingConstraints"
+        android:onClick="yung"/>
+
+    <ImageButton
+        android:id="@+id/post_maloaf"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitCenter"
+        tools:background="@android:color/background_light"
+        tools:layout_editor_absoluteX="207dp"
+        tools:layout_editor_absoluteY="96dp"
+        tools:scaleType="fitCenter"
+        tools:srcCompat="@drawable/postmaloaf"
+        tools:ignore="MissingConstraints"
+        android:onClick="post"/>
+
+    <Button
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back To Menu"
+        tools:layout_editor_absoluteX="132dp"
+        tools:layout_editor_absoluteY="503dp"
+        tools:ignore="MissingConstraints"
+        android:onClick="backtoStart"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <TextView
+        android:id="@+id/carbi_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Carbi B"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="257dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/post_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Post Maloaf"
+        tools:layout_editor_absoluteX="251dp"
+        tools:layout_editor_absoluteY="257dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/yung_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Yung Yea$ty"
+        tools:layout_editor_absoluteX="74dp"
+        tools:layout_editor_absoluteY="463dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/lil_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lil Wheaty"
+        tools:layout_editor_absoluteX="251dp"
+        tools:layout_editor_absoluteY="463dp"
+        tools:ignore="MissingConstraints" />
+
+</android.support.constraint.ConstraintLayout>
