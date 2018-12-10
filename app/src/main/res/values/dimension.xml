@@ -5,4 +5,5 @@
     <dimen name="bread_icon">30dp</dimen>
     <dimen name="character">40dp</dimen>
     <dimen name="chair">40dp</dimen>
+    <dimen name="goldenCroissant">40dp</dimen>
 </resources>

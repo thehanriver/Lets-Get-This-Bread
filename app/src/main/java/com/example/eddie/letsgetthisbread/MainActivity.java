@@ -97,9 +97,9 @@ public class MainActivity extends AppCompatActivity {
     // Initialize View objects in layout
 
 	    private TextView scoreboard;
-	    private TextView life1;
-	    private TextView life2;
-	    private TextView life3;
+	    private ImageView life1;
+	    private ImageView life2;
+	    private ImageView life3;
 	    private TextView start;
 	    private TextView left;
 	    private TextView right;
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 	    private ImageView bread_icon;
 	    private ImageView bread;
 	    private ImageView knife;
+	    private ImageView goldenCroissant;
 
 
     // Initialize variables for dimensions in layout
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         private int character_height;
         private int breadWidth;
         private int breadIconWidth;
+        private int goldenCroissantWidth;
         private int knifeWidth;
         private int chairWidth;
         private int chairHeight;
@@ -136,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
         private int knifeY;
         private int chairX;
         private int chairY;
+        private int goldenCroissantX;
+        private int goldenCroissantY;
 
         private int goldenNumber;
         private int goldenGuess;
@@ -155,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         private boolean chair_flag = false;
     	private boolean jump_flag = false;
         private boolean reset_flag = false;
+        private boolean bonus_flag = false;
         private boolean control;
 
     // Counter
@@ -191,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
         breadWidth = (int)(res.getDimension(R.dimen.bread));
         knifeWidth = (int)(res.getDimension(R.dimen.knife));
         breadIconWidth = (int)(res.getDimension(R.dimen.bread_icon));
+        goldenCroissantWidth = (int)(res.getDimension(R.dimen.goldenCroissant));
+
 
         // Assign View objects
         //Characters initialized
@@ -199,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
         bread = findViewById(R.id.bread);
         knife = findViewById(R.id.knife);
         chair = findViewById(R.id.chair);
+        goldenCroissant = findViewById(R.id.goldenCroissant);
 
         // UI initialized
         scoreboard = findViewById(R.id.scoreboard);
@@ -236,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
         knifeY = screenHeight + 40;
         bread_iconY = screenHeight + 40;
         chairY = screenHeight + 40;
+        goldenCroissantY = screenHeight + 40;
 
         // Set positions for falling sprites
         bread_icon.setX(-40);
@@ -244,6 +253,9 @@ public class MainActivity extends AppCompatActivity {
         knife.setY(knifeY);
         bread.setX(-40);
         bread.setY(breadY);
+
+        goldenCroissant.setX(-40);
+        goldenCroissant.setY(goldenCroissantY);
 
         chair.setX(-40);
         chair.setY(chairY);
@@ -254,23 +266,24 @@ public class MainActivity extends AppCompatActivity {
 
         orientationData.newGame();
 
-        goldenNumber = (int) Math.floor(Math.random() * 10000 + 1);
+        goldenNumber = (int) Math.floor(Math.random() * 1000 + 1);
 
     }
 
     // Input X coordinate of falling sprites and a string key, ie "bread", to return if bread is in the x range of other falling sprites
-    public boolean avoidStack(String key, int kx, int cx, int px) {
+    public boolean avoidStack(String key, int knifeX, int iconx, int breadx) {
         boolean result = false;
         switch (key) {
             case "knife":
-                result = (px >= kx && px <= kx + breadWidth) || (px + knifeWidth >= kx && px + knifeWidth <= kx + breadWidth) && (px >= cx && px <= cx + breadIconWidth) || (px + knifeWidth >= cx && px + knifeWidth <= cx + breadIconWidth);
+                result = (breadx >= knifeX && breadx <= knifeX + breadWidth) || (breadx + knifeWidth >= knifeX && breadx + knifeWidth <= knifeX + breadWidth) && (breadx >= iconx && breadx <= iconx + breadIconWidth) || (breadx + knifeWidth >= iconx && breadx + knifeWidth <= iconx + breadIconWidth);
                 break;
             case "bread_icon":
-                result = (cx >= px && cx <= px + knifeWidth) || (cx + breadIconWidth >= px && cx + breadIconWidth <= px + knifeWidth) &&  (cx >= kx && cx <= kx + breadWidth) || (cx + breadIconWidth >= kx && cx + breadIconWidth <= kx + breadWidth);
+                result = (iconx >= breadx && iconx <= breadx + knifeWidth) || (iconx + breadIconWidth >= breadx && iconx + breadIconWidth <= breadx + knifeWidth) &&  (iconx >= knifeX && iconx <= knifeX + breadWidth) || (iconx + breadIconWidth >= knifeX && iconx + breadIconWidth <= knifeX + breadWidth);
                 break;
             case "bread":
-                result = (kx >= cx && kx <= cx + breadIconWidth) || (kx + breadWidth >= cx && kx + breadWidth <= cx + breadIconWidth) &&  (kx >= cx && kx <= cx + breadIconWidth) || (kx + breadWidth >= cx && kx + breadWidth <= cx + breadIconWidth);
+                result = (knifeX >= iconx && knifeX <= iconx + breadIconWidth) || (knifeX + breadWidth >= iconx && knifeX + breadWidth <= iconx + breadIconWidth) &&  (knifeX >= iconx && knifeX <= iconx + breadIconWidth) || (knifeX + breadWidth >= iconx && knifeX + breadWidth <= iconx + breadIconWidth);
                 break;
+
         }
         return result;
     }
@@ -338,6 +351,47 @@ public class MainActivity extends AppCompatActivity {
         
         knife.setX(knifeX);
         knife.setY(knifeY);
+
+
+
+        if(goldenGuess != goldenNumber)
+            goldenGuess = (int) Math.floor(Math.random() * 1000 + 1);
+        else if (goldenGuess == goldenNumber && goldenCroissantY < 0)
+            goldenCroissantY += 101; // Otherwise start falling
+        if ( goldenCroissantY > 0) {
+
+            goldenCroissantY += 10;
+
+            if (goldenCroissantY > frameHeight) { // Move knife above screen once knife falls below screen
+                goldenCroissantY = -100;
+            }
+            if (goldenCroissantY == -100) { // While still above screen, at -100, do initial shuffle and make this statement false
+                goldenCroissantX = shufflePos(goldenCroissantWidth);
+                goldenCroissantY = -99;
+            }
+
+            goldenGuess = 0;
+
+            goldenCroissant.setX(goldenCroissantX);
+            goldenCroissant.setY(goldenCroissantY);
+        }
+
+
+
+
+        else {
+            if (goldenCroissantY > frameHeight)  // Move knife above screen once knife falls below screen
+                goldenCroissantY = -100;
+
+            bonus_flag = true;
+        }
+
+        if (bonus_flag) {
+
+
+        }
+
+
 
         if (!chair_flag) {
             currentscore = score;
@@ -445,7 +499,7 @@ public class MainActivity extends AppCompatActivity {
                 characterY = frameHeight - character_height;
             }
         }
-        debug.setText(Integer.toString(goldenGuess));
+        debug.setText(Float.toString(goldenCroissant.getY()));
 
 
         //if(characterY + character_height < frameHeight - chairHeight - 20)
@@ -504,6 +558,16 @@ public class MainActivity extends AppCompatActivity {
             score += 50;
             bread_iconY = -100;
             sound.playPointSound();
+        }
+
+        if ((goldenCroissantX + goldenCroissant.getWidth() >= characterX) && (goldenCroissantX <= characterX + character_width) && (goldenCroissantY + goldenCroissant.getHeight() >= characterY) && (goldenCroissantY + goldenCroissant.getHeight() <= frameHeight)) {
+            score += 200;
+            goldenCroissantY = -100;
+            bonus_flag = false;
+            goldenGuess = 0;
+            sound.playPointSound();
+            goldenCroissant.setY(goldenCroissantY);
+
         }
     }
 
@@ -646,8 +710,6 @@ public class MainActivity extends AppCompatActivity {
                                 changePos(); // In charge of update all the sprites as time goes on
                                 loop_number += 1;
                                 sound.playBackgroundMusic();
-
-                                goldenGuess = (int) Math.floor(Math.random() * 10000 + 1);
                             }
                         });
                     }
@@ -672,7 +734,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // Updates the player difficulty by score
     public float difficulty(int PlayerScore) {
-        return 1 + (float)PlayerScore/1000; // Start at difficulty 1
+        return 1 + (float)PlayerScore/2000; // Start at difficulty 1
     }
 }
 

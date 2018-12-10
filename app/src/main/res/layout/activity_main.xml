@@ -47,6 +47,12 @@
                 android:src="@drawable/bread_icon" />
 
             <ImageView
+                android:id="@+id/goldenCroissant"
+                android:layout_width="@dimen/bread_icon"
+                android:layout_height="@dimen/bread_icon"
+                android:src="@drawable/golden_croissant" />
+
+            <ImageView
                 android:id="@+id/character"
                 android:layout_width="@dimen/character"
                 android:layout_height="@dimen/character"
@@ -155,7 +161,7 @@
                 android:src="@drawable/pausebutton"
                 android:background="@color/white"/>
 
-            <TextView
+            <ImageView
                 android:id="@+id/life1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -166,7 +172,7 @@
                 android:textSize="32sp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/heart" />
-            <TextView
+            <ImageView
                 android:id="@+id/life2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -177,7 +183,7 @@
                 android:textSize="32sp"
                 android:layout_marginTop="45dp"
                 android:background="@drawable/heart" />
-            <TextView
+            <ImageView
                 android:id="@+id/life3"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
