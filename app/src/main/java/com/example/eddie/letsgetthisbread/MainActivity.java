@@ -180,11 +180,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences control_data = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        control = control_data.getBoolean("GAME_DATA", false);
+        SharedPreferences control_data = getSharedPreferences("CONTROL_DATA", Context.MODE_PRIVATE);
+        control = control_data.getBoolean("CONTROL_DATA", false);
 
-        SharedPreferences sound_data = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
-        sound_flag = sound_data.getBoolean("GAME_DATA", false);
+        SharedPreferences sound_data = getSharedPreferences("SOUND_DATA", Context.MODE_PRIVATE);
+        sound_flag = sound_data.getBoolean("SOUND_DATA", false);
 
         sound = new SoundPlayer(this);
         SharedPreferences character_data = getSharedPreferences("CHAR_DATA", Context.MODE_PRIVATE);
