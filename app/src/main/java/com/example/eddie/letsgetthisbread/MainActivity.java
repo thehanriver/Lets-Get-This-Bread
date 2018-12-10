@@ -488,18 +488,16 @@ public class MainActivity extends AppCompatActivity {
             jump_loop_number = loop_number;
         }
         if (reset_flag) {
-            if(loop_number - jump_loop_number < 30) {
+            if (loop_number - jump_loop_number < 30) {
                 characterY = frameHeight - chairHeight - 10 - character_height;
-                if(loop_number == jump_loop_number)
+                if (loop_number == jump_loop_number)
                     sound.playJumpSound();
-            }
-            else {
+            } else {
                 jump_flag = false;
                 reset_flag = false;
                 characterY = frameHeight - character_height;
             }
         }
-        debug.setText(Float.toString(goldenCroissant.getY()));
 
 
         //if(characterY + character_height < frameHeight - chairHeight - 20)
@@ -577,9 +575,9 @@ public class MainActivity extends AppCompatActivity {
         if (!start_flag) { // If its the player's first time touching the screen on MainActivity, call this
             start_flag = true; // Set true so this doesn't get called again
 
-            FrameLayout game_frame = findViewById(R.id.game_frame); // Initialize the FrameLayout that holds most of the objects, get dimensions
-            frameHeight = game_frame.getHeight();
-            frameWidth = game_frame.getWidth();
+            FrameLayout gameframe = findViewById(R.id.gameframe); // Initialize the FrameLayout that holds most of the objects, get dimensions
+            frameHeight = gameframe.getHeight();
+            frameWidth = gameframe.getWidth();
 
             // Initialize character positions and dimensions
             characterX = (int)character.getX();
@@ -598,6 +596,7 @@ public class MainActivity extends AppCompatActivity {
             resume();
         }
         else { // Detects player's finger motion
+            debug.setText(Boolean.toString(inLeftBoundry(me.getX(), me.getY())));
             if (me.getAction() == MotionEvent.ACTION_DOWN) { // If holding down, check where the player's finger position on the screen
                 if (inLeftBoundry(me.getX(), me.getY()))  // If position in Object: left, set left flag true. Will move character left in changePos()
                     left_flag = true;

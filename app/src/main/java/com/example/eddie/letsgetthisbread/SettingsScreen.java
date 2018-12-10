@@ -46,6 +46,6 @@ public class SettingsScreen extends AppCompatActivity {
         editor.commit();
     }
     public void mainMenu(View view){
-            startActivity(new Intent(getApplicationContext(), StartScreen.class));
-        }
+        startActivity(new Intent(getApplicationContext(), StartScreen.class));
+    }
 }
