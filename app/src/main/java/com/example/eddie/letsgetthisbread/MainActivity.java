@@ -596,7 +596,7 @@ public class MainActivity extends AppCompatActivity {
             resume();
         }
         else { // Detects player's finger motion
-            debug.setText(Boolean.toString(inLeftBoundry(me.getX(), me.getY())));
+            debug.setText(Boolean.toString(jump_flag));
             if (me.getAction() == MotionEvent.ACTION_DOWN) { // If holding down, check where the player's finger position on the screen
                 if (inLeftBoundry(me.getX(), me.getY()))  // If position in Object: left, set left flag true. Will move character left in changePos()
                     left_flag = true;
