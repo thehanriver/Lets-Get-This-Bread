@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             chair.setX(chairX);
-            if ((score - currentscore) < 100) {
+            if ((score - currentscore) < 200) {
                 chairY -= 10;
             }
             else {
@@ -458,7 +458,7 @@ public class MainActivity extends AppCompatActivity {
                 character.setX((float) characterX);
             }
         }
-        
+
         // Make sure character stays inside the boundry of the screen
         if(!control) {
             if (left_flag)

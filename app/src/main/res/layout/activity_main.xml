@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:keepScreenOn="true"
-    android:background="@drawable/environment_j">
+    android:keepScreenOn="true">
 
     <android.support.constraint.Guideline
         android:id="@+id/center"
@@ -78,15 +77,16 @@
 
         <ImageView
             android:id="@+id/character"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/character"
+            android:layout_height="80dp"
             android:layout_gravity="center|bottom"
             android:src="@drawable/carbib" />
 
         <ImageView
             android:id="@+id/chair"
             android:layout_width="@dimen/chair"
-            android:layout_height="@dimen/chair"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
             android:src="@drawable/chair" />
 
         <TextView
