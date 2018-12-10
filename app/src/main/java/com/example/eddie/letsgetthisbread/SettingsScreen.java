@@ -55,7 +55,7 @@ public class SettingsScreen extends AppCompatActivity {
         SharedPreferences.Editor editor = control_data.edit();
         editor.putBoolean("GAME_DATA" , control_state);
         editor.commit();
-        changeText("M", sound_state);
+        changeText("M", control_state);
     }
 
     public void button(View view) {
@@ -63,7 +63,7 @@ public class SettingsScreen extends AppCompatActivity {
         SharedPreferences.Editor editor = control_data.edit();
         editor.putBoolean("GAME_DATA" , control_state);
         editor.commit();
-        changeText("M", sound_state);
+        changeText("M", control_state);
     }
 
     public void on(View view) {

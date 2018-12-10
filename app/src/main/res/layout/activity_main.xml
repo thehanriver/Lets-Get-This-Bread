@@ -8,14 +8,6 @@
     android:background="@color/white"
     android:keepScreenOn="true">
 
-    <pl.droidsonroids.gif.GifImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/main"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <android.support.constraint.Guideline
         android:id="@+id/center"
         android:layout_width="wrap_content"
@@ -44,7 +36,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
-        android:background="@drawable/environment_j"
         >
 
 
