@@ -34,7 +34,10 @@
         android:layout_height="fill_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3">
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        android:background="@drawable/environment_j"
+        >
+
 
         <TextView
             android:id="@+id/start"
@@ -52,39 +55,39 @@
 
         <ImageView
             android:id="@+id/bread_icon"
-            android:layout_width="@dimen/bread_icon"
-            android:layout_height="@dimen/bread_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/bread_icon" />
 
         <ImageView
             android:id="@+id/bread"
-            android:layout_width="@dimen/bread"
-            android:layout_height="@dimen/bread"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/bread" />
 
         <ImageView
             android:id="@+id/knife"
-            android:layout_width="@dimen/knife"
-            android:layout_height="@dimen/knife"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/knife" />
 
         <ImageView
             android:id="@+id/goldenCroissant"
-            android:layout_width="@dimen/bread_icon"
-            android:layout_height="@dimen/bread_icon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@drawable/golden_croissant" />
 
         <ImageView
             android:id="@+id/character"
-            android:layout_width="@dimen/character"
-            android:layout_height="@dimen/character"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="center|bottom"
             android:src="@drawable/character" />
 
         <ImageView
             android:id="@+id/chair"
-            android:layout_width="@dimen/chair"
-            android:layout_height="@dimen/chair"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/chair" />
 
         <TextView
