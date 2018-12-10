@@ -97,15 +97,15 @@ public class MainActivity extends AppCompatActivity {
     // Initialize View objects in layout
 
 	    private TextView scoreboard;
-	    private ImageView life1;
-	    private ImageView life2;
-	    private ImageView life3;
 	    private TextView start;
 	    private TextView left;
 	    private TextView right;
 	    private TextView jump;
 	    private TextView debug;
 	    private TextView countdown;
+        private ImageView life1;
+        private ImageView life2;
+        private ImageView life3;
 	    private ImageView chair;
 	    private ImageView character;
 	    private ImageView bread_icon;
@@ -262,8 +262,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set scoreboard & live counter
         scoreboard.setText("Score: 0");
-
-
         orientationData.newGame();
 
         goldenNumber = (int) Math.floor(Math.random() * 1000 + 1);
@@ -451,7 +449,6 @@ public class MainActivity extends AppCompatActivity {
                 // temporary to show values of stuff, helpful for debug
             }
 
-        }
         // Make sure character stays inside the boundry of the screen
         if(control == false) {
             left.setVisibility(View.VISIBLE);
@@ -534,8 +531,14 @@ public class MainActivity extends AppCompatActivity {
                 life2.setVisibility(View.GONE);
 
             // Once zero, call next activity ResultScreen
-            if(healthCounter == 0) {
-                life1.setVisibility(View.GONE); // Update Life Counter
+            if(healthCounter == 2) {
+                life3.setVisibility(View.GONE);
+            }
+            else if(healthCounter == 1) {
+                life2.setVisibility(View.GONE);
+            }
+            else if(healthCounter == 0) {
+                life1.setVisibility(View.GONE);
                 timer.cancel();
                 timer = null;
 
@@ -549,8 +552,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
                 intent.putExtra("SCORE", score); // Sends value of score into ResultScreen
                 startActivity(intent);
-            }// Update Life Counter
-
         }
 
         // Collision check for bread_icon, add points, plays hit sound
@@ -577,9 +578,9 @@ public class MainActivity extends AppCompatActivity {
         if (!start_flag) { // If its the player's first time touching the screen on MainActivity, call this
             start_flag = true; // Set true so this doesn't get called again
 
-            FrameLayout game_frame = findViewById(R.id.game_frame); // Initialize the FrameLayout that holds most of the objects, get dimensions
-            frameHeight = game_frame.getHeight();
-            frameWidth = game_frame.getWidth();
+            FrameLayout gameframe = findViewById(R.id.gameframe); // Initialize the FrameLayout that holds most of the objects, get dimensions
+            frameHeight = gameframe.getHeight();
+            frameWidth = gameframe.getWidth();
 
             // Initialize character positions and dimensions
             characterX = (int)character.getX();
