@@ -11,7 +11,6 @@ public class SoundPlayer {
 
     // Initialize Classes
     MediaPlayer backgroundMusic;
-    MediaPlayer goldenCroissant;
     MediaPlayer startMusic;
     MediaPlayer goldenHit;
     private static SoundPool soundPool;
@@ -28,9 +27,8 @@ public class SoundPlayer {
     public SoundPlayer(Context context){
         // Plays & load sounds
         // SoundPool (int maxStreams, int streamType, int srcQuality)
-        soundPool= new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
+        soundPool= new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
         backgroundMusic=MediaPlayer.create(context,R.raw.background);
-        goldenCroissant=MediaPlayer.create(context,R.raw.angel);
         startMusic=MediaPlayer.create(context,R.raw.menu);
         goldenHit=MediaPlayer.create(context,R.raw.hallelujah);
         pointSound= soundPool.load(context, R.raw.hit, 1);
@@ -86,14 +84,6 @@ public class SoundPlayer {
     public void playJumpSound(){
 
         soundPool.play(jumpSound,1.0f,1.0f,1,0,1);
-    }
-
-    public void playAngelSound(){
-        goldenCroissant.start();
-    }
-
-    public void stopAngelSound(){
-        goldenCroissant.stop();
     }
 
     public void playStartMusic(){
