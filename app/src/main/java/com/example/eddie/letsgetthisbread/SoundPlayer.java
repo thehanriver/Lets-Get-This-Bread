@@ -9,21 +9,25 @@ import android.provider.MediaStore;
 
 public class SoundPlayer {
 
-    private static SoundPool soundPool;
-    private static int pointSound;
-    private static int overSound;
-    private static int hitSound;
+    // Initialize Classes
     MediaPlayer backgroundMusic;
-    private static int countSound;
-    private static int startSound;
-    private static int jumpSound;
     MediaPlayer goldenCroissant;
     MediaPlayer startMusic;
     MediaPlayer goldenHit;
+    private static SoundPool soundPool;
+
+    // Initialize variables
+    private static int countSound;
+    private static int startSound;
+    private static int jumpSound;
+    private static int pointSound;
+    private static int overSound;
+    private static int hitSound;
+
 
     public SoundPlayer(Context context){
-
-        //SoundPool (int maxStreams, int streamType, int srcQuality)
+        // Plays & load sounds
+        // SoundPool (int maxStreams, int streamType, int srcQuality)
         soundPool= new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
         backgroundMusic=MediaPlayer.create(context,R.raw.background);
         goldenCroissant=MediaPlayer.create(context,R.raw.angel);
@@ -35,8 +39,10 @@ public class SoundPlayer {
         countSound= soundPool.load(context,R.raw.count,1);
         startSound= soundPool.load(context,R.raw.start,1);
         jumpSound= soundPool.load(context,R.raw.jump,1);
-            }
+    }
 
+
+    // Following functions all play ingame sounds
     public void playPointSound() {
 
         //play(int soundID, float leftVolume, float rightVolume, int priority, int loop, float rate)
@@ -62,7 +68,6 @@ public class SoundPlayer {
 
         backgroundMusic.pause();
     }
-
 
     public void stopBackgroundMusic(){
 
@@ -106,7 +111,6 @@ public class SoundPlayer {
     }
 
     public void stopGoldenHit(){
-
         goldenHit.stop();
     }
 

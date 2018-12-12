@@ -18,32 +18,44 @@ import android.widget.TextView;
 
 public class CharacterScreen extends AppCompatActivity {
 
+    // Initialzize Classes
     SharedPreferences character_data;
-    private int char_id;
-
-    private TextView current;
-    private ImageView chardisplay;
     Resources res;
 
+    // Initialize View Objects
+    private TextView current;
+    private ImageView chardisplay;
 
+    // Initialize Variables
+    private int char_id;
+
+    // Runs when activity is first called
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_screen);
 
-        res = getResources();
+        // Initialize View Objects
         current = findViewById(R.id.current);
         chardisplay = findViewById(R.id.chardisplay);
 
+        // Initialize res to get stored strings for character names in res -> values -> strings.xml
+        res = getResources();
+
+        // Retrieve previously stored prefreferences
         character_data = getSharedPreferences("CHAR_DATA", Context.MODE_PRIVATE);
         char_id = character_data.getInt("CHAR_DATA" , 1);
+
+        // Call custom fuction "update()" that display current charater selected
         update(char_id);
     }
 
+    // Send user back to main menu
     protected void backtoStart(View view){
         startActivity(new Intent(getApplicationContext(),StartScreen.class));
     }
 
+    // Button for character 1
     public void cardi(View view){
         SharedPreferences.Editor editor3 = character_data.edit();
         char_id = 1;
@@ -53,6 +65,25 @@ public class CharacterScreen extends AppCompatActivity {
 
     }
 
+    // Button for character 2
+    public void post(View view){
+        SharedPreferences.Editor editor3 = character_data.edit();
+        char_id = 2;
+        editor3.putInt("CHAR_DATA", char_id);
+        editor3.commit();
+        update(char_id);
+    }
+
+    // Button for character 3
+    public void yung(View view){
+        SharedPreferences.Editor editor3 = character_data.edit();
+        char_id = 3;
+        editor3.putInt("CHAR_DATA", char_id);
+        editor3.commit();
+        update(char_id);
+    }
+
+    // Button for character 4
     public void lil(View view){
         SharedPreferences.Editor editor3 = character_data.edit();
         char_id = 4;
@@ -61,22 +92,7 @@ public class CharacterScreen extends AppCompatActivity {
         update(char_id);
     }
 
-     public void post(View view){
-         SharedPreferences.Editor editor3 = character_data.edit();
-         char_id = 2;
-         editor3.putInt("CHAR_DATA", char_id);
-         editor3.commit();
-         update(char_id);
-     }
-
-     public void yung(View view){
-         SharedPreferences.Editor editor3 = character_data.edit();
-         char_id = 3;
-         editor3.putInt("CHAR_DATA", char_id);
-         editor3.commit();
-         update(char_id);
-     }
-
+    // Takes in input id, correspond to specific character and update display to show selected character
     public void update(int id){
         String name;
         switch(id) {

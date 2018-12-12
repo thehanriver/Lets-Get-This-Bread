@@ -11,24 +11,25 @@ import android.widget.ImageView;
 
 public class StartScreen extends AppCompatActivity {
 
-    // flags for quitting tutorial
+    // Initialize Variables
     private boolean action_flag = false;
 
-    // Tutorial images
+    // Initialize view
     private ImageView tutorialPG1;
 
-    // Buttons
-
+    // Initialize Buttons on Start Screen
     private Button startButton;
     private Button settingButton;
     private Button tutorialButton;
     private Button characterButton;
 
+    // Runs once on create
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
 
+        // Initialize objects
         tutorialPG1 = findViewById(R.id.tutorial_pg1);
         tutorialButton = findViewById(R.id.tutorialButton);
         startButton = findViewById(R.id.startButton);
@@ -36,19 +37,22 @@ public class StartScreen extends AppCompatActivity {
         characterButton = findViewById(R.id.characterButton);
     }
 
+    // Send user to game activity
     public void startGame(View view) {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
+    // Send user to setting activty
     public void startSettings(View view) {
         startActivity(new Intent(getApplicationContext(), SettingsScreen.class));
     }
 
+    // Send user to character selection activty
     public void characterScreen(View view){
         startActivity(new Intent(getApplicationContext(), CharacterScreen.class));
     }
 
-    // Make tutorial images visible
+    // Make tutorial images visible and make other UI invisible
     public void revealTutorial(View view) {
         tutorialPG1.setVisibility(View.VISIBLE);
         tutorialButton.setVisibility(View.GONE);
@@ -58,7 +62,7 @@ public class StartScreen extends AppCompatActivity {
 
     }
 
-    // Detection pressing
+    // Detecting user pressing screen, used to make tutorial invisible again and make UI appear
     public boolean onTouchEvent(MotionEvent me) {
         if (me.getAction() == MotionEvent.ACTION_DOWN) {
             action_flag = true;

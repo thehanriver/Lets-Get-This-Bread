@@ -28,7 +28,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    public class OrientationData implements SensorEventListener {
+    public class OrientationData implements SensorEventListener { // Class to retrieve data from accelerometer
         private SensorManager manager;
         private Sensor accelerometer;
         private Sensor magnometer;
@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Initialize View objects in layout
 
-        private TextView debug;
 	    private TextView scoreboard;
 	    private ImageView life1;
 	    private ImageView life2;
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
 	    private ImageView bread;
 	    private ImageView knife;
 	    private ImageView goldenCroissant;
-
 
     // Initialize variables for dimensions in layout
         private int frameHeight;
@@ -133,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         private int goldenCroissantX;
         private int goldenCroissantY;
 
+    // Variables for random bonus sprite
         private int goldenNumber;
         private int goldenGuess;
 
@@ -164,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
         private ImageButton pauseButton;
         private ImageButton menu;
 
-
     //looper
         private int loop_number = 0;
         private int jump_loop_number;
@@ -172,14 +170,16 @@ public class MainActivity extends AppCompatActivity {
     // Difficulty Multiplier
         private float speed_multiplier = 1;
 
+    // Initialize motion control variable
         private OrientationData orientationData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Runs first time on activity startup, inflates layout of MainActivity
+        // Runs first time on activity startup, inflates layout of MainActivity & retrieve apporpriate data
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Retrieve necessary data eg. sound/control/character set in menu
         SharedPreferences control_data = getSharedPreferences("CONTROL_DATA", Context.MODE_PRIVATE);
         control = control_data.getBoolean("CONTROL_DATA", false);
 
@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         sound = new SoundPlayer(this);
         SharedPreferences character_data = getSharedPreferences("CHAR_DATA", Context.MODE_PRIVATE);
         charselect = character_data.getInt("CHAR_DATA", 1);
+
         // Gets saved dimensions of sprites from xml file: dimension
         Resources res = getResources();
         breadWidth = (int) (res.getDimension(R.dimen.bread));
@@ -196,12 +197,9 @@ public class MainActivity extends AppCompatActivity {
         breadIconWidth = (int) (res.getDimension(R.dimen.bread_icon));
         goldenCroissantWidth = (int) (res.getDimension(R.dimen.goldenCroissant));
 
-
-        debug = findViewById(R.id.debug1);
-
         // Assign View objects
-        //Characters initialized
 
+        //Characters initialized
         bread_icon = findViewById(R.id.bread_icon);
         bread = findViewById(R.id.bread);
         knife = findViewById(R.id.knife);
@@ -218,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
         countdown = findViewById(R.id.countdown);
         pauseButton = findViewById(R.id.pause);
         menu = findViewById(R.id.menu);
-
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
         jump = findViewById(R.id.jump);
@@ -228,6 +225,8 @@ public class MainActivity extends AppCompatActivity {
         menu.setClickable(false);
         countdown.setText(Integer.toString(3));
 
+        // Change UI according to settings
+        // Make certain control UI aspect visble/invisible
         if (control) {
             left.setVisibility(View.GONE);
             right.setVisibility(View.GONE);
@@ -236,6 +235,8 @@ public class MainActivity extends AppCompatActivity {
             left.setVisibility(View.VISIBLE);
             right.setVisibility(View.VISIBLE);
         }
+
+        // Set character to user selected from settings
         switch (charselect) {
             case 1:
                 character.setImageDrawable(getResources().getDrawable(R.drawable.carbib));
@@ -251,47 +252,40 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-            // TODO: offload constants into its own class file file
-            // TODO: compatibility for differnt devices
-            // Get height of screen for compatibility reasons
-            screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-            orientationData = new OrientationData();
-            orientationData.register();
+        // Get height of screen for compatibility reasons
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
+        // Register Motion Control
+        orientationData = new OrientationData();
+        orientationData.register();
+        orientationData.newGame();
 
-            // Set objects below screen when initialized
-            breadY = screenHeight + 40;
-            knifeY = screenHeight + 40;
-            bread_iconY = screenHeight + 40;
-            chairY = screenHeight + 40;
-            goldenCroissantY = screenHeight + 40;
+        // Set objects out of screen when initialized
+        breadY = screenHeight + 40;
+        knifeY = screenHeight + 40;
+        bread_iconY = screenHeight + 40;
+        chairY = screenHeight + 40;
+        goldenCroissantY = screenHeight + 40;
 
-            // Set positions for falling sprites
-            bread_icon.setX(-40);
-            bread_icon.setY(bread_iconY);
-            knife.setX(-40);
-            knife.setY(knifeY);
-            bread.setX(-40);
-            bread.setY(breadY);
+        // Set positions for moving sprites
+        bread_icon.setX(-40);
+        bread_icon.setY(bread_iconY);
+        knife.setX(-40);
+        knife.setY(knifeY);
+        bread.setX(-40);
+        bread.setY(breadY);
+        goldenCroissant.setX(-40);
+        goldenCroissant.setY(goldenCroissantY);
+        chair.setX(-40);
+        chair.setY(chairY);
 
-            goldenCroissant.setX(-40);
-            goldenCroissant.setY(goldenCroissantY);
+        // Set scoreboard & seed for random sprite
+        scoreboard.setText("Score: 0");
+        goldenNumber = (int) Math.floor(Math.random() * 1000 + 1);
+    }
 
-            chair.setX(-40);
-            chair.setY(chairY);
-
-            // Set scoreboard & live counter
-            scoreboard.setText("Score: 0");
-
-
-            orientationData.newGame();
-
-            goldenNumber = (int) Math.floor(Math.random() * 300 + 1);
-
-        }
-
-    // Input X coordinate of falling sprites and a string key, ie "bread", to return if bread is in the x range of other falling sprites
+    // Input X coordinate of falling sprites and a string key, ie "bread", to return true if bread is in the x range of other falling sprites
     public boolean avoidStack(String key, int knifeX, int iconx, int breadx) {
         boolean result = false;
         switch (key) {
@@ -314,18 +308,15 @@ public class MainActivity extends AppCompatActivity {
         return (int) Math.floor(Math.random() * (frameWidth - width));
     }
 
-    // Funtion that will run in a loop to update position of all characters
+    // Function that runs in game loop to update position of all characters
     public void changePos() {
-        // Runs collision check, responds if character touches other characters
+        // Runs collision check "hitCheck()", responds if character touches other characters
         hitCheck();
 
-        // Updates speed of characters as player scores more
+        // Updates speed of characters as player scores
         speed_multiplier = difficulty(score);
 
-        // TODO: make it so score has a multiplier for each bread not dropped
-        // TODO: add bonus object for achievement system
-
-        // Move obstacle bread
+        // Move sprite bread
         if (breadY > frameHeight) // Move bread above screen once bread falls below screen
             breadY = -200;
         else if (breadY == -200) { // While still above screen, at -100, do initial shuffle and make this statement false. Required since we need to shuffle at least once
@@ -341,8 +332,7 @@ public class MainActivity extends AppCompatActivity {
         bread.setX(breadX);
         bread.setY(breadY);
 
-        // Move obstacle bread_icon
-
+        // Move sprite bread_icon
         if (bread_iconY > frameHeight) // Move bread_icon above screen once bread_icon falls below screen
             bread_iconY = -200;
         else if (bread_iconY == -200) { // While still above screen, at -100, do initial shuffle and make this statement false
@@ -354,11 +344,11 @@ public class MainActivity extends AppCompatActivity {
         else
             bread_iconY += (14 * speed_multiplier); // Otherwise start falling
 
+        // Set bread_icon coordinates
         bread_icon.setX(bread_iconX);
         bread_icon.setY(bread_iconY);
 
-        // Move obstacle bread
-
+        // Move sprite knife
         if (knifeY > frameHeight) // Move knife above screen once knife falls below screen
             knifeY = -200;
         else if (knifeY == -200) { // While still above screen, at -100, do initial shuffle and make this statement false
@@ -369,25 +359,26 @@ public class MainActivity extends AppCompatActivity {
             knifeX = shufflePos(knifeWidth);
         else
             knifeY += (12 * speed_multiplier); // Otherwise start falling
-        
+
+        // Set knife coordinates
         knife.setX(knifeX);
         knife.setY(knifeY);
 
-
-
+        // Determine if special sprite should start falling in this game loop
         if(goldenGuess != goldenNumber)
-            goldenGuess = (int) Math.floor(Math.random() * 300 + 1);
+            goldenGuess = (int) Math.floor(Math.random() * 1000 + 1);
+        // If random generator match with initialized seed, start falling
         else if (goldenGuess == goldenNumber && goldenCroissantY < -goldenCroissantWidth)
-            goldenCroissantY = -goldenCroissantWidth; // Otherwise start falling
+            goldenCroissantY = -goldenCroissantWidth;
         else if ( goldenCroissantY >= -goldenCroissantWidth) {
-
+            // Default to falling
             goldenCroissantY += 10;
 
-            if (goldenCroissantY > frameHeight) { // Move knife above screen once knife falls below screen
+            if (goldenCroissantY > frameHeight) { // Move knife above screen once knife falls below screen, make statement false to randomize new number
                 goldenCroissantY = -200;
                 goldenGuess = 0;
             }
-            if (goldenCroissantY == -200) { // While still above screen, at -100, do initial shuffle and make this statement false
+            if (goldenCroissantY == -200) { // While still above screen, at -100, do initial shuffle to x coordinate and make statement false to randomize new number to match
                 goldenCroissantX = shufflePos(goldenCroissantWidth);
                 goldenCroissantY = -199;
                 goldenGuess = 0;
@@ -398,20 +389,22 @@ public class MainActivity extends AppCompatActivity {
                 goldenCroissantY = -200;
         }
 
+        // Set character once logic is done
         goldenCroissant.setX(goldenCroissantX);
         goldenCroissant.setY(goldenCroissantY);
 
-
-
+        // If bool chair_flag is false, it means the obstacle is not on screen yet
         if (!chair_flag) {
-            currentscore = score;
+            currentscore = score; // Retrieves current score
             chairX = shufflePos(chairWidth);
+            // Check collision with character to make sure it doesn't appear under character
             if ((chairX >= characterX && chairX <= characterX + character_width) || (chairX + chairWidth >= characterX && chairX + chairWidth <= characterX + character_width))
                 chairX = shufflePos(chairWidth);
             chair_flag = true;
         }
         else {
             chair.setX(chairX);
+            // Obstacle only shuffles a new position after a certain amount of points, in this case its 200
             if ((score - currentscore) < 200) {
                 chairY -= 10;
             }
@@ -419,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
                 chairY += 10;
             }
 
-
+            // Collision was set so character cant move past obstacle, but statement will be false if y coordinate of char is out of obstacle range
             if (chairY < frameHeight - chairHeight) {
                 chairY = frameHeight - chairHeight;
             }
@@ -430,22 +423,15 @@ public class MainActivity extends AppCompatActivity {
         }
         chair.setY(chairY);
 
-        // Move main character
-        // TODO: change action flag mechanic into button & tilt
-
-        // Depending on movement flag, move characters
-
-        //motion controlled movement
-
-        if (control) {
+        // Setup for Motion Control
+        if (control) { // Motion control
             if (orientationData.getOrientation() != null && orientationData.getOrientation() != null) {
-                float pitch = orientationData.getOrientation()[1] - orientationData.getStartOrientation()[1];
                 float roll = orientationData.getOrientation()[2] - orientationData.getStartOrientation()[2];
 
                 float xSpeed = 20 * roll / 1f;
 
                 characterX += (int)xSpeed;
-                //boundary check and reversal if within bounds
+                // Check for collision with obstacle
                 if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
                     if (character.getY() + character_height > chair.getY()) {
                         if (characterX + character_width > chairX && characterX > chairX) // Right side collision
@@ -458,13 +444,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // Make sure character stays inside the boundry of the screen
+        // Setup for Button Control
         if(!control) {
-            if (left_flag)
+            if (left_flag) // Player clicks left button will make left_flag true
                 characterX -= 20;
-            else if (right_flag)
+            else if (right_flag) // Player clicks left button will make right_flag true
                 characterX += 20;
 
+            // Check Collision with obstacle
             if ((characterX >= chairX && characterX <= chairX + chairWidth) || (characterX + character_width >= chairX && characterX + character_width <= chairX + chairWidth)) {
                 if (character.getY() + character_height > chair.getY()) {
                     if (characterX + character_width > chairX && characterX > chairX)
@@ -475,22 +462,20 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        // Check if character is in the boundry of the screen
         if (characterX < 0)
             characterX = 0;
         else if (characterX > (frameWidth - character_width))
             characterX = frameWidth - character_width;
 
-
-        // TODO: add jump mechanic and change characterx
-        // Sets the position of the character
-
-//Make sure character stays inside the boundry of the screen in the vertical direction
-
+        // Make sure character stays inside the boundry of the screen in the vertical direction
+        // Jump mechanic is making the character shift to a y position that will be "above" relative to the obstacle, Jump is a hover for 3 second
+        // reset_flag is bool for whether character is still jumping, jump_flag is bool for character pressing jump button
         if (jump_flag && !reset_flag) {
             reset_flag = true;
-            jump_loop_number = loop_number;
+            jump_loop_number = loop_number; // Retrieve current game loop number, gameloop ticks 50 times per second
         }
-        if (reset_flag) {
+        if (reset_flag) { // If still allowed in the air
             if (loop_number - jump_loop_number < 30) {
                 characterY = frameHeight - chairHeight - 10 - character_height;
                 if (loop_number == jump_loop_number)
@@ -502,20 +487,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
-        //if(characterY + character_height < frameHeight - chairHeight - 20)
-        //else if(characterY > (frameHeight-character_height))
-
+        // Sets the character last to make sure all collision and sprites move first
         character.setX(characterX);
         character.setY(characterY);
-        // Updates scoreboard
+
+        // Updates scoreboard if sprites collide with character, checked with "hitCheck()"
         scoreboard.setText("Score: " + score);
     }
 
     public void hitCheck() {
-        // Boolean statement is basically checking if each corner of an object is inside the character's sprite boundry and plays sound
+        // If statements is checking if each corner of an object is inside the character's sprite boundry. If so, add score, reset position and play sound
 
-        // Collision check for bread, add points
+        // Collision check for bread, add points, play sound
         if ((breadX + bread.getWidth() >= characterX) && (breadX <= characterX + character_width) && (breadY + bread.getHeight() >= characterY) && (breadY + bread.getHeight() <= frameHeight)) {
             score += 30;
             breadY = -200;
@@ -534,7 +517,7 @@ public class MainActivity extends AppCompatActivity {
             else if(healthCounter ==1)
                 life2.setVisibility(View.GONE);
 
-            // Once zero, call next activity ResultScreen
+            // Once zero, user loses game and call next activity ResultScreen
             if(healthCounter == 0) {
                 life1.setVisibility(View.GONE); // Update Life Counter
                 timer.cancel();
@@ -548,11 +531,11 @@ public class MainActivity extends AppCompatActivity {
                 if (sound_flag)
                     sound.playOverSound();
 
-                // Print results
+                // Print results, done by passing score via intent to the next activity
                 Intent intent = new Intent(getApplicationContext(), ResultScreen.class);
                 intent.putExtra("SCORE", score); // Sends value of score into ResultScreen
                 startActivity(intent);
-            }// Update Life Counter
+            } // Update Life Counter
 
         }
 
@@ -563,6 +546,7 @@ public class MainActivity extends AppCompatActivity {
             sound.playPointSound();
         }
 
+        // Collision check for special sprite, add extra points, plays hit sound
         if ((goldenCroissantX + goldenCroissant.getWidth() >= characterX) && (goldenCroissantX <= characterX + character_width) && (goldenCroissantY + goldenCroissant.getHeight() >= characterY) && (goldenCroissantY + goldenCroissant.getHeight() <= frameHeight)) {
             score += 200;
             goldenCroissantY = -200;
@@ -575,21 +559,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onTouchEvent(MotionEvent me) {
-        int pointerCount = me.getPointerCount();
-
-        if (!start_flag) { // If its the player's first time touching the screen on MainActivity, call this
+        // If its the player's first time touching the screen on MainActivity, call this. Done after player taps when game displays "Tap to Start"
+        if (!start_flag) {
             start_flag = true; // Set true so this doesn't get called again
 
-            FrameLayout gameframe = findViewById(R.id.gameframe); // Initialize the FrameLayout that holds most of the objects, get dimensions
+            // Initialize the FrameLayout that holds most of the objects, get dimensions
+            FrameLayout gameframe = findViewById(R.id.gameframe);
             frameHeight = gameframe.getHeight();
             frameWidth = gameframe.getWidth();
 
-            // Initialize character positions and dimensions
+            // Initialize character & obstacle positions and dimensions
             characterX = (int)character.getX();
             characterY = (int)character.getY();
             character_width = character.getWidth();
             character_height = character.getHeight();
-
             chairWidth = chair.getWidth();
             chairHeight = chair.getHeight();
 
@@ -597,16 +580,16 @@ public class MainActivity extends AppCompatActivity {
             start.setVisibility(View.GONE);
             pauseButton.setClickable(true);
 
-            // Resume calls on the loop function that runs the game
+            // Starts gameloop function "resume()"
             resume();
         }
         else { // Detects player's finger motion
             if (me.getAction() == MotionEvent.ACTION_DOWN) { // If holding down, check where the player's finger position on the screen
                 if (inLeftBoundry(me.getX(), me.getY()))  // If position in Object: left, set left flag true. Will move character left in changePos()
                     left_flag = true;
-                if (inRightBoundry(me.getX(), me.getY()))  // Move Right
+                if (inRightBoundry(me.getX(), me.getY()))  // If in Right Button boundry, set flag true
                     right_flag = true;
-                if (inJumpBoundry(me.getX(), me.getY()))  //jump
+                if (inJumpBoundry(me.getX(), me.getY()))  // If in Jump Button boundry, set flag true
                     jump_flag = true;
             }
             else if (me.getAction() == MotionEvent.ACTION_UP) { // If finger leaves screen, return flags to false
@@ -627,33 +610,30 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchKeyEvent(event);
-
-
     }
 
 
 
-    // Implements pause button
+    // Implements pause feature
     public void pausePushed(View view) {
-        if (!pause_flag) { // Pause flag keeps track of the state of the game
-            pause_flag = true;
+        // Ensure pause is done once at a time and keeps track of the state of the game
+        if (!pause_flag) {
+            pause_flag = true; // Ensure this statement doesn't get called again until game starts again
 
-            // Stop timer and show paused interface
+            // Stop timer
             timer.cancel();
             timer = null;
 
-            //pause background music
+            // Pause background music
             if (sound_flag)
                 sound.pauseBackgroundMusic();
 
-            // Show PAUSED state
+            // Show PAUSED state and Paused UI
             countdown.setVisibility(View.VISIBLE);
             countdown.setText("PAUSED");
-
             pauseButton.setAlpha(128);
             menu.setVisibility(View.VISIBLE);
             menu.setClickable(true);
-            // TODO: change pauseButton.setImageDrawable();
         }
         else { // Resume game and reset flag state
             pause_flag = false;
@@ -661,55 +641,52 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Menu Button onClick Function
     public void menuPushed(View view) {
-        startActivity(new Intent(getApplicationContext(), StartScreen.class));
-        if (sound_flag)
+        startActivity(new Intent(getApplicationContext(), StartScreen.class)); // Send user back to main menu
+        if (sound_flag) // Stops background music
             sound.stopBackgroundMusic();
     }
 
     // Function that runs the game loop
-    public void resume() { // Before the game starts, there will be a timer buffer that counts down before game starts
+    public void resume() {
+        // Before the game starts, there will be a timer buffer that counts down before game starts
         countdown.setVisibility(View.VISIBLE);
 
-
-        // CountDownTimer counts down from 3 seconds doing actions every second
+        // CountDownTimer counts down from 3 seconds doing actions every second. Seconds is not exactly 3 second, added extra millis as buffer to prevent errors
         new CountDownTimer(3300, 1000) {
-
+            // Function of timer that runs as it ticks down
             public void onTick(long millisUntilFinished) {
-
+                // Hide Menu UI & disable button
                 menu.setVisibility(View.GONE);
                 menu.setClickable(false);
-                // TODO: add setting button and replace alpha
-                // Make pause button invisible and disable interaction
+
+                // Hide Pause UI and disable to prevent abuse
                 pauseButton.setAlpha(128);
                 pauseButton.setClickable(false);
+
                 // Print time as timer counts down, prints "BREADY?" when timer is down to 1
                 int display = (int)(Math.floor(millisUntilFinished/1000));
                 if (display == 1) {
-
                     countdown.setText("BREADY?");
-
                     if (!(display < 1))
-                        sound.playStartSound();
+                        sound.playStartSound(); // Plays sound 2 when countdown is down to 1
                 }
                 else if (display > 1) {
-                    countdown.setText(Integer.toString(display));
-                    sound.playCountSound();
+                    countdown.setText(Integer.toString(display)); // Display countdown
+                    sound.playCountSound(); // Play sound 1 when counting down
                 }
 
             }
 
-            // Resumes game time and things will start moving
+            // Function of timer that runs as it completes ticking
             public void onFinish() {
-
                 // Make pause button visible and enable interaction, countdown will disappear
                 countdown.setVisibility(View.INVISIBLE);
-
                 pauseButton.setAlpha(255);
                 pauseButton.setClickable(true);
 
-
-                // Resume game timer
+                // Resumes game timer and gameloop resumes
                 timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
@@ -718,9 +695,9 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 changePos(); // In charge of update all the sprites as time goes on
-                                loop_number += 1;
+                                loop_number += 1; // Keeps track of gameloop
                                 if (sound_flag)
-                                    sound.playBackgroundMusic();
+                                    sound.playBackgroundMusic(); // Plays background Music
                             }
                         });
                     }
@@ -729,9 +706,8 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
-    // TODO: Make boundry check more general
-    // Checks if input coordinate is in left/right button also jump. Used to see if user is pressing the "buttons"
-    // The buttons are actually images so you cant do call functions
+    // Checks if input coordinate is in left/right/jump button. Used to see if user is pressing the "buttons"
+    // The buttons are actually images so custom functions take in user's touch coordinates. Return bool whether user is touch these objects
     public boolean inLeftBoundry(float x, float y) {
         return ((x <= left.getX() + left.getWidth()) && (x >= left.getX()) && (y >= left.getY()) && (y <= left.getY() + left.getHeight()));
     }
@@ -743,9 +719,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean inJumpBoundry(float x,float y){
         return((x <= jump.getX() + jump.getWidth()) && (x >= jump.getX()) && (y >= jump.getY()));
     }
+
     // Updates the player difficulty by score
     public float difficulty(int PlayerScore) {
-        return 1 + (float)PlayerScore/2000; // Start at difficulty 1
+        return 1 + (float)PlayerScore/2000; // Start at difficulty 1.0
     }
 }
 
