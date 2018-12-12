@@ -41,7 +41,6 @@ public class SoundPlayer {
         jumpSound= soundPool.load(context,R.raw.jump,1);
     }
 
-
     // Following functions all play ingame sounds
     public void playPointSound() {
 

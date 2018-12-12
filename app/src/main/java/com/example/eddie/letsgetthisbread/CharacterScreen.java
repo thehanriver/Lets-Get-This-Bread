@@ -119,7 +119,7 @@ public class CharacterScreen extends AppCompatActivity {
         }
     }
 
-    // Disable back button
+    // Disable back buttony
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {

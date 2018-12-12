@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -85,55 +87,58 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // android:background="@drawable/environment_j"
     // Initialize View objects in layout
 
-	    private TextView scoreboard;
-	    private ImageView life1;
-	    private ImageView life2;
-	    private ImageView life3;
-	    private TextView start;
-	    private TextView left;
-	    private TextView right;
-	    private TextView jump;
-	    private TextView countdown;
-	    private ImageView chair;
-	    private ImageView character;
-	    private ImageView bread_icon;
-	    private ImageView bread;
-	    private ImageView knife;
-	    private ImageView goldenCroissant;
+    private FrameLayout gameframe;
+    private TextView scoreboard;
+    private TextView start;
+    private TextView left;
+    private TextView right;
+    private TextView jump;
+    private TextView countdown;
+    private ImageView background;
+    private ImageView life1;
+    private ImageView life2;
+    private ImageView life3;
+    private ImageView chair;
+    private ImageView character;
+    private ImageView bread_icon;
+    private ImageView bread;
+    private ImageView knife;
+    private ImageView goldenCroissant;
 
     // Initialize variables for dimensions in layout
-        private int frameHeight;
-        private int frameWidth;
-        private int screenHeight;
-        private int character_width;
-        private int character_height;
-        private int breadWidth;
-        private int breadIconWidth;
-        private int goldenCroissantWidth;
-        private int knifeWidth;
-        private int chairWidth;
-        private int chairHeight;
-        private int charselect;
+    private int frameHeight;
+    private int frameWidth;
+    private int screenHeight;
+    private int character_width;
+    private int character_height;
+    private int breadWidth;
+    private int breadIconWidth;
+    private int goldenCroissantWidth;
+    private int knifeWidth;
+    private int chairWidth;
+    private int chairHeight;
+    private int charselect;
 
     // Positions of sprites
-        private int characterX;
-        private int characterY;
-        private int bread_iconX;
-        private int bread_iconY;
-        private int breadX;
-        private int breadY;
-        private int knifeX;
-        private int knifeY;
-        private int chairX;
-        private int chairY;
-        private int goldenCroissantX;
-        private int goldenCroissantY;
+    private int characterX;
+    private int characterY;
+    private int bread_iconX;
+    private int bread_iconY;
+    private int breadX;
+    private int breadY;
+    private int knifeX;
+    private int knifeY;
+    private int chairX;
+    private int chairY;
+    private int goldenCroissantX;
+    private int goldenCroissantY;
 
     // Variables for random bonus sprite
-        private int goldenNumber;
-        private int goldenGuess;
+    private int goldenNumber;
+    private int goldenGuess;
 
     // Intialize classes
 
@@ -143,35 +148,35 @@ public class MainActivity extends AppCompatActivity {
 
     // Status check
 
-        private boolean start_flag = false;
-        private boolean pause_flag = false;
-        private boolean left_flag = false;
-        private boolean right_flag = false;
-        private boolean chair_flag = false;
-    	private boolean jump_flag = false;
-        private boolean reset_flag = false;
-        private boolean bonus_flag = false;
-        private boolean control;
-        private boolean sound_flag;
+    private boolean start_flag = false;
+    private boolean pause_flag = false;
+    private boolean left_flag = false;
+    private boolean right_flag = false;
+    private boolean chair_flag = false;
+    private boolean jump_flag = false;
+    private boolean reset_flag = false;
+    private boolean bonus_flag = false;
+    private boolean control;
+    private boolean sound_flag;
 
     // Counter
-        private int score = 0;
-        private int currentscore;
-        private int healthCounter = 3;
+    private int score = 0;
+    private int currentscore;
+    private int healthCounter = 3;
 
     // Button
-        private ImageButton pauseButton;
-        private ImageButton menu;
+    private ImageButton pauseButton;
+    private ImageButton menu;
 
     //looper
-        private int loop_number = 0;
-        private int jump_loop_number;
+    private int loop_number = 0;
+    private int jump_loop_number;
 
     // Difficulty Multiplier
-        private float speed_multiplier = 1;
+    private float speed_multiplier = 1;
 
     // Initialize motion control variable
-        private OrientationData orientationData;
+    private OrientationData orientationData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,16 +202,10 @@ public class MainActivity extends AppCompatActivity {
         breadIconWidth = (int) (res.getDimension(R.dimen.bread_icon));
         goldenCroissantWidth = (int) (res.getDimension(R.dimen.goldenCroissant));
 
-        // Assign View objects
-
-        //Characters initialized
-        bread_icon = findViewById(R.id.bread_icon);
-        bread = findViewById(R.id.bread);
-        knife = findViewById(R.id.knife);
-        chair = findViewById(R.id.chair);
-        goldenCroissant = findViewById(R.id.goldenCroissant);
-
+        // Assigning View objects
         // UI initialized
+        gameframe = findViewById(R.id.gameframe);
+        background = findViewById(R.id.background);
         scoreboard = findViewById(R.id.scoreboard);
         start = findViewById(R.id.start);
         life1 = findViewById(R.id.life1);
@@ -219,6 +218,16 @@ public class MainActivity extends AppCompatActivity {
         left = findViewById(R.id.left);
         right = findViewById(R.id.right);
         jump = findViewById(R.id.jump);
+
+        //Characters initialized
+        bread_icon = findViewById(R.id.bread_icon);
+        bread = findViewById(R.id.bread);
+        knife = findViewById(R.id.knife);
+        chair = findViewById(R.id.chair);
+        goldenCroissant = findViewById(R.id.goldenCroissant);
+
+        // Set Images
+        //background.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.environment_j) );
 
         // On startup, pause button is not clickable and set countdown to tick from 3
         pauseButton.setClickable(false);
@@ -564,7 +573,6 @@ public class MainActivity extends AppCompatActivity {
             start_flag = true; // Set true so this doesn't get called again
 
             // Initialize the FrameLayout that holds most of the objects, get dimensions
-            FrameLayout gameframe = findViewById(R.id.gameframe);
             frameHeight = gameframe.getHeight();
             frameWidth = gameframe.getWidth();
 
