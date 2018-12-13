@@ -16,18 +16,18 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
+        android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.08" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/guideMid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
+        app:layout_constraintGuide_percent="0.68" />
 
     <FrameLayout
         android:id="@+id/gameframe"
@@ -35,27 +35,8 @@
         android:layout_height="fill_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/background"
-            android:background="@drawable/environment_j"/>
-
-        <TextView
-            android:id="@+id/start"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="132dp"
-            android:gravity="center"
-            android:text="@string/tap"
-            android:textSize="30sp"
-            app:fontFamily="sans-serif"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        android:background="@drawable/environment_j">
 
         <ImageView
             android:id="@+id/bread_icon"
@@ -103,7 +84,7 @@
             android:textSize="32sp"
             android:paddingLeft="15dp"
             android:paddingStart="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/character"
@@ -111,46 +92,6 @@
             app:layout_constraintVertical_bias="0.0" />
 
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/jump"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@drawable/outline"
-        android:gravity="center"
-        android:text="@string/up"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-
-    <TextView
-        android:id="@+id/left"
-        android:layout_width="0dp"
-        android:layout_height="520dp"
-        android:layout_weight="1"
-        android:alpha="128"
-        android:gravity="center"
-        android:text="@string/left"
-        android:textSize="100sp"
-        app:layout_constraintBottom_toTopOf="@+id/jump"
-        app:layout_constraintEnd_toStartOf="@+id/center"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/right"
-        android:layout_width="205dp"
-        android:layout_height="520dp"
-        android:layout_weight="1"
-        android:alpha="128"
-        android:gravity="center"
-        android:text="@string/right"
-        android:textSize="100sp"
-        app:layout_constraintBottom_toTopOf="@+id/jump"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/center" />
 
 
     <ImageButton
@@ -238,6 +179,72 @@
         android:src="@drawable/heart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <TextView
+        android:id="@+id/jump"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/outline"
+        android:textColor="@color/white"
+        android:alpha=".7"
+        android:gravity="center"
+        android:text="@string/up"
+        android:textSize="170sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideMid" />
+
+
+    <TextView
+        android:id="@+id/left"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/outline"
+        android:gravity="center"
+        android:text="@string/left"
+        android:textSize="100sp"
+        android:textColor="@color/white"
+        android:alpha=".7"
+        app:layout_constraintBottom_toTopOf="@+id/jump"
+        app:layout_constraintEnd_toStartOf="@+id/center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/right"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/outline"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/right"
+        android:textSize="100sp"
+        android:textColor="@color/white"
+        android:alpha=".7"
+        app:layout_constraintBottom_toTopOf="@+id/jump"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/center"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/start"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="132dp"
+        android:gravity="center"
+        android:text="@string/tap"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:fontFamily="sans-serif"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

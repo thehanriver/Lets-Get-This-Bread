@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // android:background="@drawable/environment_j"
     // Initialize View objects in layout
 
     private FrameLayout gameframe;
@@ -97,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView right;
     private TextView jump;
     private TextView countdown;
-    private ImageView background;
     private ImageView life1;
     private ImageView life2;
     private ImageView life3;
@@ -205,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
         // Assigning View objects
         // UI initialized
         gameframe = findViewById(R.id.gameframe);
-        background = findViewById(R.id.background);
         scoreboard = findViewById(R.id.scoreboard);
         start = findViewById(R.id.start);
         life1 = findViewById(R.id.life1);
@@ -225,9 +222,6 @@ public class MainActivity extends AppCompatActivity {
         knife = findViewById(R.id.knife);
         chair = findViewById(R.id.chair);
         goldenCroissant = findViewById(R.id.goldenCroissant);
-
-        // Set Images
-        //background.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.environment_j) );
 
         // On startup, pause button is not clickable and set countdown to tick from 3
         pauseButton.setClickable(false);
@@ -583,6 +577,11 @@ public class MainActivity extends AppCompatActivity {
             character_height = character.getHeight();
             chairWidth = chair.getWidth();
             chairHeight = chair.getHeight();
+
+            // Hide UI
+            left.setAlpha(0);
+            right.setAlpha(0);
+            jump.setAlpha(0);
 
             // Remove "Tap to Start" display and allow pause to be clickable
             start.setVisibility(View.GONE);
