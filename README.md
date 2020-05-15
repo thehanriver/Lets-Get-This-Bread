@@ -5,7 +5,7 @@ This was for a class project in which we had to make an app. My group (4 people)
 It's our first attempt and has a lot of bugs so please be gentle.
 
 ## My contribution
-I mainly was in charge of connecting the front end to back end like connecting the buttons to the right function and etc. I also did all the sounds. Other than that, since 
+I was mainly in charge of connecting the front end to back end like connecting the buttons to the right function and etc. I also did all the sounds. Other than that, since 
 I had to wait for whoever was doing the other parts, I touched on all aspects of the app besides the artwork.
 
 ## Problems
