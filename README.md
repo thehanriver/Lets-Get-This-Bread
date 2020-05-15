@@ -3,6 +3,7 @@
 ## Description
 This was for a class project in which we had to make an app. My group (4 people) and I made an app called Lets Get This Bread using Java and Android Studios.
 It's our first attempt and has a lot of bugs so please be gentle.
+Full game source code on Edward Hong's Profile : https://github.com/loxaedward626/LGTB
 
 ## My contribution
 I was mainly in charge of connecting the front end to back end like connecting the buttons to the right function and etc. I also did all the sounds. Other than that, since 
