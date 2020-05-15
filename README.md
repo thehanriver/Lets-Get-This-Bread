@@ -1,4 +1,4 @@
-# Lets-Get-This-Bread
+# Lets Get This Bread! Game in Java
 
 ## Description
 This was for a class project in which we had to make an app. My group (4 people) and I made an app called Lets Get This Bread using Java and Android Studios.
